@@ -1,0 +1,80 @@
+import {Express} from 'express';
+import {Server} from "socket.io";
+import {Chat} from "./classes/Chat";
+import {ObjectId} from "mongodb";
+import {Message} from "./classes/Message";
+
+const express = require('express');
+const config = require('config');
+const http = require('http');
+const cors = require('cors');
+const bodyParser = require("body-parser");
+
+const authRoute = require("./routes/auth.routes");
+const chatRoute = require("./routes/chat.routes");
+const userRoute = require("./routes/user.routes");
+const messageRoute = require("./routes/message.routes");
+
+const app: Express = express()
+const port = config.get('Dev.programConfig.port');
+
+app.get('/', (req, res) => {
+    res.send('Hello Messenger')
+})
+
+app.use(cors());
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        optionsSuccessStatus: 200
+    }
+});
+
+io.on("connection", (socket) => {
+
+    socket.on("join_chat", (data) => {
+        socket.join(data);
+    })
+
+    socket.on("send_message", (data) => {
+        try {
+            const chat = new Chat(new ObjectId(data.chat_id));
+            chat.send_message(new ObjectId(data.sender_id), data.text).then((message_id) => {
+                Message.findMessage({_id: message_id}).then(message => {
+                    io.in(data.chat_id).emit("receive_message", message)
+                }).catch(err => console.log("ERR"))
+
+            }).catch(err=> console.log('err'))
+
+        }
+        catch (e) {
+            console.log(e.toString());
+        }
+
+
+    })
+
+    socket.on("delete_message", (message) => {
+
+        Message.deleteMessage(message).then(() => {
+            io.in(message.chat_id).emit("message_deleted", message)
+        })
+    })
+
+    socket.on("disconnect", () => {
+        console.log("user disconnected", socket.id)
+    })
+})
+
+app.use(bodyParser.json());
+app.use("/api/auth", authRoute);
+app.use("/api/chat", chatRoute);
+app.use("/api/user", userRoute);
+app.use("/api/message", messageRoute);
+
+server.listen(port, () => {
+    console.log(`Server has been started on port ${port}`)
+})
+
