@@ -1,12 +1,17 @@
 import React from 'react';
 import {io} from "socket.io-client";
+
 import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home"
 import Register from "./pages/Register/Register";
+import {Contacts} from "./pages/Contacts/Contacts";
+
 import { useContext } from "react";
 import { AuthContext } from "./contexts/Auth/AuthContext";
 import {BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
+
 export const socket = io("http://localhost:3001");
+
 function App() {
     const { user } = useContext(AuthContext);
 
@@ -16,6 +21,7 @@ function App() {
                 <Route exact path="/" element={user ? <Home /> : <Register />} />
                 <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
                 <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
+                <Route path="/contacts" element={user ? <Contacts socket={socket}/> : <Register />} />
             </Routes>
         </Router>
     );

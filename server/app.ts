@@ -3,6 +3,7 @@ import {Server} from "socket.io";
 import {Chat} from "./classes/Chat";
 import {ObjectId} from "mongodb";
 import {Message} from "./classes/Message";
+import {User} from "./classes/User";
 
 const express = require('express');
 const config = require('config');
@@ -61,6 +62,28 @@ io.on("connection", (socket) => {
         Message.deleteMessage(message).then(() => {
             io.in(message.chat_id).emit("message_deleted", message)
         })
+    })
+
+    socket.on("add_contact", (data) => {
+
+        User.findOneUser({phone_number: data.new_contact_number}).then(contact => {
+
+            if (contact) {
+                User.addNewContact(new ObjectId(data.user_id), contact._id).then(() => {
+                        if (socket.id === data.socket_id) {
+                            socket.emit('new_contact', {error: false})
+                        }
+                    }
+                )
+            }
+            else {
+
+                if (socket.id === data.socket_id) {
+                    socket.emit('new_contact', {error: 'There are no users with such number!'})
+                }
+            }
+        })
+
     })
 
     socket.on("disconnect", () => {

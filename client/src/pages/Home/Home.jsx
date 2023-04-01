@@ -15,6 +15,10 @@ export default function Home() {
         userInfoCall(user._id, dispatch).catch()
     }
 
+    function handleContactsButtonClick() {
+        navigate('/contacts');
+    }
+
     function handleLogoutButtonClick() {
         logout();
         navigate('/login');
@@ -23,6 +27,13 @@ export default function Home() {
     return (
         <div className="Home">
             <p> {user.username} ------- id: {user._id}
+                <button
+                    className="ml-10"
+                    style={{color: "blue"}}
+                    onClick={handleContactsButtonClick}
+                > My contacts
+                </button>
+
                 <button
                     className="ml-10"
                     style={{color: "blue"}}

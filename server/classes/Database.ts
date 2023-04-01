@@ -60,7 +60,7 @@ export class DB {
     }
 
     async findAndUpdateById(id: ObjectId, newObject: object) {
-        await this.collection.findOneAndUpdate({"_id": id}, newObject)
+        await this.collection.updateOne({_id: id}, {$set: newObject})
     }
 
     async updateMany(filter: object, update: object) {

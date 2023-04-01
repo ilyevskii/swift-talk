@@ -30,9 +30,8 @@ router.put("/:userId", async (req, res) => {
             }
         }
         try {
-            await User.findUserByIdAndUpdate(req.params.userId, {
-                $set: req.body,
-            });
+            delete req.body._id;
+            await User.findUserByIdAndUpdate(req.params.userId, req.body);
             res.status(200).json("Account has been updated");
         } catch (err) {
             res.status(500).json({error: err.toString()});

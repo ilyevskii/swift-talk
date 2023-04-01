@@ -23,7 +23,7 @@ export const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
 
     function logout() {
-        dispatch({ type: 'LOGOUT' });
+        dispatch({type: 'LOGOUT'});
     }
 
     useEffect(()=>{
