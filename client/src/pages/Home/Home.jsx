@@ -4,11 +4,20 @@ import {socket} from "../../App";
 import {Chat} from "../Chat/Chat";
 import { userInfoCall } from "../../api-calls";
 import {useNavigate} from "react-router-dom";
+import Header from "../../components/Header/Header";
+import VerticalChatList from "../../components/ChatList/VerticalChatList/VerticalChatList";
+import HorizontalChatList from "../../components/ChatList/HorizontalChatList/HorizontalChatList";
 
 export default function Home() {
     const navigate = useNavigate();
     const { user, dispatch, logout } = useAuth();
+
     const [chat, setChat] = useState("")
+    const [showVertical, setShowVertical] = useState(false);
+
+    const toggleChatList = () =>  {
+        setShowVertical((prev) => !prev);
+    }
 
     const RefreshUser = (e) => {
         e.preventDefault();
@@ -26,6 +35,15 @@ export default function Home() {
 
     return (
         <div className="Home">
+            <Header onToggle={toggleChatList}/>
+
+            {showVertical ?
+                <VerticalChatList />
+            :
+                <HorizontalChatList />
+            }
+
+
             <p> {user.username} ------- id: {user._id}
                 <button
                     className="ml-10"
