@@ -1,12 +1,12 @@
 const router = require("express").Router();
 import {User} from '../classes/User'
-import {ObjectId} from "mongodb";
 const bcrypt = require("bcrypt");
 
-//get user info
+//GET USER INFO
 router.get("/:userId", async (req, res) => {
     try {
-        const user = await User.findOneUser({_id: new ObjectId(req.params.userId)});
+        const user = await User.findOneUserById(req.params.userId);
+
         if (!user) {
             res.status(404).json("user doesn`t exists");
             return;
@@ -18,7 +18,8 @@ router.get("/:userId", async (req, res) => {
     }
 });
 
-//change user info
+
+//CHANGE USER INFO
 router.put("/:userId", async (req, res) => {
     if (req.body._id === req.params.userId) {
         if (req.body.password) {
@@ -41,7 +42,8 @@ router.put("/:userId", async (req, res) => {
     }
 });
 
-//delete user
+
+//DELETE USER
 router.delete("/:userId", async (req, res) => {
 
     if (req.body._id === req.params.userId) {
@@ -56,6 +58,16 @@ router.delete("/:userId", async (req, res) => {
     }
 });
 
+
+// GET ALL USER CHATS
+router.get("/chats/:userId", async (req, res) => {
+    try {
+        const chats = await User.getAllUserChatsObjects(req.params.userId);
+        res.status(200).json(chats);
+    } catch (err) {
+        res.status(500).json({error: err.toString()});
+    }
+});
 
 
 module.exports = router;
