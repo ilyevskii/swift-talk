@@ -1,33 +1,28 @@
 import { PrivateChat } from "./PrivateChat";
 import { GroupChat } from "./GroupChat";
 import { SavedMessages } from "./SavedMessages";
-import {ObjectId} from "mongodb";
 
-interface IChatFactory {
-    createPrivateChat(first_user_id: string, second_user_id: string): Promise<PrivateChat>;
-    createGroupChat(users: ObjectId[], name: string): Promise<GroupChat>;
-    createSavedMessages(name: ObjectId): Promise<SavedMessages>;
+export enum ChatTypes {
+    PRIVATE = 'private',
+    GROUP = 'group',
+    MSG = 'saved_messages'
 }
+export class ChatFactory {
+    static createChat(chat_type: ChatTypes ): PrivateChat | GroupChat | SavedMessages {
 
-class ChatFactory implements IChatFactory {
+        if (chat_type === ChatTypes.PRIVATE){
+            return new PrivateChat();
 
-    async createPrivateChat(first_user_id: string, second_user_id: string): Promise<PrivateChat> {
-        const chat = new PrivateChat();
-        await chat.initialize(first_user_id, second_user_id);
-        return chat;
-    }
+        } else if (chat_type === ChatTypes.GROUP) {
+            return new GroupChat();
 
-    async createGroupChat(users: ObjectId[], name: string = 'New group chat'): Promise<GroupChat> {
-        const chat = new GroupChat();
-        await chat.initialize(users, name);
-        return chat;
-    }
+        } else if (chat_type === ChatTypes.MSG) {
+            return new SavedMessages();
 
-    async createSavedMessages(user_id: ObjectId): Promise<SavedMessages> {
-        const chat = new SavedMessages();
-        await chat.initialize(user_id.toString());
-        return chat;
+        } else {
+            throw new Error('Invalid chat type');
+        }
     }
 }
 
-export const ChatCreator = new ChatFactory();
+

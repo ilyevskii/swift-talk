@@ -8,7 +8,7 @@ export class SavedMessages extends Chat {
         super();
     }
 
-    async initialize(user_id: string) {
+    async initialize(user_id: string | ObjectId) {
         this.id = await this.db.insertOne(
             {
                 type: 'saved_messages',
