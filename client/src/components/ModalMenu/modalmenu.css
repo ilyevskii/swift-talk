@@ -1,0 +1,72 @@
+.button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+}
+
+.modal {
+    position: fixed;
+    top: 3.5rem;
+    left: 0.75rem;
+    width: 12.5rem;
+    height: 100%;
+    text-align: left;
+}
+
+.menu {
+    border-radius: 0.75rem;
+    background-color: rgba(33, 33, 33, 0.9);
+    backdrop-filter: blur(4px);
+    padding: 0.4rem 0.75rem;
+    position: relative;
+}
+
+.menu-item {
+    display: flex;
+    border-radius: 8%;
+    color: white;
+    padding: 0.25rem;
+}
+
+.menu-item:hover {
+    background-color: rgba(52, 52, 52, 0.9);
+}
+
+.menu-item-icon {
+    opacity: 70%;
+    margin-right: 1rem;
+}
+
+.close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding: 0.75rem;
+    cursor: pointer;
+}
+
+li:hover {
+    background-color: #ddd;
+}
+
+.description {
+    text-align: center;
+    color: #838383;
+    opacity: 60;
+    font-size: 0.75rem;
+    margin-top: 0.2rem;
+}
