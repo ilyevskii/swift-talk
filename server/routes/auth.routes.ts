@@ -7,7 +7,9 @@ router.post("/register", async (req, res) => {
     try {
 
         // check if user with such phone number or username exists
-        if (await User.findOneUser({phone_number: req.body.phone_number, username: req.body.username})) {
+        if (await User.findOneUser({phone_number: req.body.phone_number})
+            || await User.findOneUser({username: req.body.username}))
+        {
             res.status(404).json("user exists");
             return;
         }
@@ -20,7 +22,7 @@ router.post("/register", async (req, res) => {
         const user = new User();
         await user.initialize(req.body.username, req.body.phone_number, hashedPassword)
 
-        res.status(200).json(await User.findOneUser({"_id": user.get_id()}));
+        res.status(200).json(await User.findOneUser({_id: user.get_id()}));
     } catch (err) {
         res.status(500).json({error: err.toString()});
     }
