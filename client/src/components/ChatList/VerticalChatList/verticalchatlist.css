@@ -1,5 +1,5 @@
 .vertical-chat-list {
-    background-color: rgb(38, 38, 38);
+    background-color: #212121;
     color: white;
     width: 30rem;
     height: 100vh;
@@ -14,6 +14,7 @@
     width: 100%;
     max-height: 94%;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 0.375rem;
     animation: switchVerticalAnimation 0.25s ease-in-out;
 }
@@ -24,6 +25,10 @@
     padding: 10px;
     cursor: pointer;
     border-radius: 0.75rem;
+}
+
+.vertical-chat-info {
+    width: 85%;
 }
 
 .vertical-chat-preview:hover {
@@ -46,6 +51,9 @@
     margin: 0;
     font-size: 0.875rem;
     color: gray;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .no-user-chats {

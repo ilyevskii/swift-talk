@@ -8,7 +8,7 @@ export default function HorizontalChatList() {
     const chats = [
         {
             id: 1,
-            name: 'мэри.',
+            name: 'илья.',
             lastMessage: 'Привет! Как дела?'
         },
         {
@@ -18,84 +18,84 @@ export default function HorizontalChatList() {
         },
         {
             id: 3,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
         ,
         {
             id: 4,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
         ,
         {
             id: 5,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
         ,
         {
             id: 6,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
         ,
         {
             id: 7,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
         ,
         {
             id: 8,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
         ,
         {
             id: 9,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
         ,
         {
             id: 10,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
         ,
         {
             id: 11,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         },
         {
             id: 12,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
         ,
         {
             id: 13,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
         ,
         {
             id: 113,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
         ,
         {
             id: 3345,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
         ,
         {
             id: 33645,
-            name: 'катя.',
+            name: 'илья.',
             lastMessage: 'аплллтпдпаодлпалд'
         }
     ]
