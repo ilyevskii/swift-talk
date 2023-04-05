@@ -1,7 +1,6 @@
 import {chat_messages, DB} from './Database'
 import { ObjectId } from "mongodb";
 import { User } from './User';
-import { Chat } from "./Chats/Chat";
 
 export class Message {
 

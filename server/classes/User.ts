@@ -1,8 +1,8 @@
-import { DB, user_chats } from './Database';
-import { Profile } from "./Profile";
-import { ObjectId} from "mongodb";
-import { ChatCreator } from "./Chats/ChatFactory";
-
+import {DB, user_chats} from './Database';
+import {Profile} from "./Profile";
+import {ObjectId} from "mongodb";
+import {ChatFactory, ChatTypes} from "./Chats/ChatFactory";
+import {SavedMessages} from "./Chats/SavedMessages";
 
 export class User {
 
@@ -35,7 +35,8 @@ export class User {
                 contacts: []
             }
         )
-        await ChatCreator.createSavedMessages(this.id);
+        const saved_messages = ChatFactory.createChat(ChatTypes.MSG) as SavedMessages;
+        await saved_messages.initialize(this.id);
     }
 
     get_id() {
