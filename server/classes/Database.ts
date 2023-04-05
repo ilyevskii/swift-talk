@@ -25,6 +25,10 @@ export class DB {
         this.collection = this.db.collection(this.collectionName);
     }
 
+    async find(query?: object) {
+        return (await this.collection.find(query || {}));
+    }
+
     async findAll(query?: object) {
         return await this.collection.find(query || {}).toArray();
     }
@@ -55,6 +59,10 @@ export class DB {
         return result.deletedCount;
     }
 
+    async deleteMany(query: object) {
+        await this.collection.deleteMany(query);
+    }
+
     async findAndDeleteById(id: ObjectId) {
         await this.collection.findOneAndDelete({"_id": id})
     }
@@ -72,3 +80,6 @@ export class DB {
         return res[0];
     }
 }
+
+export const user_chats = new DB('user_chats');
+export const chat_messages = new DB('chat_messages');

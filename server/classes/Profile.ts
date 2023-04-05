@@ -1,8 +1,5 @@
 import { DB } from './Database'
 import { ObjectId } from "mongodb";
-import {User} from "./User";
-
-const config = require('config');
 
 export class Profile {
 
@@ -30,15 +27,14 @@ export class Profile {
             bio: ''
             }
         )
+        return this.id;
     }
 
     get_id() {
         return this.id;
     }
     async get_first_name() {
-        const data = await this.db.findOne({_id: this.id});
-        return data.first_name;
-
+        return (await this.db.findOne({_id: this.id})).first_name;
     }
 
     async set_first_name(first_name: string) {
@@ -46,8 +42,7 @@ export class Profile {
     }
 
     async get_last_name() {
-        const data = await this.db.findOne({_id: this.id});
-        return data.last_name;
+        return (await this.db.findOne({_id: this.id})).last_name;
     }
 
     async set_last_name(last_name: string) {
@@ -55,8 +50,7 @@ export class Profile {
     }
 
     async get_bio() {
-        const data = await this.db.findOne({_id: this.id});
-        return data.bio;
+        return (await this.db.findOne({_id: this.id})).bio;
     }
 
     async set_bio(bio: string) {
@@ -65,6 +59,10 @@ export class Profile {
 
     static async set_first_name(profile_id: ObjectId, first_name: string) {
         await Profile.db.updateOneField({_id: profile_id}, 'first_name', first_name)
+    }
+
+    static async set_last_name(profile_id: ObjectId, last_name: string) {
+        await Profile.db.updateOneField({_id: profile_id}, 'last_name', last_name)
     }
 
     static async set_bio(profile_id: ObjectId, bio: string) {
