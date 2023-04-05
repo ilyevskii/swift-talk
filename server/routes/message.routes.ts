@@ -1,10 +1,7 @@
 const router = require("express").Router();
-
 import {Message} from "../classes/Message";
-import {Chat} from "../classes/Chat";
-import {ObjectId} from "mongodb";
 
-// add new message
+// SEND NEW MESSAGE
 router.post("/", async (req, res) => {
     try {
         const newMessage = new Message();
@@ -16,32 +13,69 @@ router.post("/", async (req, res) => {
     }
 });
 
-// get messages in chat
-router.get("/:chatId", async (req, res) => {
-    try {
-        const messages = await Chat.getAllMessageObjects(req.params.chatId);
-        res.status(200).json(messages);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
 
-router.get("/info/:messageId", async (req, res) => {
+// GET MESSAGE INFO
+router.get("/:messageId", async (req, res) => {
     try {
-        const message = await Message.findMessage({_id: new ObjectId(req.params.messageId)});
+        const message = await Message.findMessageById(req.params.messageId);
+
+        if (!message) {
+            res.status(404).json("message doens`t exists");
+            return;
+        }
+
         res.status(200).json(message);
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
-router.put("/edit/:messageId", async (req, res) => {
+
+// EDIT MESSAGE
+router.put("/:messageId", async (req, res) => {
 
     try {
-        await Message.findMessageByIdAndUpdate(req.params.userId, {
-            $set: req.body,
-        });
-        res.status(200).json("Message has been updated");
+        const message = await Message.findMessageById(req.params.messageId);
+
+        if (!message) {
+            res.status(404).json("message doesn`t exists");
+            return;
+        }
+
+        if (message.sender_id.toString() === req.body.user_id) {
+            await Message.setNewMessageText(req.params.messageId, req.body.text);
+            res.status(200).json("Message has been updated");
+        }
+        else {
+            res.status(403).json("You can delete only your messages");
+        }
+    }
+    catch (err) {
+        res.status(500).json({error: err.toString()});
+    }
+
+});
+
+
+// DELETE MESSAGE
+router.delete("/:messageId", async (req, res) => {
+
+    try {
+        const message = await Message.findMessageById(req.params.messageId);
+
+        if (!message) {
+            res.status(404).json("message doesn`t exists");
+            return;
+        }
+
+        if (message.sender_id.toString() === req.body._id) {
+            await Message.deleteMessageById(req.params.messageId);
+            res.status(200).json("Message has been deleted");
+        }
+        else {
+            res.status(403).json("You can delete only your messages");
+        }
+
     } catch (err) {
         res.status(500).json({error: err.toString()});
     }
