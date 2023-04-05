@@ -1,0 +1,36 @@
+.chat-message {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 16px;
+    font-size: 16px;
+    max-width: 60%;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.chat-message.left {
+    background-color: #212121;
+    color: #ffffff;
+    margin-right: auto;
+}
+
+.chat-message.right {
+    background-color: rgb(135, 116, 225);
+    color: #fff;
+    margin-left: auto;
+}
+
+.chat-message p {
+    margin: 0;
+    white-space: normal;
+}
+
+.message-time {
+    color: white;
+    font-size: 12px;
+    align-self: flex-end;
+    white-space: nowrap;
+    margin-left: 0.5rem;
+}
