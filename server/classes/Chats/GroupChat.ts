@@ -8,7 +8,7 @@ export class GroupChat extends Chat {
         super();
     }
 
-    async initialize(users: ObjectId[], name: string) {
+    async initialize(users: ObjectId[], name: string = "New group chat") {
         this.id = await this.db.insertOne(
             {
                 type: 'group',
