@@ -32,4 +32,11 @@ export class GroupChat extends Chat {
         await this.db.updateOneField({_id: this.id}, "photo", photo_src)
     }
 
+    static async addNewUserInChat(chat_id: string | ObjectId, user_id: string | ObjectId) {
+        await user_chats.insertOne(
+            {
+                chat_id: new ObjectId(chat_id.toString()),
+                user_id: new ObjectId(user_id.toString())
+            })
+    }
 }
