@@ -55,7 +55,7 @@ export function Contacts({socket}) {
         if (currentNumber) {
 
             if (currentNumber === user.phone_number) {
-                setNewContactError("You can't add yourself to your contacts!")
+                setNewContactError("You can'Chattt add yourself to your contacts!")
             }
             else {
                 const data = {

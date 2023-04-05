@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useAuth} from "../../contexts/Auth/AuthContext";
 import axios from "axios";
 
-export function Chat({socket, chat}) {
+export function Chattt({socket, chat}) {
     const { user } = useAuth();
     const [currentMessage, setCurrentMessage] = useState("");
     const [messages, setMessages] = useState([]);
@@ -50,7 +50,7 @@ export function Chat({socket, chat}) {
             {chat ?
                 <div>
                     <div className="chat-header">
-                        <p>Chat {chat}</p>
+                        <p>Chattt {chat}</p>
                     </div>
                     <div className="chat-body mt-10">
                     <hr/>
