@@ -1,6 +1,7 @@
 import {chat_messages, DB} from './Database'
 import { ObjectId } from "mongodb";
 import { User } from './User';
+import {Chat} from "./Chats/Chat";
 
 export class Message {
 
@@ -37,6 +38,7 @@ export class Message {
             }
         )
 
+        await Chat.setLastMessage(chat_id, this.id);
         await chat_messages.insertOne({chat_id: chat_id, message_id: this.id})
     }
 

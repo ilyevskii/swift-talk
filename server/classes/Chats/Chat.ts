@@ -80,4 +80,11 @@ export abstract class Chat{
         const users = await user_chats.findAll({'chat_id': new ObjectId(chat_id.toString())});
         return (users).map(obj => obj.user_id);
     }
+
+    static async setLastMessage(chat_id: string | ObjectId, message_id: string | ObjectId) {
+        await Chat.chatsDb.updateOneField({_id: new ObjectId(chat_id.toString())}, 'last_message',
+                                            new ObjectId(message_id.toString()
+                                        )
+        )
+    }
 }

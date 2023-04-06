@@ -59,10 +59,10 @@ router.delete("/:userId", async (req, res) => {
 });
 
 
-// GET ALL USER CHATS
+// GET ALL USER CHAT IDS
 router.get("/chats/:userId", async (req, res) => {
     try {
-        const chats = await User.getAllUserChatsObjects(req.params.userId);
+        const chats = await User.getAllUserChatsIds(req.params.userId);
         res.status(200).json(chats);
     } catch (err) {
         res.status(500).json({error: err.toString()});

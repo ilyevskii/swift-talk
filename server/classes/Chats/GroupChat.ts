@@ -13,7 +13,8 @@ export class GroupChat extends Chat {
             {
                 type: 'group',
                 name: name,
-                photo: ''
+                photo: '',
+                last_message: ""
             }
         )
 

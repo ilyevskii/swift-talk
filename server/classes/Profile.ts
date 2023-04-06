@@ -3,20 +3,12 @@ import { ObjectId } from "mongodb";
 
 export class Profile {
 
-    static readonly db: DB = new DB('profiles');
+    static readonly profilesDb: DB = new DB('profiles');
     readonly db!: DB;
     private id: ObjectId;
 
-    constructor(profile_id?: ObjectId) {
-
-        this.db = Profile.db;
-        if (typeof(profile_id) === "string") {
-            this.id = new ObjectId(profile_id);
-        }
-        else{
-            this.id = profile_id;
-        }
-
+    constructor() {
+        this.db = Profile.profilesDb;
     }
 
     async initialize() {
@@ -58,14 +50,22 @@ export class Profile {
     }
 
     static async set_first_name(profile_id: ObjectId, first_name: string) {
-        await Profile.db.updateOneField({_id: profile_id}, 'first_name', first_name)
+        await Profile.profilesDb.updateOneField({_id: profile_id}, 'first_name', first_name)
     }
 
     static async set_last_name(profile_id: ObjectId, last_name: string) {
-        await Profile.db.updateOneField({_id: profile_id}, 'last_name', last_name)
+        await Profile.profilesDb.updateOneField({_id: profile_id}, 'last_name', last_name)
     }
 
     static async set_bio(profile_id: ObjectId, bio: string) {
-        await Profile.db.updateOneField({_id: profile_id}, 'bio', bio)
+        await Profile.profilesDb.updateOneField({_id: profile_id}, 'bio', bio)
+    }
+
+    static async findProfile(query: object) {
+        return await Profile.profilesDb.findOne(query);
+    }
+
+    static async findProfileById(user_id: string | ObjectId) {
+        return await Profile.profilesDb.findOne({_id: new ObjectId(user_id.toString())});
     }
 }

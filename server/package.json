@@ -4,7 +4,8 @@
   "description": "Web application for messaging.",
   "main": "app.ts",
   "scripts": {
-    "start": "nodemon app.ts"
+    "start": "nodemon app.ts",
+    "test": "nodemon test.ts"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "messanger-serializer": "file:../../messanger-serializer",
     "mongod": "^2.0.0",
     "mongodb": "^5.1.0",
     "mongoose": "^7.0.3",

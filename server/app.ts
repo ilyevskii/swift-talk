@@ -3,7 +3,6 @@ import {Server} from "socket.io";
 import {ObjectId} from "mongodb";
 import {Message} from "./classes/Message";
 import {User} from "./classes/User";
-
 const express = require('express');
 const config = require('config');
 const http = require('http');
