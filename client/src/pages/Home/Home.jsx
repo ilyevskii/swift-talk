@@ -17,10 +17,16 @@ export default function Home({socket}) {
     const [showVertical, setShowVertical] = useState(false);
     const [chatData, setChatData] = useState([]);
     const [selectedChat, setSelectedChat] = useState(null);
+    const [leftMenuItem, setLeftMenuItem] = useState(null);
 
     const toggleChatList = () =>  {
         setShowVertical((prev) => !prev);
     }
+
+     const changeLeftMenu = (item) => {
+        console.log(item);
+        setLeftMenuItem(item);
+     }
 
     async function getChatData() {
         const res = await userRepo.getAllUserChats(user._id);
@@ -56,12 +62,18 @@ export default function Home({socket}) {
     return (
         <div className="home-page">
             <div className="left-menu">
-                <Header onToggle={toggleChatList}/>
-
-                {showVertical ?
-                    <VerticalChatList socket={socket} chats={chatData} setSelectedChat={setSelectedChat}/>
-                    :
-                    <HorizontalChatList socket={socket} chats={chatData} setSelectedChat={setSelectedChat}/>
+                <Header onToggle={toggleChatList} chooseMenuItem={changeLeftMenu}/>
+                {
+                    leftMenuItem ?
+                        <div>{leftMenuItem}</div>
+                        :
+                        <>
+                            {showVertical ?
+                                <VerticalChatList socket={socket} chats={chatData} setSelectedChat={setSelectedChat}/>
+                                :
+                                <HorizontalChatList socket={socket} chats={chatData} setSelectedChat={setSelectedChat}/>
+                            }
+                        </>
                 }
             </div>
             {selectedChat ?

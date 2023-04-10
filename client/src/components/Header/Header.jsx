@@ -5,6 +5,7 @@ import ModalMenu from "../ModalMenu/ModalMenu";
 
 export default function Header(props) {
     const [isSearchInputActive, setSearchInputActive] = useState(false)
+    const [isMenuItemActive, setMenuItemActive] = useState(false)
     const [isMenuOpen, setMenuOpen] = useState(false)
 
     const handleBackButtonClick = () => {
@@ -34,6 +35,10 @@ export default function Header(props) {
     }
 
     useEffect(() => {
+        console.log(isMenuItemActive);
+    }, [isMenuItemActive])
+
+    useEffect(() => {
         document.addEventListener('click', handleOutsideClick);
         return () => {
             document.removeEventListener('click', handleOutsideClick);
@@ -50,13 +55,26 @@ export default function Header(props) {
             <div className="header-buttons">
 
                 <div className={isMenuOpen ? "main-menu" : "main-menu disappear"} onClick={handleOutsideClick}>
-                    <ModalMenu />
+                    <ModalMenu changeMenuItem={props.chooseMenuItem} toggleButton={setMenuItemActive}/>
                 </div>
                 { !isSearchInputActive ?
-                    <Dehaze
-                        className={`header-button${isMenuOpen ? ' rotate-out' : ' rotate-in'}`}
-                        onClick={handleMenuButtonClick}
-                    />
+                    <>
+                        { !isMenuItemActive ?
+                            <Dehaze
+                                className={`header-button${isMenuOpen ? ' rotate-out' : ' rotate-in'}`}
+                                onClick={handleMenuButtonClick}
+                            />
+                            :
+                            <ArrowBack
+                                className={`header-button rotate-in`}
+                                onClick={() => {
+                                    setMenuItemActive(false);
+                                    props.chooseMenuItem(null);
+                                }
+                                }
+                            />
+                        }
+                    </>
                     :
                     <ArrowBack
                         className={`header-button${!isSearchInputActive ? ' rotate-out' : ' rotate-in'}`}
