@@ -87,3 +87,4 @@ export class DB {
 
 export const user_chats = new DB('user_chats');
 export const chat_messages = new DB('chat_messages');
+export const user_contacts = new DB('user_contacts');
