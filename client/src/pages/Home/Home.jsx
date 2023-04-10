@@ -1,38 +1,43 @@
 import {useState, useEffect} from "react";
 import {useAuth} from "../../contexts/Auth/AuthContext";
-import {socket} from "../../App";
-import {Chat} from "../Chat/Chat";
 import { userInfoCall } from "../../api-calls";
 import {useNavigate} from "react-router-dom";
 import Header from "../../components/Header/Header";
 import VerticalChatList from "../../components/ChatList/VerticalChatList/VerticalChatList";
 import HorizontalChatList from "../../components/ChatList/HorizontalChatList/HorizontalChatList";
 import ChatWindow from "../../components/Chat/ChatWindow/ChatWindow";
-import axios from "axios";
 
 import './home.css';
+import {userRepo} from "../../serializer.js";
 
-export default function Home() {
+export default function Home({socket}) {
     const navigate = useNavigate();
     const { user, dispatch, logout } = useAuth();
 
-    const [chat, setChat] = useState("")
     const [showVertical, setShowVertical] = useState(false);
     const [chatData, setChatData] = useState([]);
+    const [selectedChat, setSelectedChat] = useState(null);
 
     const toggleChatList = () =>  {
         setShowVertical((prev) => !prev);
     }
 
+    async function getChatData() {
+        const res = await userRepo.getAllUserChats(user._id);
+        setChatData(res);
+    }
+
     useEffect(() => {
-        async function getChatData() {
-            const chats = await axios.get(`http://localhost:3001/api/user/chats/${user._id}`);
-
-            setChatData(chats.data);
-        }
-
         getChatData();
-    }, [user]);
+    }, []);
+
+    useEffect(() => {
+
+        socket.on("receive_message", () => {
+            getChatData();
+        })
+
+    }, [socket]);
 
     const RefreshUser = (e) => {
         e.preventDefault();
@@ -54,14 +59,18 @@ export default function Home() {
                 <Header onToggle={toggleChatList}/>
 
                 {showVertical ?
-                    <VerticalChatList />
+                    <VerticalChatList socket={socket} chats={chatData} setSelectedChat={setSelectedChat}/>
                     :
-                    <HorizontalChatList />
+                    <HorizontalChatList socket={socket} chats={chatData} setSelectedChat={setSelectedChat}/>
                 }
             </div>
-            <div className="chat-window">
-                <ChatWindow chat={'fg'} user_id={'df'}/>
-            </div>
+            {selectedChat ?
+                <div className="chat-window">
+                    <ChatWindow socket={socket} chat={selectedChat} user_id={user._id}/>
+                </div>
+                :
+                <p>Choose chat to start messaging!</p>
+            }
 
             {/*<p> {user.username} ------- id: {user._id}*/}
             {/*    <button*/}
