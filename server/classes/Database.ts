@@ -26,7 +26,7 @@ export class DB {
     }
 
     async find(query?: object) {
-        return (await this.collection.find(query || {}));
+        return (await this.collection.find(query || {})).next();
     }
 
     async findAll(query?: object) {
@@ -35,6 +35,10 @@ export class DB {
 
     async findOne(query: object) {
         return await this.collection.findOne(query);
+    }
+
+    async findLastOne(query: object) {
+        return (await this.collection.find(query).sort({ _id: -1 }).limit(1)).next();
     }
 
     async insertOne(document: object) {
