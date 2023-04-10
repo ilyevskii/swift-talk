@@ -1,8 +1,9 @@
-import {DB, user_chats} from './Database';
+import {DB, user_chats, user_contacts} from './Database';
 import {Profile} from "./Profile";
 import {ObjectId} from "mongodb";
 import {ChatFactory, ChatTypes} from "./Chats/ChatFactory";
 import {SavedMessages} from "./Chats/SavedMessages";
+import {PrivateChat} from "./Chats/PrivateChat";
 
 export class User {
 
@@ -31,8 +32,7 @@ export class User {
                 username: username,
                 phone_number: phone_number,
                 password: password,
-                profile_id: profile_id,
-                contacts: []
+                profile_id: profile_id
             }
         )
         const saved_messages = ChatFactory.createChat(ChatTypes.MSG) as SavedMessages;
@@ -75,10 +75,9 @@ export class User {
     }
 
 
-    async add_contact(contact_id: ObjectId) {
-        await this.db.updateMany({_id: this.id}, {"$push": {"contacts": contact_id}});
+    async add_contact(contact_id: ObjectId | string) {
+        await user_contacts.insertOne({user_id: this.id, contact_id: new ObjectId(contact_id.toString())})
     }
-
 
     async delete_contact(contact_id: ObjectId) {
         await this.db.updateMany({_id: this.id}, {"$pull": {"contacts": contact_id}});
@@ -108,15 +107,27 @@ export class User {
         await user_chats.insertOne({user_id: user_id, chat_id: chat_id})
     }
 
-    static async addNewContact(user_id: ObjectId, contact_id: ObjectId) {
-        await this.usersDb.updateMany({_id: user_id}, {"$push": {"contacts": contact_id}});
+    static async addNewContact(user_id: ObjectId | string, contact_id: ObjectId | string) {
+        const chat = ChatFactory.createChat(ChatTypes.PRIVATE) as PrivateChat;
+        await chat.initialize(user_id.toString(), contact_id.toString());
+        await user_contacts.insertOne(
+            {
+                user_id: new ObjectId(user_id.toString()),
+                contact_id: new ObjectId(contact_id.toString()),
+                chat_id: chat.get_id()
+            }
+        )
     }
 
     static async getAllUserChatsIds(user_id: string | ObjectId) {
         return await user_chats.findAll({user_id: new ObjectId(user_id.toString())})
     }
 
-    static async getAllUserChatsObjects(user_id: string) {
+    static async getAllUserContacts(user_id: string) {
+        return await user_contacts.findAll({user_id: new ObjectId(user_id)})
+    }
+
+    static async getAllUserChats(user_id: string) {
 
         return await user_chats.aggregate([
 

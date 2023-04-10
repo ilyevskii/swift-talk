@@ -75,6 +75,10 @@ io.on("connection", (socket) => {
 
     })
 
+    socket.on("get_contact_info", (contact_id) => {
+
+    })
+
     socket.on("disconnect", () => {
         console.log("user disconnected", socket.id)
     })

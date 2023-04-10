@@ -62,8 +62,36 @@ router.delete("/:userId", async (req, res) => {
 // GET ALL USER CHATS
 router.get("/chats/:userId", async (req, res) => {
     try {
-        const chats = await User.getAllUserChatsObjects(req.params.userId);
+        const chats = await User.getAllUserChats(req.params.userId);
         res.status(200).json(chats);
+    } catch (err) {
+        res.status(500).json({error: err.toString()});
+    }
+});
+
+// GET ALL USER CONTACTS
+router.get("/contacts/:userId", async (req, res) => {
+    try {
+        const contacts = await User.getAllUserContacts(req.params.userId);
+        res.status(200).json(contacts);
+    } catch (err) {
+        res.status(500).json({error: err.toString()});
+    }
+});
+
+// ADD NEW CONTACT
+router.post("/contact", async (req, res) => {
+    try {
+        const contact = await User.findOneUser({phone_number: req.body.contact_phone_number})
+
+        if (contact) {
+            await User.addNewContact(req.body.user_id, contact._id);
+            res.status(200).json("Contact was added.");
+        }
+        else {
+            res.status(404).json("user doesn`t exists");
+        }
+
     } catch (err) {
         res.status(500).json({error: err.toString()});
     }
