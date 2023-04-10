@@ -12,7 +12,8 @@ export class SavedMessages extends Chat {
         this.id = await this.db.insertOne(
             {
                 type: 'saved_messages',
-                name: 'Saved Messages'
+                name: 'Saved Messages',
+                last_message: {}
             }
         )
 

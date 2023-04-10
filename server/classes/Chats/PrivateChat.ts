@@ -1,6 +1,7 @@
 import { Chat } from './Chat';
 import { ObjectId } from "mongodb";
 import { user_chats } from "../Database";
+import {User} from "../User";
 
 export class PrivateChat extends Chat {
 
@@ -9,9 +10,15 @@ export class PrivateChat extends Chat {
     }
 
     async initialize(first_user_id: string, second_user_id: string) {
+
         this.id = await this.db.insertOne(
             {
-                type: 'private'
+                type: 'private',
+                name: {
+                    [first_user_id]: await User.getUsername(second_user_id),
+                    [second_user_id]: await User.getUsername(first_user_id)
+                },
+                last_message: {}
             }
         )
 
