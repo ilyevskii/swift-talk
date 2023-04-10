@@ -1,112 +1,28 @@
 import './horizontalchatlist.css';
-import {useAuth} from "../../../contexts/Auth/AuthContext";
+import { useEffect, useState } from "react";
 
-export default function HorizontalChatList() {
+interface Chat {
+    id: number;
+    name: string;
+}
 
-    const {user} = useAuth();
+interface Props {
+    chats: Chat[];
+}
 
-    const chats = [
-        {
-            id: 1,
-            name: 'илья.',
-            lastMessage: 'Привет! Как дела?'
-        },
-        {
-            id: 2,
-            name: 'илья.',
-            lastMessage: 'Ооооо'
-        },
-        {
-            id: 3,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-        ,
-        {
-            id: 4,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-        ,
-        {
-            id: 5,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-        ,
-        {
-            id: 6,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-        ,
-        {
-            id: 7,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-        ,
-        {
-            id: 8,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-        ,
-        {
-            id: 9,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-        ,
-        {
-            id: 10,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-        ,
-        {
-            id: 11,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        },
-        {
-            id: 12,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-        ,
-        {
-            id: 13,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-        ,
-        {
-            id: 113,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-        ,
-        {
-            id: 3345,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-        ,
-        {
-            id: 33645,
-            name: 'илья.',
-            lastMessage: 'аплллтпдпаодлпалд'
-        }
-    ]
+export default function HorizontalChatList({ chats }: Props) {
+    useEffect(() => {
+        console.log(chats);
+    }, [])
 
     const image_url = 'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13'
+
     return (
         <>
             <div className="horizontal-chat-list">
-                {chats ?
+                {chats.length ?
                     <div className="horizontal-chat-list-content">
-                        {chats.map((chat) => (
+                        {chats.map((chat: Chat) => (
                             <div key={chat.id} className="horizontal-chat-preview">
                                 <img src={image_url} alt={chat.name} className="horizontal-chat-image" />
                                 <h3 className="horizontal-chat-name">{chat.name}</h3>
@@ -121,4 +37,3 @@ export default function HorizontalChatList() {
         </>
     );
 }
-

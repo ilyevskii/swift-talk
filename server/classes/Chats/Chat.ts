@@ -21,7 +21,7 @@ export abstract class Chat{
             message_id = await message.initialize(text, new ObjectId(sender_id.toString()), this.id)
         }
 
-        await chat_messages.insertOne({chat_id: this.id, user_id: message_id})
+        await chat_messages.insertOne({chat_id: this.id, message_id: message_id})
 
         return message_id;
     }
@@ -79,5 +79,29 @@ export abstract class Chat{
     static async getAllChatUsersIds(chat_id: string | ObjectId) {
         const users = await user_chats.findAll({'chat_id': new ObjectId(chat_id.toString())});
         return (users).map(obj => obj.user_id);
+    }
+
+    static async setLastMessage(chat_id: string | ObjectId, message_id: string | ObjectId) {
+        await Chat.chatsDb.updateOneField({_id: new ObjectId(chat_id.toString())}, 'last_message',
+                                            new ObjectId(message_id.toString()
+                                        )
+        )
+    }
+
+    static async getLastMessage(chat_id: string | ObjectId,) {
+        return (await chat_messages.findLastOne({chat_id: new ObjectId(chat_id.toString())})).message_id;
+    }
+
+    static async sendMessage(chat_id: string | ObjectId, sender_id: string | ObjectId, text: string, attachments: string = '') {
+        let message = new Message()
+        let message_id;
+
+        message_id = await message.initialize(
+            text,
+            new ObjectId(sender_id.toString()),
+            new ObjectId(chat_id.toString()),
+            attachments
+        )
+
     }
 }
