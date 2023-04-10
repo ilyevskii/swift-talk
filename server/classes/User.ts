@@ -92,6 +92,10 @@ export class User {
         return await User.usersDb.findOne({_id: new ObjectId(user_id)});
     }
 
+    static async getUsername(user_id: string) {
+        return (await User.usersDb.findOne({_id: new ObjectId(user_id.toString())})).username;
+    }
+
     static async deleteUserById(id: string) {
         return await User.usersDb.findAndDeleteById(new ObjectId(id));
     }
@@ -108,8 +112,8 @@ export class User {
         await this.usersDb.updateMany({_id: user_id}, {"$push": {"contacts": contact_id}});
     }
 
-    static async getAllUserChatsIds(user_id: string) {
-        return await user_chats.findAll({user_id: new ObjectId(user_id)})
+    static async getAllUserChatsIds(user_id: string | ObjectId) {
+        return await user_chats.findAll({user_id: new ObjectId(user_id.toString())})
     }
 
     static async getAllUserChatsObjects(user_id: string) {
