@@ -3,6 +3,7 @@ import {Server} from "socket.io";
 import {ObjectId} from "mongodb";
 import {Message} from "./classes/Message";
 import {User} from "./classes/User";
+import {Chat} from "./classes/Chats/Chat";
 
 const express = require('express');
 const config = require('config');
@@ -39,9 +40,12 @@ io.on("connection", (socket) => {
     socket.on("send_message", (data) => {
         try {
 
+            Chat.sendMessage(data.chat_id, data.sender_id, data.text).then(() => {
+                    io.in(data.chat_id).emit("receive_message")
+            }).catch(err => console.log(err.toString()))
         }
-        catch (e) {
-            console.log(e.toString());
+        catch (err) {
+            console.log(err.toString());
         }
 
 
