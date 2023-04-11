@@ -6,13 +6,14 @@ import Header from "../../components/Header/Header";
 import VerticalChatList from "../../components/ChatList/VerticalChatList/VerticalChatList";
 import HorizontalChatList from "../../components/ChatList/HorizontalChatList/HorizontalChatList";
 import ChatWindow from "../../components/Chat/ChatWindow/ChatWindow";
-import ContactList from "../../components/ContactList/ContactList";
+import ContactList from "../../components/ContactList/List/ContactList";
+import {NewContactWindow} from "../../components/ContactList/NewContactWindow/NewContactWindow";
 
 import './home.css';
-import {userRepo} from "../../serializer.js";
+import {chatRepo, userRepo} from "../../serializer.js";
 
 export default function Home({socket}) {
-    const navigate = useNavigate();
+
     const { user } = useAuth();
 
     const [showVertical, setShowVertical] = useState(false);
@@ -20,14 +21,18 @@ export default function Home({socket}) {
     const [contactData, setContactData] = useState([]);
     const [selectedChat, setSelectedChat] = useState(null);
     const [leftMenuItem, setLeftMenuItem] = useState(null);
+    const [isContactFormOpen, setContactFormOpen] = useState(false);
 
-    const toggleChatList = () =>  {
-        setShowVertical((prev) => !prev);
+    const [newContactError, setContactError] = useState(null);
+
+    const changeLeftMenu = (item) => {
+        setLeftMenuItem(item);
     }
 
-     const changeLeftMenu = (item) => {
-        setLeftMenuItem(item);
-     }
+    const closeNewContactWindow = () => {
+        setContactFormOpen(false);
+        setContactError(false);
+    }
 
     async function getChatData() {
         const res = await userRepo.getAllUserChats(user._id);
@@ -36,37 +41,63 @@ export default function Home({socket}) {
 
     async function getContactData() {
         const res = await userRepo.getAllUserContacts(user._id);
-        console.log(res);
         setContactData(res);
     }
 
+    async function addNewContact(contact_number) {
+        await socket.emit("add_contact", {socket_id: socket.id, user_id: user._id, new_contact_number: contact_number});
+    }
+
     useEffect(() => {
-        getChatData();
+        getChatData().catch(err=> console.log(err.toString()));
     }, []);
 
     useEffect(() => {
         if (leftMenuItem === 'contacts') {
-            getContactData();
+            getContactData().catch(err=> console.log(err.toString()));
         }
     }, [leftMenuItem])
 
     useEffect(() => {
 
         socket.on("receive_message", () => {
-            getChatData();
+            getChatData().catch();
         })
 
+        socket.on("new_contact", (data) => {
+            if (data.error === false) {
+                getContactData().then(() => {
+                    setContactFormOpen(false);
+                    setContactError(null);
+                });
+            }
+            else {
+                setContactError(data.error);
+            }
+
+        })
+
+
     }, [socket]);
+
+    useEffect(() => {
+        getChatData().catch(err=> console.log(err.toString()));
+    }, [isContactFormOpen])
 
     return (
         <div className="home-page">
             <div className="left-menu">
-                <Header onToggle={toggleChatList} chooseMenuItem={changeLeftMenu}/>
+                <Header
+                    onToggle={() => setShowVertical((prev) => !prev)}
+                    chooseMenuItem={changeLeftMenu}/>
                 {
                     leftMenuItem ?
                         <>
                             {leftMenuItem === "contacts" ?
-                                <ContactList contacts={contactData} setSelectedChat={setSelectedChat}/>
+                                <ContactList
+                                    contacts={contactData}
+                                    setSelectedChat={setSelectedChat}
+                                    setFormOpen={setContactFormOpen}/>
                                 :
                                 <>{leftMenuItem}</>
                             }
@@ -74,19 +105,37 @@ export default function Home({socket}) {
                         :
                         <>
                             {showVertical ?
-                                <VerticalChatList socket={socket} chats={chatData} setSelectedChat={setSelectedChat}/>
+                                <VerticalChatList
+                                    socket={socket}
+                                    chats={chatData}
+                                    setSelectedChat={setSelectedChat}/>
                                 :
-                                <HorizontalChatList socket={socket} chats={chatData} setSelectedChat={setSelectedChat}/>
+                                <HorizontalChatList
+                                    socket={socket}
+                                    chats={chatData}
+                                    setSelectedChat={setSelectedChat}/>
                             }
                         </>
                 }
             </div>
             {selectedChat ?
                 <div className="chat-window">
-                    <ChatWindow socket={socket} chat={selectedChat} user_id={user._id}/>
+                    <ChatWindow
+                        socket={socket}
+                        selectedChat={selectedChat}
+                        user_id={user._id}/>
                 </div>
                 :
                 <p>Choose chat to start messaging!</p>
+            }
+
+            {isContactFormOpen ?
+                <NewContactWindow
+                    onClose={closeNewContactWindow}
+                    addNewContact={addNewContact}
+                    error={newContactError}/>
+                :
+                <></>
             }
 
         </div>

@@ -1,0 +1,82 @@
+.new-contact-window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.window-content {
+    background-color: #2c2c2c;
+    width: 25rem;
+    color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 1.25rem 1.25rem 0.375rem 1.25rem;
+}
+
+.window-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.35rem;
+    font-weight: 450;
+}
+
+#phone_input {
+    margin: 1rem 0;
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid #838383;
+    background-color: #2c2c2c;
+    width: 100%;
+    position: relative;
+}
+
+#phone_input:focus {
+    border: 1px solid rgb(135, 116, 225);
+}
+#phone_input:focus::placeholder {
+    color: rgb(135, 116, 225);
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.submit-button {
+    margin-right: 0.5rem;
+}
+
+.form-buttons button {
+    color: rgb(135, 116, 225);
+    font-size: 1.125rem;
+    font-weight: 410;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.75rem;
+}
+
+.form-buttons button:disabled {
+    color: rgb(105, 90, 175);
+}
+
+.form-buttons button:disabled:hover {
+    background-color: rgba(135, 116, 225, 0);
+}
+
+.form-buttons button:hover {
+    background-color: rgba(135, 116, 225, 0.1);
+}
+
+.error {
+    margin-top: 0.5rem;
+    color: crimson;
+}

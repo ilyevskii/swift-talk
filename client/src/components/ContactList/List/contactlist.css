@@ -7,6 +7,7 @@
     overflow-y: scroll;
     scrollbar-width: thin;
     scrollbar-color: #262626FF #262626FF;
+    position: relative;
 }
 
 
@@ -17,6 +18,20 @@
     overflow-x: hidden;
     padding: 0.375rem;
     animation: switchVerticalAnimation 0.25s ease-in-out;
+}
+
+.add-contact-btn {
+    position: absolute;
+    background-color:  rgb(135, 116, 225);
+    border-radius: 50%;
+    padding: 1rem 1.125rem 1rem 1rem;
+    color: white;
+    top: 86.5%;
+    left: 85%;
+}
+
+.add-contact-btn:hover {
+    background-color: rgb(105, 90, 175);
 }
 
 .contact-preview {
@@ -53,7 +68,6 @@
     height: 90%;
     justify-content: center;
     align-items: center;
-
 }
 
 .no-user-contacts p {

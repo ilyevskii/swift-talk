@@ -35,10 +35,6 @@ export default function Header(props) {
     }
 
     useEffect(() => {
-        console.log(isMenuItemActive);
-    }, [isMenuItemActive])
-
-    useEffect(() => {
         document.addEventListener('click', handleOutsideClick);
         return () => {
             document.removeEventListener('click', handleOutsideClick);

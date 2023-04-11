@@ -9,24 +9,32 @@ import './chatwindow.css';
 export default function ChatWindow(props) {
 
     const [messages, setMessages] = useState([]);
-
-    const { socket, chat, user_id } = props;
+    const {socket, selectedChat, user_id} = props;
+    const [chat, setChat] = useState(selectedChat);
 
 
     useEffect(() => {
         setMessages([]);
 
         async function getChatMessages() {
+
+            if (typeof selectedChat === "string") {
+                setChat(await chatRepo.getChatInfo(user_id, selectedChat));
+            }
+            else {
+                setChat(selectedChat);
+            }
             const messages = await chatRepo.getChatMessages(chat._id);
             setMessages(messages);
         }
 
         getChatMessages();
-    }, [chat])
+    }, [selectedChat])
 
     async function sendMessage(currentMessage) {
 
         if (currentMessage) {
+
             const messageData = {
                 chat_id: chat._id,
                 sender_id: user_id,
