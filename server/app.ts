@@ -58,9 +58,9 @@ io.on("connection", (socket) => {
         User.findOneUser({phone_number: data.new_contact_number}).then(contact => {
 
             if (contact) {
-                User.addNewContact(new ObjectId(data.user_id), contact._id).then(() => {
+                User.addNewContact(new ObjectId(data.user_id), contact._id).then((chat_id) => {
                         if (socket.id === data.socket_id) {
-                            socket.emit('new_contact', {error: false})
+                            socket.emit('new_contact', {error: false, chat_id: chat_id})
                         }
                     }
                 )
@@ -85,10 +85,10 @@ io.on("connection", (socket) => {
 })
 
 app.use(bodyParser.json());
-app.use("/api/auth", authRoute);
-app.use("/api/chat", chatRoute);
-app.use("/api/user", userRoute);
-app.use("/api/message", messageRoute);
+app.use("/repositories/auth", authRoute);
+app.use("/repositories/chat", chatRoute);
+app.use("/repositories/user", userRoute);
+app.use("/repositories/message", messageRoute);
 
 server.listen(port, () => {
     console.log(`Server has been started on port ${port}...`)
