@@ -14,7 +14,7 @@ export default function HorizontalChatList(props) {
                             <div key={chat._id} className="horizontal-chat-preview" onClick={() =>
                             {
                                 socket.emit("join_chat", chat._id)
-                                setSelectedChat(chat)
+                                setSelectedChat(chat._id)
                             }}>
                                 <img src={image_url} alt={chat.name} className="horizontal-chat-image" />
                                 <h3 className="horizontal-chat-name">{chat.name}</h3>

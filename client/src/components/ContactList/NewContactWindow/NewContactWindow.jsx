@@ -1,5 +1,4 @@
 import './newcontactwindow.css';
-import {PersonOutlineOutlined, SettingsOutlined, InfoOutlined, Send} from "@mui/icons-material";
 import React, {useState} from "react";
 
 export function NewContactWindow(props) {

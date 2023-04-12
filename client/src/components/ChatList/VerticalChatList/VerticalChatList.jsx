@@ -17,7 +17,7 @@ export default function VerticalChatList(props) {
                             <div className="vertical-chat-info" onClick={() =>
                             {
                                 socket.emit("join_chat", chat._id)
-                                setSelectedChat(chat)
+                                setSelectedChat(chat._id)
                             }}>
                                 <h3 className="vertical-chat-name">{chat.name}</h3>
                                 {Object.keys(chat.last_message).length ?
