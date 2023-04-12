@@ -52,20 +52,20 @@ router.get("/users/:chatId", async (req, res) => {
 // GET ALL MESSAGES IN CHAT
 router.get("/messages/:chatId", async (req, res) => {
     try {
-        const messages = await Chat.getAllChatMessagesObjects(req.params.chatId);
-        res.status(200).json(messages);
+        const data = await Chat.getAllChatMessagesObjects(req.params.chatId);
+        res.status(200).json(data.messages);
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).json({error: err.toString()});
     }
 });
 
 // GET LAST MESSAGE IN CHAT
 router.get("/lastMessage/:chatId", async (req, res) => {
     try {
-        const message_id = await Chat.getLastMessage(req.params.chatId);
-        res.status(200).json({message_id: message_id});
+        const data = await Chat.getLastMessage(req.params.chatId);
+        res.status(200).json({message_id: data.message_id});
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).json({error: err.toString()});
     }
 });
 
