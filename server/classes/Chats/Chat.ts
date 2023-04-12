@@ -89,7 +89,7 @@ export abstract class Chat{
     }
 
     static async getLastMessage(chat_id: string | ObjectId,) {
-        return (await chat_messages.findLastOne({chat_id: new ObjectId(chat_id.toString())})).message_id;
+        return (await chat_messages.findLastOne({chat_id: new ObjectId(chat_id.toString())}));
     }
 
     static async sendMessage(chat_id: string | ObjectId, sender_id: string | ObjectId, text: string, attachments: string = '') {

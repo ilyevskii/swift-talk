@@ -117,6 +117,7 @@ export class User {
                 chat_id: chat.get_id()
             }
         )
+        return chat.get_id().toString();
     }
 
     static async getAllUserChatsIds(user_id: string | ObjectId) {
