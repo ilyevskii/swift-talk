@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Messenger.iml" filepath="$PROJECT_DIR$/.idea/Messenger.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../messanger-serializer/.idea/messanger-serializer.iml" filepath="$PROJECT_DIR$/../messanger-serializer/.idea/messanger-serializer.iml" />
     </modules>
   </component>
 </project>
