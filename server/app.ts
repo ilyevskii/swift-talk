@@ -85,10 +85,10 @@ io.on("connection", (socket) => {
 })
 
 app.use(bodyParser.json());
-app.use("/repositories/auth", authRoute);
-app.use("/repositories/chat", chatRoute);
-app.use("/repositories/user", userRoute);
-app.use("/repositories/message", messageRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/chat", chatRoute);
+app.use("/api/user", userRoute);
+app.use("/api/message", messageRoute);
 
 server.listen(port, () => {
     console.log(`Server has been started on port ${port}...`)

@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {Send} from "@mui/icons-material";
-import './messageform.css';
+import './MessageForm.css';
 
-export function MessageForm(props) {
-    const [message, setMessage] = useState('');
+interface MessageFormProps {
+    submitFunc: (message: string) => void;
+}
 
-    const handleChange = (event) => {
+export function MessageForm(props: MessageFormProps): JSX.Element {
+    const [message, setMessage] = useState<string>('');
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setMessage(event.target.value);
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         props.submitFunc(message);
         setMessage('');
@@ -25,9 +29,8 @@ export function MessageForm(props) {
                 onChange={handleChange}
             />
             <button className="send-button" type="submit">
-                <Send/>
+                <Send />
             </button>
         </form>
     );
 }
-

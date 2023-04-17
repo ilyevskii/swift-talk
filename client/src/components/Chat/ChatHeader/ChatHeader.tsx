@@ -1,11 +1,19 @@
 import React from 'react';
-import './chatheader.css';
+import './ChatHeader.css';
 
-export default function ChatHeader ({ chatName, chatPhoto }) {
+interface ChatHeaderProps {
+    chatName: string;
+    chatPhoto: string;
+}
+
+export function ChatHeader(props: ChatHeaderProps): JSX.Element {
+
+    const {chatName, chatPhoto} = props;
+
     return (
         <div className="chat-header">
             <div className="chat-photo">
-                <img src={chatPhoto} alt="Chattt Photo" />
+                <img src={chatPhoto} alt="Chat Photo" />
             </div>
             <div className="chat-info">
                 <h2>{chatName}</h2>
@@ -15,5 +23,4 @@ export default function ChatHeader ({ chatName, chatPhoto }) {
             </div>
         </div>
     );
-};
-
+}

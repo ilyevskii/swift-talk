@@ -1,12 +1,18 @@
-import "./header.css";
+import "./Header.css";
 import {Search, Dehaze, ArrowBack} from "@mui/icons-material";
-import { useState, useEffect, useRef } from "react";
-import ModalMenu from "../ModalMenu/ModalMenu";
+import {useState, useEffect, useRef} from "react";
+import {ModalMenu} from "../ModalMenu/ModalMenu";
 
-export default function Header(props) {
-    const [isSearchInputActive, setSearchInputActive] = useState(false)
-    const [isMenuItemActive, setMenuItemActive] = useState(false)
-    const [isMenuOpen, setMenuOpen] = useState(false)
+interface HeaderProps {
+    onToggle: () => void;
+    chooseMenuItem: (menuItem: string | null) => void;
+}
+
+export default function Header(props: HeaderProps): JSX.Element {
+
+    const [isSearchInputActive, setSearchInputActive] = useState<boolean>(false)
+    const [isMenuItemActive, setMenuItemActive] = useState<boolean>(false)
+    const [isMenuOpen, setMenuOpen] = useState<boolean>(false)
 
     const handleBackButtonClick = () => {
         setSearchInputActive((prev) => !prev);
@@ -22,16 +28,16 @@ export default function Header(props) {
         setMenuOpen((prev) => !prev)
     }
 
-    const handleOutsideClick = (event) => {
+    function handleOutsideClick(event: any): any {
+        const target: HTMLElement = event.target as HTMLElement;
 
-        if (!event.target.classList.contains('search-input') && (!event.target.classList.contains('header-button'))) {
+        if (!target.classList.contains('search-input') && (!target.classList.contains('header-button'))) {
             setSearchInputActive(false);
 
-            if(isMenuOpen || event.target.tagName === 'path') {
+            if (isMenuOpen || target.tagName === 'path') {
                 setMenuOpen((prev) => !prev);
             }
         }
-
     }
 
     useEffect(() => {
@@ -42,14 +48,15 @@ export default function Header(props) {
     }, [isMenuOpen]);
 
 
-    useEffect( () => {
+
+
+    useEffect(() => {
         props.onToggle();
     }, [isSearchInputActive])
 
     return (
         <div className="header-container">
             <div className="header-buttons">
-
                 <div className={isMenuOpen ? "main-menu" : "main-menu disappear"} onClick={handleOutsideClick}>
                     <ModalMenu changeMenuItem={props.chooseMenuItem} toggleButton={setMenuItemActive}/>
                 </div>
@@ -66,8 +73,7 @@ export default function Header(props) {
                                 onClick={() => {
                                     setMenuItemActive(false);
                                     props.chooseMenuItem(null);
-                                }
-                                }
+                                }}
                             />
                         }
                     </>
