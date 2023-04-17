@@ -9,7 +9,7 @@ type ContactListProps = {
     setFormOpen: (open: SetStateAction<boolean>) => void;
 };
 
-export default function ContactList(props: ContactListProps) {
+export function ContactList(props: ContactListProps) {
 
     const { contacts, setSelectedChat, setFormOpen } = props;
 

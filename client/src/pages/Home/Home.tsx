@@ -2,20 +2,22 @@ import './Home.css';
 
 import {useState, useEffect} from "react";
 import {useAuth} from "../../contexts/Auth/AuthContext";
-import {useUserChats, useUserContacts} from "../../hooks/UserHooks";
+import {useUserChats, useUserContacts} from "../../hooks";
 
-import Header from "../../components/Header/Header";
-import VerticalChatList from "../../components/ChatList/VerticalChatList/VerticalChatList";
-import HorizontalChatList from "../../components/ChatList/HorizontalChatList/HorizontalChatList";
-import ChatWindow from "../../components/Chat/ChatWindow/ChatWindow";
-import ContactList from "../../components/ContactList/List/ContactList";
-import {NewContactWindow} from "../../components/ContactList/NewContactWindow/NewContactWindow";
+import {HorizontalChatList,
+        VerticalChatList,
+        Header,
+        ChatWindow,
+        ChatHeader,
+        ContactList,
+        NewContactWindow} from "../../components";
+
 
 type HomeProps = {
     socket: any;
 };
 
-export default function Home({socket}: HomeProps) {
+export function Home({socket}: HomeProps) {
 
     const {user} = useAuth();
 

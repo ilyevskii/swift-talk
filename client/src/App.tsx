@@ -1,9 +1,7 @@
 import React from 'react';
 import {io} from "socket.io-client";
 
-import Login from "./pages/Login/Login";
-import Home from "./pages/Home/Home"
-import Register from "./pages/Register/Register";
+import {Login, Register, Home} from "./pages";
 
 import {useAuth} from "./contexts/Auth/AuthContext";
 import {BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";

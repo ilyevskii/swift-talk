@@ -1,13 +1,14 @@
 import React from 'react';
 import './HorizontalChatList.css';
 import {ChatDTO} from "messanger-serializer";
+
 interface Props {
     socket: any;
     chats: ChatDTO[];
     setSelectedChat: (id: string) => void;
 }
 
-export default function HorizontalChatList(props: Props): JSX.Element {
+export function HorizontalChatList(props: Props): JSX.Element {
 
     const { socket, chats, setSelectedChat } = props;
     const image_url: string = 'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13';

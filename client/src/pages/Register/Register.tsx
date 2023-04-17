@@ -1,10 +1,9 @@
-import {useContext, useRef, FormEvent, useReducer} from "react";
+import {useContext, useRef, FormEvent} from "react";
 import {registerCall} from "../../api-calls";
 import {AuthContext, AuthContextInterface} from "../../contexts/Auth/AuthContext";
 import {useNavigate} from "react-router-dom";
-import AuthReducer from "../../contexts/Auth/AuthReducer";
 
-export default function Register() {
+export function Register() {
     const navigate = useNavigate();
     const phone = useRef<HTMLInputElement>(null);
     const password = useRef<HTMLInputElement>(null);

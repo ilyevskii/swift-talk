@@ -4,7 +4,7 @@ import {ChatMessage} from '../ChatMessage/ChatMessage';
 import {MessageForm} from '../MessageForm/MessageForm';
 import './ChatWindow.css';
 
-import {useChatMessages, useChatInfo} from '../../../hooks/ChatHooks';
+import {useChatMessages, useChatInfo} from '../../../hooks';
 
 interface ChatWindowProps {
     socket: any;
@@ -13,7 +13,7 @@ interface ChatWindowProps {
     refresh_chats: () => Promise<any>;
 }
 
-export default function ChatWindow(props: ChatWindowProps): JSX.Element {
+export function ChatWindow(props: ChatWindowProps): JSX.Element {
     const { socket, selectedChat, user_id, refresh_chats } = props;
 
     const [chat, setChat] = useState<string>(selectedChat);

@@ -8,7 +8,7 @@ interface HeaderProps {
     chooseMenuItem: (menuItem: string | null) => void;
 }
 
-export default function Header(props: HeaderProps): JSX.Element {
+export function Header(props: HeaderProps): JSX.Element {
 
     const [isSearchInputActive, setSearchInputActive] = useState<boolean>(false)
     const [isMenuItemActive, setMenuItemActive] = useState<boolean>(false)
