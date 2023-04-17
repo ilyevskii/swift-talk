@@ -1,5 +1,5 @@
 #general ignores
-.idea/
+.idea
 
 #server ignores
 server/node_modules
