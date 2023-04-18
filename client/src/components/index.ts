@@ -1,5 +1,6 @@
 export {ChatWindow} from "./Chat/ChatWindow/ChatWindow";
 export {ChatHeader} from "./Chat/ChatHeader/ChatHeader";
+export {ChatMessage} from "./Chat/ChatMessage/ChatMessage";
 export {MessageForm} from "./Chat/MessageForm/MessageForm";
 export {HorizontalChatList} from "./ChatList/HorizontalChatList/HorizontalChatList";
 export {VerticalChatList} from "./ChatList/VerticalChatList/VerticalChatList";

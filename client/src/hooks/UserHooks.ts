@@ -1,6 +1,6 @@
 import {useQuery} from "react-query";
-import {ChatDTO} from "../repositories/ChatRepository";
-import {UserRepository, ContactDTO} from "../repositories/UserRepository";
+import {ChatDTO} from "repositories";
+import {UserRepository, ContactDTO} from "repositories";
 
 const userRepo: UserRepository = new UserRepository("http://localhost:3001");
 

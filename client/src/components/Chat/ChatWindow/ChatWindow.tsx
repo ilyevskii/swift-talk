@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {ChatHeader} from '../ChatHeader/ChatHeader';
-import {ChatMessage} from '../ChatMessage/ChatMessage';
-import {MessageForm} from '../MessageForm/MessageForm';
+import {ChatHeader, ChatMessage, MessageForm} from 'components';
 import './ChatWindow.css';
 
-import {useChatMessages, useChatInfo} from '../../../hooks';
+import {useChatMessages, useChatInfo} from 'hooks';
 
 interface ChatWindowProps {
     socket: any;

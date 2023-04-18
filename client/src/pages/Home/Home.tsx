@@ -2,15 +2,9 @@ import './Home.css';
 
 import {useState, useEffect} from "react";
 import {useAuth} from "../../contexts/Auth/AuthContext";
-import {useUserChats, useUserContacts} from "../../hooks";
+import {useUserChats, useUserContacts} from "hooks";
 
-import {HorizontalChatList,
-        VerticalChatList,
-        Header,
-        ChatWindow,
-        ChatHeader,
-        ContactList,
-        NewContactWindow} from "../../components";
+import {HorizontalChatList, VerticalChatList, Header, ChatWindow, ContactList, NewContactWindow} from "components";
 
 
 type HomeProps = {

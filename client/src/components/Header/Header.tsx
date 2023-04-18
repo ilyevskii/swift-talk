@@ -1,7 +1,7 @@
 import "./Header.css";
 import {Search, Dehaze, ArrowBack} from "@mui/icons-material";
-import {useState, useEffect, useRef} from "react";
-import {ModalMenu} from "../ModalMenu/ModalMenu";
+import {useState, useEffect} from "react";
+import {ModalMenu} from "components";
 
 interface HeaderProps {
     onToggle: () => void;
