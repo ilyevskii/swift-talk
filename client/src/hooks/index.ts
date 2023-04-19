@@ -3,3 +3,4 @@ export {useUserChats, useUserContacts} from "./repoHooks/UserHooks";
 export {useHeader} from "./componentHooks/useHeader";
 export {useMenu} from "./storeHooks/useMenu";
 export {useSearchInput} from "./storeHooks/useSearchInput";
+export {useChatList} from "./storeHooks/useChatList";

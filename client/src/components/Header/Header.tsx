@@ -1,16 +1,12 @@
 import "./Header.css";
 import {Search, Dehaze, ArrowBack} from "@mui/icons-material";
 import {useEffect} from "react";
+
 import {ModalMenu} from "components";
 
 import {useHeader} from "hooks";
 
-interface HeaderProps {
-    onToggle: () => void;
-    chooseMenuItem: (menuItem: string | null) => void;
-}
-
-export function Header(props: HeaderProps): JSX.Element {
+export function Header(): JSX.Element {
 
     const {
         isSearchInputActive,
@@ -19,19 +15,20 @@ export function Header(props: HeaderProps): JSX.Element {
         handleBackButtonClick,
         handleSearchbarClick,
         handleMenuButtonClick,
-        handleOutsideClick,
-        setMenuItemActive
+        setMenuItemActive,
+        setIsVerticalChat,
+        setMenuItem
     } = useHeader();
 
     useEffect(() => {
-        props.onToggle();
+        setIsVerticalChat();
     }, [isSearchInputActive])
 
     return (
         <div className="header-container">
             <div className="header-buttons">
-                <div className={isMenuOpen ? "main-menu" : "main-menu disappear"} onClick={handleOutsideClick}>
-                    <ModalMenu changeMenuItem={props.chooseMenuItem} toggleButton={setMenuItemActive}/>
+                <div className={isMenuOpen ? "main-menu" : "main-menu disappear"}>
+                    <ModalMenu/>
                 </div>
                 { !isSearchInputActive ?
                     <>
@@ -45,7 +42,7 @@ export function Header(props: HeaderProps): JSX.Element {
                                 className={`header-button rotate-in`}
                                 onClick={() => {
                                     setMenuItemActive(false);
-                                    props.chooseMenuItem(null);
+                                    setMenuItem(null);
                                 }}
                             />
                         }

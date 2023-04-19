@@ -2,7 +2,7 @@ import './Home.css';
 
 import {useState, useEffect} from "react";
 import {useAuth} from "../../contexts/Auth/AuthContext";
-import {useUserChats, useUserContacts} from "hooks";
+import {useChatList, useHeader, useMenu, useUserChats, useUserContacts} from "hooks";
 
 import {HorizontalChatList, VerticalChatList, Header, ChatWindow, ContactList, NewContactWindow} from "components";
 
@@ -15,9 +15,10 @@ export function Home({socket}: HomeProps) {
 
     const {user} = useAuth();
 
-    const [showVertical, setShowVertical] = useState<boolean>(true);
-    const [selectedChat, setSelectedChat] = useState<string | null>(null);
-    const [leftMenuItem, setLeftMenuItem] = useState<string | null>(null);
+    const {isVerticalChatNow, selectedChat, setSelectedChat} = useChatList();
+    const {handleOutsideClick} = useHeader();
+    const {menuItem} = useMenu();
+
     const [isContactFormOpen, setContactFormOpen] = useState<boolean>(false);
     const [newContactError, setContactError] = useState<string | null>(null);
 
@@ -80,24 +81,21 @@ export function Home({socket}: HomeProps) {
     }, [socket, refresh_chats, refresh_contacts]);
 
     return (
-        <div className="home-page">
+        <div className="home-page" onClick={handleOutsideClick}>
             <div className="left-menu">
-                <Header
-                    onToggle={() => setShowVertical((prev) => !prev)}
-                    chooseMenuItem={(item) => setLeftMenuItem(item)}
-                />
+                <Header/>
                 {
-                    leftMenuItem ?
+                    menuItem ?
                         <>
                             {!isContactsLoading ?
                                 <>
-                                    {leftMenuItem === "contacts" ?
+                                    {menuItem === "contacts" ?
                                         <ContactList
                                             contacts={user_contacts!}
                                             setSelectedChat={setSelectedChat}
                                             setFormOpen={setContactFormOpen}/>
                                         :
-                                        <>{leftMenuItem}</>
+                                        <>{menuItem}</>
                                     }
                                 </>
                                 :
@@ -109,7 +107,7 @@ export function Home({socket}: HomeProps) {
                         <>
                             {!isChatsLoading ?
                                 <>
-                                    {showVertical ?
+                                    {isVerticalChatNow ?
                                         <VerticalChatList
                                             socket={socket}
                                             chats={user_chats!}
