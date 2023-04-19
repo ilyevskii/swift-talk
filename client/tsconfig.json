@@ -14,7 +14,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": "src",
+    "paths": {
+      "components": ["components/index.ts"],
+      "reducers": ["store/reducers/index.ts"],
+      "pages": ["pages/index.ts"],
+      "hooks": ["hooks/index.ts"],
+      "repositories": ["repositories/index.ts"]
+    },
   },
   "include": [
     "src"

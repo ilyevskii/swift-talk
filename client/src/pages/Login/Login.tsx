@@ -3,7 +3,7 @@ import {loginCall} from "../../api-calls";
 import {AuthContext, AuthContextInterface} from "../../contexts/Auth/AuthContext";
 import {useNavigate} from "react-router-dom";
 
-export default function Login() {
+export function Login() {
     const navigate = useNavigate();
     const phone = useRef<HTMLInputElement>(null);
     const password = useRef<HTMLInputElement>(null);

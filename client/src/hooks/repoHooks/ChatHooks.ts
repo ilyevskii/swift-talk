@@ -1,6 +1,6 @@
 import {useQuery} from "react-query";
-import {ChatRepository} from "../repositories/ChatRepository";
-import {MessageDTO} from "../repositories/MessageRepository";
+import {ChatRepository} from "repositories";
+import {MessageDTO} from "repositories";
 
 const chatRepo: ChatRepository = new ChatRepository("http://localhost:3001");
 
