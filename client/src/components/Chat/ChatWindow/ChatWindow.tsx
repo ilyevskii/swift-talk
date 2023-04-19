@@ -12,7 +12,7 @@ interface ChatWindowProps {
 }
 
 export function ChatWindow(props: ChatWindowProps): JSX.Element {
-    const { socket, selectedChat, user_id, refresh_chats } = props;
+    const {socket, selectedChat, user_id, refresh_chats} = props;
 
     const [chat, setChat] = useState<string>(selectedChat);
 
