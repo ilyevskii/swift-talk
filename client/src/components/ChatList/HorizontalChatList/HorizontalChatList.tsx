@@ -1,14 +1,14 @@
-import React from 'react';
 import './HorizontalChatList.css';
 
-import {useChatList, useSocket, useUserChats} from "hooks";
-import {useAuth} from "../../../contexts/Auth/AuthContext";
+import React from 'react';
+import {socket} from "App";
 
+import {useChatList, useUserChats} from "hooks";
+import {useAuth} from "../../../contexts/Auth/AuthContext";
 
 export function HorizontalChatList(): JSX.Element {
 
     const {user} = useAuth();
-    const {socket} = useSocket();
     const {user_chats} = useUserChats(user!._id);
     const {setSelectedChat} = useChatList();
 

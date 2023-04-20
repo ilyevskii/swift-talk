@@ -1,12 +1,13 @@
 import './VerticalChatList.css';
+import {socket} from "App";
 
 import {useAuth} from "../../../contexts/Auth/AuthContext";
-import {useChatList, useSocket, useUserChats} from "hooks";
+import {useChatList, useUserChats} from "hooks";
+
 
 export function VerticalChatList(): JSX.Element {
 
     const {user} = useAuth();
-    const {socket} = useSocket();
     const {user_chats} = useUserChats(user!._id);
     const {setSelectedChat} = useChatList();
 

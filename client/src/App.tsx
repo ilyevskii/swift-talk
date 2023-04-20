@@ -1,5 +1,5 @@
 import {BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
-import React, {useEffect} from 'react';
+import React from 'react';
 import {io} from "socket.io-client";
 
 import {QueryClient, QueryClientProvider} from 'react-query';

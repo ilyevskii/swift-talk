@@ -1,14 +1,16 @@
-import React, {useEffect} from 'react';
-import {ChatHeader, ChatMessage, MessageForm} from 'components';
 import './ChatWindow.css';
 
-import {useChatMessages, useChatInfo, useSocket, useChatList, useUserChats} from 'hooks';
+import React, {useEffect} from 'react';
+import {ChatHeader, ChatMessage, MessageForm} from 'components';
+import {socket} from "App";
+
+import {useChatMessages, useChatInfo, useChatList, useUserChats} from 'hooks';
 import {useAuth} from "../../../contexts/Auth/AuthContext";
+
 
 export function ChatWindow(): JSX.Element {
 
     const {user} = useAuth();
-    const {socket} = useSocket();
     const {selectedChat} = useChatList();
     const {refresh_chats} = useUserChats(user!._id)
 
@@ -41,9 +43,10 @@ export function ChatWindow(): JSX.Element {
     }
 
     useEffect(() => {
+
         socket.on('receive_message', async () => {
-            await refresh_messages();
             await refresh_chats();
+            await refresh_messages();
         });
     }, [socket]);
 

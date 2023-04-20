@@ -14,7 +14,6 @@ interface HomeProps {
 export function Home({socket}: HomeProps): JSX.Element {
 
     const {user} = useAuth();
-    const {setSocket} = useSocket();
     const {isVerticalChatNow, selectedChat, setSelectedChat} = useChatList();
     const {handleOutsideClick} = useHeader();
     const {menuItem} = useMenu();
@@ -38,14 +37,6 @@ export function Home({socket}: HomeProps): JSX.Element {
 
 
     useEffect(() => {
-        setSocket(socket);
-    }, [])
-
-    useEffect(() => {
-        if (!isContactFormOpen) refresh_chats().catch();
-    }, [isContactFormOpen, refresh_chats]);
-
-    useEffect(() => {
 
         socket.on("receive_message", () => {
             refresh_chats().catch();
@@ -56,12 +47,13 @@ export function Home({socket}: HomeProps): JSX.Element {
             if (data.error === false) {
 
                 refresh_contacts().then(() => {
+                    socket.emit('join_chat', data.chat_id as string);
                     setContactFormOpen(false);
-                    setContactError(null);
-                });
+                    setContactError("null");
+                    setSelectedChat(data.chat_id as string);
+                    refresh_chats();
+                })
 
-                setSelectedChat(data.chat_id as string);
-                refresh_chats();
 
             } else {
                 setContactError(data.error as string);

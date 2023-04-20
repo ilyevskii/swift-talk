@@ -3,7 +3,7 @@ import {updateContactError, updateContactFormOpen, RootState} from "../../store/
 import {Dispatch} from "react";
 import {AnyAction} from "redux";
 import {useAuth} from "../../contexts/Auth/AuthContext";
-import {useSocket} from "./useSocket";
+import {socket} from "App";
 
 interface contactListHook {
     isContactFormOpen: string | null;
@@ -20,7 +20,6 @@ export function useContactList(): contactListHook {
     const isContactFormOpen: string | null = useSelector((state: RootState) => state.contact_list.isContactFormOpen);
     const contactError: boolean = useSelector((state: RootState) => state.contact_list.contactError);
     const {user} = useAuth();
-    const {socket} = useSocket();
 
     const setContactFormOpen = (state?: boolean): void => {
 
