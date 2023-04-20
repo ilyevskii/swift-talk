@@ -1,20 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {ChatHeader, ChatMessage, MessageForm} from 'components';
 import './ChatWindow.css';
 
-import {useChatMessages, useChatInfo} from 'hooks';
+import {useChatMessages, useChatInfo, useSocket, useChatList, useUserChats} from 'hooks';
+import {useAuth} from "../../../contexts/Auth/AuthContext";
 
-interface ChatWindowProps {
-    socket: any;
-    selectedChat: string;
-    user_id: string;
-    refresh_chats: () => Promise<any>;
-}
+export function ChatWindow(): JSX.Element {
 
-export function ChatWindow(props: ChatWindowProps): JSX.Element {
-    const {socket, selectedChat, user_id, refresh_chats} = props;
-
-    const [chat, setChat] = useState<string>(selectedChat);
+    const {user} = useAuth();
+    const {socket} = useSocket();
+    const {selectedChat} = useChatList();
+    const {refresh_chats} = useUserChats(user!._id)
 
     const {
         isMessagesLoading,
@@ -22,7 +18,7 @@ export function ChatWindow(props: ChatWindowProps): JSX.Element {
         chat_messages,
         messages_error,
         refresh_messages,
-    } = useChatMessages(chat);
+    } = useChatMessages(selectedChat!);
 
     const {
         isChatInfoLoading,
@@ -30,17 +26,13 @@ export function ChatWindow(props: ChatWindowProps): JSX.Element {
         chat_info,
         chat_info_error,
         refresh_chat_info,
-    } = useChatInfo(user_id, chat);
-
-    useEffect((): void => {
-        setChat(selectedChat);
-    }, [selectedChat]);
+    } = useChatInfo(user!._id, selectedChat!);
 
     async function sendMessage(currentMessage: string): Promise<void> {
         if (currentMessage) {
             const messageData = {
-                chat_id: chat,
-                sender_id: user_id,
+                chat_id: selectedChat!,
+                sender_id: user!._id,
                 text: currentMessage,
             };
 
@@ -70,7 +62,7 @@ export function ChatWindow(props: ChatWindowProps): JSX.Element {
                                     <ChatMessage
                                         key={message._id}
                                         message={message.text}
-                                        isMyMessage={message.sender_id === user_id}
+                                        isMyMessage={message.sender_id === user!._id}
                                         time={message.time}
                                     />
                                 ))}

@@ -7,15 +7,18 @@ import {useAuth} from "../../contexts/Auth/AuthContext";
 import {HorizontalChatList, VerticalChatList, Header, ChatWindow, ContactList, NewContactWindow} from "components";
 
 
-export function Home(): JSX.Element {
+interface HomeProps {
+    socket: any;
+}
+
+export function Home({socket}: HomeProps): JSX.Element {
 
     const {user} = useAuth();
-    const {socket} = useSocket();
+    const {setSocket} = useSocket();
     const {isVerticalChatNow, selectedChat, setSelectedChat} = useChatList();
     const {handleOutsideClick} = useHeader();
     const {menuItem} = useMenu();
-    const {isContactFormOpen, setContactFormOpen, setContactError, addNewContact} = useContactList();
-
+    const {isContactFormOpen, setContactFormOpen, setContactError} = useContactList();
 
     const {
         isChatsLoading,
@@ -34,6 +37,9 @@ export function Home(): JSX.Element {
     } = useUserContacts(user!._id);
 
 
+    useEffect(() => {
+        setSocket(socket);
+    }, [])
 
     useEffect(() => {
         if (!isContactFormOpen) refresh_chats().catch();
@@ -88,15 +94,9 @@ export function Home(): JSX.Element {
                             {!isChatsLoading ?
                                 <>
                                     {isVerticalChatNow ?
-                                        <VerticalChatList
-                                            socket={socket}
-                                            chats={user_chats!}
-                                            setSelectedChat={setSelectedChat}/>
+                                        <VerticalChatList/>
                                         :
-                                        <HorizontalChatList
-                                            socket={socket}
-                                            chats={user_chats!}
-                                            setSelectedChat={setSelectedChat}/>
+                                        <HorizontalChatList/>
                                     }
                                 </>
                                 :
@@ -108,11 +108,7 @@ export function Home(): JSX.Element {
             </div>
             {selectedChat ?
                 <div className="chat-window">
-                    <ChatWindow
-                        socket={socket}
-                        selectedChat={selectedChat}
-                        user_id={user!._id}
-                        refresh_chats={refresh_chats}/>
+                    <ChatWindow/>
                 </div>
                 :
                 <p>Choose chat to start messaging!</p>

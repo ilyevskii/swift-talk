@@ -1,23 +1,23 @@
 import './VerticalChatList.css';
-import {ChatDTO} from "messanger-serializer";
 
-interface Props {
-    socket: any;
-    chats: ChatDTO[];
-    setSelectedChat: (chatId: string) => void;
-}
+import {useAuth} from "../../../contexts/Auth/AuthContext";
+import {useChatList, useSocket, useUserChats} from "hooks";
 
-export function VerticalChatList(props: Props): JSX.Element {
+export function VerticalChatList(): JSX.Element {
 
-    const { socket, chats, setSelectedChat } = props;
+    const {user} = useAuth();
+    const {socket} = useSocket();
+    const {user_chats} = useUserChats(user!._id);
+    const {setSelectedChat} = useChatList();
+
     const image_url: string = 'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13';
 
     return (
         <>
             <div className="vertical-chat-list">
-                {chats.length ? (
+                {user_chats!.length ? (
                     <div className="vertical-chat-list-content">
-                        {chats.map((chat) => (
+                        {user_chats!.map((chat) => (
                             <div key={chat._id} className="vertical-chat-preview">
                                 <img
                                     src={image_url}
