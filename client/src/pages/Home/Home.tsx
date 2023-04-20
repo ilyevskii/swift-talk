@@ -1,24 +1,20 @@
 import './Home.css';
 
+import {useChatList, useHeader, useMenu, useUserChats, useUserContacts, useContactList, useSocket} from "hooks";
+
 import {useEffect} from "react";
 import {useAuth} from "../../contexts/Auth/AuthContext";
-import {useChatList, useHeader, useMenu, useUserChats, useUserContacts, useContactList} from "hooks";
-
 import {HorizontalChatList, VerticalChatList, Header, ChatWindow, ContactList, NewContactWindow} from "components";
 
 
-type HomeProps = {
-    socket: any;
-};
-
-export function Home({socket}: HomeProps) {
+export function Home(): JSX.Element {
 
     const {user} = useAuth();
-
+    const {socket} = useSocket();
     const {isVerticalChatNow, selectedChat, setSelectedChat} = useChatList();
     const {handleOutsideClick} = useHeader();
     const {menuItem} = useMenu();
-    const {isContactFormOpen, setContactFormOpen, setContactError} = useContactList();
+    const {isContactFormOpen, setContactFormOpen, setContactError, addNewContact} = useContactList();
 
 
     const {
@@ -37,18 +33,11 @@ export function Home({socket}: HomeProps) {
         refresh_contacts,
     } = useUserContacts(user!._id);
 
+
+
     useEffect(() => {
         if (!isContactFormOpen) refresh_chats().catch();
     }, [isContactFormOpen, refresh_chats]);
-
-    async function addNewContact(contact_number: string) {
-
-        await socket.emit("add_contact", {
-            socket_id: socket.id,
-            user_id: user!._id,
-            new_contact_number: contact_number,
-        });
-    }
 
     useEffect(() => {
 
@@ -130,9 +119,7 @@ export function Home({socket}: HomeProps) {
             }
 
             {isContactFormOpen ?
-                <NewContactWindow
-                    addNewContact={addNewContact}
-                />
+                <NewContactWindow/>
                 :
                 <></>
             }

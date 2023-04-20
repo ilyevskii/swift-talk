@@ -1,15 +1,19 @@
 import {combineReducers} from 'redux';
-import searchInputReducer from './searchInputReducer';
-import menuReducer from "./menuReducer";
-import chatListReducer from "./chatListReducer";
-import contactListReducer from "./contactListReducer";
 import {Reducer} from "react";
+
+import searchInputReducer from '../componentReducers/searchInputReducer';
+import menuReducer from "../componentReducers/menuReducer";
+import chatListReducer from "../componentReducers/chatListReducer";
+import contactListReducer from "../componentReducers/contactListReducer";
+import socketReducer from "./socketReducer";
+
 
 export const rootReducer: Reducer<any, any> = combineReducers({
     search: searchInputReducer,
     menu: menuReducer,
     chat_list: chatListReducer,
-    contact_list: contactListReducer
+    contact_list: contactListReducer,
+    socket: socketReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
