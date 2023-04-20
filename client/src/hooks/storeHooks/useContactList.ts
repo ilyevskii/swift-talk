@@ -2,6 +2,8 @@ import {useSelector, useDispatch} from "react-redux";
 import {updateContactError, updateContactFormOpen, RootState} from "../../store/reducers/index";
 import {Dispatch} from "react";
 import {AnyAction} from "redux";
+import {useAuth} from "../../contexts/Auth/AuthContext";
+import {useSocket} from "./useSocket";
 
 interface contactListHook {
     isContactFormOpen: string | null;
@@ -9,12 +11,16 @@ interface contactListHook {
     setContactFormOpen: (state?: boolean | undefined) => void;
     setContactError: (chat: string | null) => void;
     closeNewContactWindow: () => void;
+    addNewContact: (contact_number: string) => Promise<void>;
 }
 
 export function useContactList(): contactListHook {
+
     const dispatch: Dispatch<AnyAction> = useDispatch();
-    const isContactFormOpen: string | null = useSelector((state: RootState) => state.contact_list.isContactFormOpen)
-    const contactError: boolean = useSelector((state: RootState) => state.contact_list.contactError)
+    const isContactFormOpen: string | null = useSelector((state: RootState) => state.contact_list.isContactFormOpen);
+    const contactError: boolean = useSelector((state: RootState) => state.contact_list.contactError);
+    const {user} = useAuth();
+    const {socket} = useSocket();
 
     const setContactFormOpen = (state?: boolean): void => {
 
@@ -35,11 +41,21 @@ export function useContactList(): contactListHook {
         setContactError(null);
     };
 
+    async function addNewContact(contact_number: string): Promise<void> {
+
+        await socket.emit("add_contact", {
+            socket_id: socket.id,
+            user_id: user!._id,
+            new_contact_number: contact_number,
+        });
+    }
+
     return {
         isContactFormOpen,
         contactError,
         setContactFormOpen,
         setContactError,
-        closeNewContactWindow
+        closeNewContactWindow,
+        addNewContact
     };
 }

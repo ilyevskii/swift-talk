@@ -2,17 +2,13 @@ import './NewContactWindow.css';
 import React, {useState, ChangeEvent} from "react";
 import {useContactList} from "hooks";
 
-interface Props {
-    addNewContact: (phoneNumber: string) => void;
-}
 
-export function NewContactWindow(props: Props): JSX.Element {
+export function NewContactWindow(): JSX.Element {
 
     const [contactNumber, setContactNumber] = useState<string>("");
-    const {addNewContact} = props;
     const isDisabled: boolean = contactNumber.trim() === '';
 
-    const {closeNewContactWindow, contactError} = useContactList();
+    const {closeNewContactWindow, contactError, addNewContact} = useContactList();
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setContactNumber(event.target.value);
