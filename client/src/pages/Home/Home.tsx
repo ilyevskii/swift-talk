@@ -1,8 +1,8 @@
 import './Home.css';
 
-import {useState, useEffect} from "react";
+import {useEffect} from "react";
 import {useAuth} from "../../contexts/Auth/AuthContext";
-import {useChatList, useHeader, useMenu, useUserChats, useUserContacts} from "hooks";
+import {useChatList, useHeader, useMenu, useUserChats, useUserContacts, useContactList} from "hooks";
 
 import {HorizontalChatList, VerticalChatList, Header, ChatWindow, ContactList, NewContactWindow} from "components";
 
@@ -18,9 +18,8 @@ export function Home({socket}: HomeProps) {
     const {isVerticalChatNow, selectedChat, setSelectedChat} = useChatList();
     const {handleOutsideClick} = useHeader();
     const {menuItem} = useMenu();
+    const {isContactFormOpen, setContactFormOpen, setContactError} = useContactList();
 
-    const [isContactFormOpen, setContactFormOpen] = useState<boolean>(false);
-    const [newContactError, setContactError] = useState<string | null>(null);
 
     const {
         isChatsLoading,
@@ -37,11 +36,6 @@ export function Home({socket}: HomeProps) {
         contacts_error,
         refresh_contacts,
     } = useUserContacts(user!._id);
-
-    const closeNewContactWindow = () => {
-        setContactFormOpen(false);
-        setContactError("");
-    };
 
     useEffect(() => {
         if (!isContactFormOpen) refresh_chats().catch();
@@ -90,10 +84,7 @@ export function Home({socket}: HomeProps) {
                             {!isContactsLoading ?
                                 <>
                                     {menuItem === "contacts" ?
-                                        <ContactList
-                                            contacts={user_contacts!}
-                                            setSelectedChat={setSelectedChat}
-                                            setFormOpen={setContactFormOpen}/>
+                                        <ContactList/>
                                         :
                                         <>{menuItem}</>
                                     }
@@ -140,9 +131,8 @@ export function Home({socket}: HomeProps) {
 
             {isContactFormOpen ?
                 <NewContactWindow
-                    onClose={closeNewContactWindow}
                     addNewContact={addNewContact}
-                    error={newContactError}/>
+                />
                 :
                 <></>
             }

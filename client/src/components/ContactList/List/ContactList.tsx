@@ -1,20 +1,19 @@
 import './ContactList.css';
 import {SetStateAction} from "react";
 import {PersonAdd} from "@mui/icons-material";
-import {ContactDTO} from "messanger-serializer";
+import {useChatList, useContactList, useUserContacts} from "hooks";
+import {useAuth} from "../../../contexts/Auth/AuthContext";
 
-type ContactListProps = {
-    contacts: ContactDTO[];
-    setSelectedChat: (chat_id: string) => void;
-    setFormOpen: (open: SetStateAction<boolean>) => void;
-};
 
-export function ContactList(props: ContactListProps) {
+export function ContactList(): JSX.Element {
 
-    const { contacts, setSelectedChat, setFormOpen } = props;
+    const {user} = useAuth();
+    const {user_contacts} = useUserContacts(user!._id);
+    const {setSelectedChat} = useChatList();
+    const {setContactFormOpen} = useContactList();
 
     const handleAddContactClick = () => {
-        setFormOpen((state: SetStateAction<boolean>) => !state);
+        setContactFormOpen();
     };
 
     const image_url = 'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13';
@@ -22,9 +21,9 @@ export function ContactList(props: ContactListProps) {
     return (
         <>
             <div className="contact-list">
-                {contacts.length ?
+                {user_contacts!.length ?
                     <div className="contact-list-content">
-                        {contacts.map((contact) => (
+                        {user_contacts!.map((contact) => (
                             <div key={contact._id} className="contact-preview" onClick={() => {
                                 setSelectedChat(contact.chat_id);
                             }}>
