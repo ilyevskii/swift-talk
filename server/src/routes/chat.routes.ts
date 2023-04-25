@@ -63,6 +63,7 @@ router.get("/messages/:chatId", async (req, res) => {
 router.get("/lastMessage/:chatId", async (req, res) => {
     try {
         const data = await Chat.getLastMessage(req.params.chatId);
+        if (!data) return res.status(202).json({message_id: 0});
         res.status(200).json({message_id: data.message_id});
     } catch (err) {
         res.status(500).json({error: err.toString()});

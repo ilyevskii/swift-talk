@@ -2,9 +2,9 @@
   "name": "messenger",
   "version": "1.0.0",
   "description": "Web application for messaging.",
-  "main": "app.ts",
+  "main": "src/app.ts",
   "scripts": {
-    "start": "nodemon app.ts"
+    "start": "nodemon src/app.ts"
   },
   "repository": {
     "type": "git",
