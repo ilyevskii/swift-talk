@@ -1,4 +1,4 @@
-import {useContext, useRef, FormEvent} from "react";
+import React, {useContext, useRef, FormEvent} from "react";
 import {registerCall} from "../../api-calls";
 import {AuthContext, AuthContextInterface} from "../../contexts/Auth/AuthContext";
 import {useNavigate} from "react-router-dom";

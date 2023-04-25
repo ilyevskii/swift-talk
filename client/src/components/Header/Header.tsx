@@ -1,6 +1,6 @@
 import "./Header.css";
 import {Search, Dehaze, ArrowBack} from "@mui/icons-material";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 
 import {ModalMenu} from "components";
 

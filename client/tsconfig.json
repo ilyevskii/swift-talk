@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost", "ES2016.Array.Include"],
+    "lib": [
+      "DOM",
+      "ES6",
+      "DOM.Iterable",
+      "ScriptHost",
+      "ES2016.Array.Include"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -14,19 +20,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": "src",
-    "paths": {
-      "components": ["components/index.ts"],
-      "reducers": ["store/reducers/index.ts"],
-      "pages": ["pages/index.ts"],
-      "hooks": ["hooks/index.ts"],
-      "repositories": ["repositories/index.ts"]
-    },
+    "jsx": "react",
+    "baseUrl": "src"
   },
   "include": [
     "src"
   ]
 }
-
-

@@ -1,4 +1,4 @@
-import {useContext, useRef, FormEvent, Dispatch} from "react";
+import React, {useContext, useRef, FormEvent, Dispatch} from "react";
 import {loginCall} from "../../api-calls";
 import {AuthContext, AuthContextInterface} from "../../contexts/Auth/AuthContext";
 import {useNavigate} from "react-router-dom";

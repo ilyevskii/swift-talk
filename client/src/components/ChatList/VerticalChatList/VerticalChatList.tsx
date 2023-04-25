@@ -1,5 +1,6 @@
 import './VerticalChatList.css';
 import {socket} from "App";
+import React from 'react';
 
 import {useAuth} from "../../../contexts/Auth/AuthContext";
 import {useChatList, useUserChats} from "hooks";
