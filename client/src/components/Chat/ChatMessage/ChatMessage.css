@@ -11,14 +11,14 @@
 }
 
 .chat-message.left {
-    background-color: #212121;
-    color: #ffffff;
+    background-color: var(--content-color);
+    color: var(--text-color);
     margin-right: auto;
 }
 
 .chat-message.right {
-    background-color: rgb(135, 116, 225);
-    color: #fff;
+    background-color: var(--message-color);
+    color: var(--text-color);
     margin-left: auto;
 }
 
@@ -28,7 +28,7 @@
 }
 
 .message-time {
-    color: white;
+    color: var(--message-time-color);
     font-size: 12px;
     align-self: flex-end;
     white-space: nowrap;

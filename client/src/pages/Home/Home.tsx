@@ -104,7 +104,9 @@ export function Home({socket}: HomeProps): JSX.Element {
                     <ChatWindow/>
                 </div>
                 :
-                <p>Choose chat to start messaging!</p>
+                <div className="no-chat-window">
+                    <p>Choose chat to start messaging!</p>
+                </div>
             }
 
             {isContactFormOpen ?

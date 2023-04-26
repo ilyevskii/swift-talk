@@ -3,9 +3,9 @@
     height: 3.41rem;
     justify-content: space-between;
     align-items: center;
-    background-color: #212121;
-    border-left: 1px solid #333333;
-    color: #fff;
+    background-color: var(--site-color);
+    border-left: 1px solid var(--header-shadow-color);
+    color: var(--text-color);
     padding: 16px;
 }
 
