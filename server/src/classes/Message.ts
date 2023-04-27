@@ -1,32 +1,31 @@
+import {ObjectId} from "mongodb";
+
 import {chat_messages, DB} from './Database'
-import { ObjectId } from "mongodb";
-import { User } from './User';
+import {User} from "./User";
 import {Chat} from "./Chats/Chat";
+
+
+export interface MessageType {
+    _id?: ObjectId | null,
+    text: string,
+    sender_id: ObjectId,
+    sender_username: string,
+    chat_id: ObjectId,
+    time: string,
+    attachments: string
+}
 
 export class Message {
 
     static readonly messagesDb: DB = new DB('messages');
-    protected db!: DB;
-    protected id: ObjectId;
 
-    constructor(message_id?: ObjectId) {
-        this.db = Message.messagesDb;
 
-        if (typeof(message_id) === "string") {
-            this.id = new ObjectId(message_id);
-        }
-        else{
-            this.id = message_id;
-        }
-    }
-
-    async initialize(text: string, sender_id: string | ObjectId, chat_id: string | ObjectId, attachments: string = '') {
+    static async addMessage(text: string, sender_id: string | ObjectId, chat_id: string | ObjectId, attachments: string = ''): Promise<MessageType> {
 
         chat_id = new ObjectId(chat_id.toString());
         sender_id = new ObjectId(sender_id.toString());
 
-        this.id = await this.db.insertOne(
-            {
+        const new_message_object: MessageType = {
             text: text,
             sender_id: sender_id,
             sender_username: (await User.findOneUser({_id: sender_id})).username,
@@ -35,49 +34,31 @@ export class Message {
                 + ":"
                 + new Date(Date.now()).getMinutes().toString().padStart(2, "0"),
             attachments: attachments
-            }
-        )
+        };
 
-        await Chat.setLastMessage(chat_id, this.id);
-        await chat_messages.insertOne({chat_id: chat_id, message_id: this.id})
+        const new_message_id: ObjectId = await this.messagesDb.insertOne(new_message_object);
 
-        return this.id;
+        await Chat.setLastMessage(chat_id, new_message_id);
+        await chat_messages.insertOne({chat_id: chat_id, message_id: new_message_id})
+
+        new_message_object._id = new_message_id;
+
+        return new_message_object;
     }
-
-    get_id() {
-        return this.id;
-    }
-
-    async get_text() {
-        return (await this.db.findOne({_id: this.id})).text;
-    }
-
-    async set_text(text: string) {
-        await this.db.updateOneField({_id: this.id}, 'text', text)
-    }
-
-    async get_sender_id() {
-        return (await this.db.findOne({_id: this.id})).sender_id;
-    }
-
-    async get_chat_id() {
-        return (await this.db.findOne({_id: this.id})).chat_id;
-    }
-
-    static async findMessage(query: object) {
+    
+    static async findMessage(query: object): Promise<any> {
         return await this.messagesDb.findOne(query);
     }
 
-    static async findMessageById(message_id: string | ObjectId) {
+    static async findMessageById(message_id: string | ObjectId): Promise<any> {
         return await this.messagesDb.findOne({_id: new ObjectId(message_id.toString())});
     }
 
-
-    static async setNewMessageText(message_id: string | ObjectId, text: string) {
+    static async setNewMessageText(message_id: string | ObjectId, text: string): Promise<any> {
         await Message.messagesDb.updateOneField({_id: new ObjectId(message_id.toString())}, 'text', text)
     }
 
-    static async deleteMessageById(message_id: string | ObjectId) {
+    static async deleteMessageById(message_id: string | ObjectId): Promise<void> {
         await chat_messages.deleteOne({message_id: new ObjectId(message_id.toString())});
         await Message.messagesDb.deleteOne({_id: new ObjectId(message_id.toString())});
     }

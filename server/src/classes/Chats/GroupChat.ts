@@ -1,6 +1,15 @@
-import { Chat } from './Chat';
-import { ObjectId } from "mongodb";
-import { user_chats } from "../Database";
+import {Chat} from './Chat';
+import {ObjectId} from "mongodb";
+import {user_chats} from "../Database";
+
+
+export interface GroupChatType {
+    _id?: ObjectId | null;
+    type: string;
+    name: string;
+    photo: string;
+    last_message: Object;
+}
 
 export class GroupChat extends Chat {
 
@@ -8,7 +17,8 @@ export class GroupChat extends Chat {
         super();
     }
 
-    async initialize(users: ObjectId[], name: string = "New group chat") {
+    async initialize(users: ObjectId[], name: string = "New group chat"): Promise<ObjectId> {
+
         this.id = await this.db.insertOne(
             {
                 type: 'group',
@@ -16,28 +26,41 @@ export class GroupChat extends Chat {
                 photo: '',
                 last_message: {}
             }
-        )
+        );
 
-        for (let i = 0; i < users.length; i++) {
+        for (let i: number = 0; i < users.length; i++) {
             await user_chats.insertOne({user_id: new ObjectId(users[i].toString()), chat_id: this.id});
         }
 
         return this.id;
     }
 
-    async set_name(name: string) {
-        await this.db.updateOneField({_id: this.id}, "name", name)
+    static async createGroupChat(users: ObjectId[], name: string = "New group chat"): Promise<GroupChatType> {
+
+        const new_chat_object: GroupChatType = {
+            type: 'group',
+            name: name,
+            photo: '',
+            last_message: {}
+        }
+
+        const chat_id: ObjectId = await this.chatsDb.insertOne(new_chat_object);
+
+        for (let user in users) {
+            await user_chats.insertOne({user_id: new ObjectId(user.toString()), chat_id: chat_id});
+        }
+
+        new_chat_object._id = chat_id;
+        return new_chat_object;
     }
 
-    async set_photo(photo_src: string) {
-        await this.db.updateOneField({_id: this.id}, "photo", photo_src)
-    }
+    static async addNewUserInChat(chat_id: string | ObjectId, user_id: string | ObjectId): Promise<void> {
 
-    static async addNewUserInChat(chat_id: string | ObjectId, user_id: string | ObjectId) {
         await user_chats.insertOne(
             {
                 chat_id: new ObjectId(chat_id.toString()),
                 user_id: new ObjectId(user_id.toString())
-            })
+            }
+        );
     }
 }

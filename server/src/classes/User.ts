@@ -1,134 +1,88 @@
+import {Document, ObjectId, WithId} from "mongodb";
+
 import {DB, user_chats, user_contacts} from './Database';
 import {Profile} from "./Profile";
-import {ObjectId} from "mongodb";
-import {ChatFactory, ChatTypes} from "./Chats/ChatFactory";
 import {SavedMessages} from "./Chats/SavedMessages";
 import {PrivateChat} from "./Chats/PrivateChat";
+
+
+export interface UserType {
+    _id: ObjectId;
+    username: string;
+    phone_number: string;
+    password: string;
+    profile_id: ObjectId;
+}
 
 export class User {
 
     static readonly usersDb: DB = new DB('users');
-    readonly db!: DB;
-    private id!: ObjectId;
+    
 
-    constructor(user_id?: ObjectId) {
+    static async addUser(username: string, phone_number: string, password: string): Promise<any> {
 
-        this.db = User.usersDb;
-        if (typeof(user_id) === "string") {
-            this.id = new ObjectId(user_id);
-        }
-        else{
-            this.id = user_id;
-        }
-    }
-
-    async initialize(username: string, phone_number: string, password: string) {
-
-        const users_profile = new Profile()
-        const profile_id = await users_profile.initialize()
-
-        this.id = await this.db.insertOne(
+        const user_id: ObjectId = await this.usersDb.insertOne(
             {
                 username: username,
                 phone_number: phone_number,
                 password: password,
-                profile_id: profile_id
+                profile_id: await Profile.addProfile()
             }
         )
-        const saved_messages = ChatFactory.createChat(ChatTypes.MSG) as SavedMessages;
-        await saved_messages.initialize(this.id);
+
+        await SavedMessages.createSavedMessages(user_id);
+
+        return user_id;
     }
 
-    get_id() {
-        return this.id;
-    }
-
-    async get_profile_id() {
-        return (await this.db.findOne({_id: this.id})).profile_id;
-    }
-
-    async get_username() {
-        return (await this.db.findOne({_id: this.id})).username;
-    }
-
-    async get_password() {
-        return (await this.db.findOne({_id: this.id})).password;
-
-    }
-
-    async get_phone_number() {
-        return (await this.db.findOne({_id: this.id})).phone_number;
-    }
-
-
-    async get_contacts() {
-        return (await this.db.findOne({_id: this.id})).contacts;
-    }
-
-
-    async set_username(username: string) {
-        await this.db.updateOneField({_id: this.id}, 'username', username)
-    }
-
-    async set_phone_number(phone_number: string) {
-        await this.db.updateOneField({_id: this.id}, 'phone_number', phone_number)
-    }
-
-
-    async add_contact(contact_id: ObjectId | string) {
-        await user_contacts.insertOne({user_id: this.id, contact_id: new ObjectId(contact_id.toString())})
-    }
-
-    async delete_contact(contact_id: ObjectId) {
-        await this.db.updateMany({_id: this.id}, {"$pull": {"contacts": contact_id}});
-    }
-
-    static async findOneUser(query: object) {
+    static async findOneUser(query: object): Promise<any> {
         return await User.usersDb.findOne(query);
     }
 
-    static async findOneUserById(user_id: string) {
+    static async findOneUserById(user_id: string): Promise<any> {
         return await User.usersDb.findOne({_id: new ObjectId(user_id)});
     }
 
-    static async getUsername(user_id: string) {
+    static async getUsername(user_id: string): Promise<any> {
         return (await User.usersDb.findOne({_id: new ObjectId(user_id.toString())})).username;
     }
 
-    static async deleteUserById(id: string) {
-        return await User.usersDb.findAndDeleteById(new ObjectId(id));
+    static async deleteUserById(id: string): Promise<void> {
+        await User.usersDb.findAndDeleteById(new ObjectId(id));
     }
 
-    static async findUserByIdAndUpdate(id: string, newObject: object) {
-        return await User.usersDb.findAndUpdateById(new ObjectId(id), newObject);
+    static async findUserByIdAndUpdate(id: string, newObject: object): Promise<void> {
+        await User.usersDb.findAndUpdateById(new ObjectId(id), newObject);
     }
 
-    static async addNewChat(user_id: ObjectId, chat_id: ObjectId) {
+    static async addNewChat(user_id: ObjectId, chat_id: ObjectId): Promise<void> {
         await user_chats.insertOne({user_id: user_id, chat_id: chat_id})
     }
 
-    static async addNewContact(user_id: ObjectId | string, contact_id: ObjectId | string) {
-        const chat = ChatFactory.createChat(ChatTypes.PRIVATE) as PrivateChat;
-        await chat.initialize(user_id.toString(), contact_id.toString());
+    static async addNewContact(user_id: ObjectId | string, contact_id: ObjectId | string): Promise<string> {
+
+        const chat_id: ObjectId = (await PrivateChat.CreatePrivateChat(user_id.toString(), contact_id.toString()))._id;
+
         await user_contacts.insertOne(
             {
                 user_id: new ObjectId(user_id.toString()),
                 contact_id: new ObjectId(contact_id.toString()),
-                chat_id: chat.get_id()
+                chat_id: chat_id
             }
-        )
-        return chat.get_id().toString();
+        );
+
+        return chat_id.toString();
     }
 
-    static async getAllUserChatsIds(user_id: string | ObjectId) {
+    static async getAllUserChatsIds(user_id: string | ObjectId): Promise<WithId<Document>[]> {
         return await user_chats.findAll({user_id: new ObjectId(user_id.toString())})
     }
 
-    static async getAllUserContacts(user_id: string) {
+    static async getAllUserContacts(user_id: string): Promise<WithId<Document>[]> {
         return await user_contacts.findAll({user_id: new ObjectId(user_id)})
     }
 
-    static async getAllUserChats(user_id: string) {
+    static async getAllUserChats(user_id: string): Promise<Document> {
 
         return await user_chats.aggregate([
 
@@ -151,6 +105,7 @@ export class User {
                 }
             },
             {$project: {_id: 0, chats: 1}}
-        ])
+        ]);
     }
+
 }
