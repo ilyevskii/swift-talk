@@ -9,9 +9,8 @@ path {
     display: flex;
     align-items: center;
     top: 0.5rem;
-    z-index: 1;
-    box-shadow: 0 2px 1px var(--header-shadow-color);
-    margin-bottom: 2px;
+    border-bottom: 1px solid var(--header-shadow-color);
+    padding-bottom: 0.1rem;
 }
 
 .header-container > * {
@@ -107,6 +106,29 @@ path {
 .main-menu.disappear {
     animation: menu-disappear 0.3s ease-in-out forwards;
     pointer-events: none;
+}
+
+.header-menu-item {
+    color: var(--text-color);
+    font-size: 1.3rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-menu-item-icons {
+    display: flex;
+    justify-content: space-between;
+    width: 15%;
+}
+
+.header-menu-item-icons svg {
+    color: var(--menu-icons-color);
+}
+
+.header-menu-item-icons svg:hover {
+    cursor: pointer;
 }
 
 @keyframes menu-disappear {

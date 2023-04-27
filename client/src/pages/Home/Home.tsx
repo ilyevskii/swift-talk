@@ -1,11 +1,20 @@
 import './Home.css';
 import React from 'react';
 
-import {useChatList, useHeader, useMenu, useUserChats, useUserContacts, useContactList, useSocket} from "hooks";
+import {useChatList, useHeader, useMenu, useUserChats, useUserContacts, useContactList} from "hooks";
 
 import {useEffect} from "react";
 import {useAuth} from "../../contexts/Auth/AuthContext";
-import {HorizontalChatList, VerticalChatList, Header, ChatWindow, ContactList, NewContactWindow} from "components";
+import {
+    HorizontalChatList,
+    VerticalChatList,
+    Header,
+    ChatWindow,
+    ContactList,
+    NewContactWindow,
+    SettingsMenu,
+    GeneralSettings
+} from "components";
 
 
 interface HomeProps {
@@ -71,11 +80,9 @@ export function Home({socket}: HomeProps): JSX.Element {
                         <>
                             {!isContactsLoading ?
                                 <>
-                                    {menuItem === "contacts" ?
-                                        <ContactList/>
-                                        :
-                                        <>{menuItem}</>
-                                    }
+                                    {menuItem === "contacts" && <ContactList/>}
+                                    {menuItem === "settings" && <SettingsMenu/>}
+                                    {menuItem === "general settings" && <GeneralSettings/>}
                                 </>
                                 :
                                 <div>Loading...</div>

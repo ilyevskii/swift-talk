@@ -1,6 +1,7 @@
 import {useMenu, useSearchInput, useChatList} from "hooks";
 
 interface HeaderHook {
+    menuItem: string | null;
     isSearchInputActive: boolean;
     isMenuItemActive: boolean;
     isMenuOpen: boolean;
@@ -15,12 +16,25 @@ interface HeaderHook {
 
 export function useHeader(): HeaderHook {
 
-    const {isMenuItemActive, isMenuOpen, setMenuActive, setMenuItemActive, setMenuItem} = useMenu();
+    const {menuItem, isMenuItemActive, isMenuOpen, setMenuActive, setMenuItemActive, setMenuItem} = useMenu();
     const {isSearchInputActive, setSearchInputActive} = useSearchInput();
     const {setIsVerticalChat} = useChatList();
 
     const handleBackButtonClick = (): void => {
-        setSearchInputActive(!isSearchInputActive);
+
+        if (isMenuItemActive) {
+            if (menuItem === "general settings") {
+                setMenuItem("settings");
+            }
+            else {
+                setMenuItemActive(false);
+                setMenuItem(null);
+            }
+        }
+        else {
+            setSearchInputActive(!isSearchInputActive);
+        }
+
     };
 
     const handleSearchbarClick = (): void => {
@@ -45,6 +59,7 @@ export function useHeader(): HeaderHook {
     };
 
     return {
+        menuItem,
         isSearchInputActive,
         isMenuOpen,
         isMenuItemActive,

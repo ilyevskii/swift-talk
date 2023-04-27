@@ -1,5 +1,5 @@
 import "./Header.css";
-import {Search, Dehaze, ArrowBack} from "@mui/icons-material";
+import {Search, Dehaze, ArrowBack, CreateOutlined, MoreVert} from "@mui/icons-material";
 import React, {useEffect} from "react";
 
 import {ModalMenu} from "components";
@@ -9,6 +9,7 @@ import {useHeader} from "hooks";
 export function Header(): JSX.Element {
 
     const {
+        menuItem,
         isSearchInputActive,
         isMenuOpen,
         isMenuItemActive,
@@ -40,10 +41,7 @@ export function Header(): JSX.Element {
                             :
                             <ArrowBack
                                 className={`header-button rotate-in`}
-                                onClick={() => {
-                                    setMenuItemActive(false);
-                                    setMenuItem(null);
-                                }}
+                                onClick={handleBackButtonClick}
                             />
                         }
                     </>
@@ -54,14 +52,28 @@ export function Header(): JSX.Element {
                     />
                 }
             </div>
-            <div className="searchbar">
-                <Search className={`search-icon`} />
-                <input
-                    placeholder="Search"
-                    className="search-input"
-                    onClick={handleSearchbarClick}
-                />
-            </div>
+            {menuItem && menuItem !== 'contacts' ?
+                <div className={"header-menu-item"}>
+                    {menuItem.charAt(0).toUpperCase() + menuItem.slice(1)}
+                    {menuItem === 'settings' ?
+                        <div className={"header-menu-item-icons"}>
+                            <CreateOutlined/>
+                            <MoreVert/>
+                        </div>
+                        :
+                        <></>
+                    }
+                </div>
+                :
+                <div className="searchbar">
+                    <Search className={`search-icon`} />
+                    <input
+                        placeholder="Search"
+                        className="search-input"
+                        onClick={handleSearchbarClick}
+                    />
+                </div>
+            }
         </div>
     );
 }
