@@ -1,0 +1,44 @@
+.settings {
+    background-color: var(--site-color);
+    color: var(--text-color);
+    font-weight: 399;
+    width: 30rem;
+    height: 100vh;
+    overflow: auto;
+    overflow-x: scroll;
+    scrollbar-width: thin;
+    white-space: nowrap;
+    scrollbar-color: #262626FF #262626FF;
+}
+
+.settings-content {
+    width: 100%;
+    font-size: 1.125rem;
+    overflow-x: auto;
+    animation: switchAnimation 0.25s ease-in-out;
+}
+
+.setting-item-preview {
+    cursor: pointer;
+    padding: 0.7rem;
+    margin: 0.75rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    transition: 0.2s ease;
+}
+
+.setting-item-preview svg {
+    font-size: 1.4rem;
+    color: var(--menu-icons-color);
+}
+
+.setting-item-preview p {
+    padding-left: 1rem;
+    font-size: 1.15rem;
+}
+
+
+.setting-item-preview:hover {
+    background-color: var(--theme-switcher-hower-color);
+}

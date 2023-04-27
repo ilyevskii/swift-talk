@@ -8,3 +8,6 @@ export {ContactList} from "./ContactList/List/ContactList";
 export {NewContactWindow} from "./ContactList/NewContactWindow/NewContactWindow";
 export {Header} from "./Header/Header";
 export {ModalMenu} from "./ModalMenu/ModalMenu";
+export {ThemeSwitcher} from "./ThemeSwitcher/ThemeSwitcher";
+export {SettingsMenu} from "./Settings/SettingsMenu/SettingsMenu";
+export {GeneralSettings} from "./Settings/GeneralSettings/GeneralSettings";
