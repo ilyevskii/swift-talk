@@ -1,19 +1,16 @@
-import {PrivateChat} from "../classes/Chats/PrivateChat";
-import {GroupChat} from "../classes/Chats/GroupChat";
+import {PrivateChat, PrivateChatType} from "../classes/Chats/PrivateChat";
+import {GroupChat, GroupChatType} from "../classes/Chats/GroupChat";
 
 const router = require("express").Router();
-import {ChatFactory, ChatTypes} from "../classes/Chats/ChatFactory";
 import {Chat} from "../classes/Chats/Chat";
 
 
-
 // CREATE PRIVATE CHAT
-router.post("/private", async (req, res) => {
-    try {
-        const chat = ChatFactory.createChat(ChatTypes.PRIVATE) as PrivateChat;
-        await chat.initialize(req.body.first_user_id, req.body.second_user_id);
-        res.status(200).json(await Chat.findOneChatById(chat.get_id()));
+router.post("/private", async (req, res): Promise<void> => {
 
+    try {
+        const chat: PrivateChatType = await PrivateChat.CreatePrivateChat(req.body.first_user_id, req.body.second_user_id);
+        res.status(200).json(chat);
     } catch (err) {
         res.status(500).json({error: err.toString()});
     }
@@ -21,17 +18,19 @@ router.post("/private", async (req, res) => {
 
 
 // CREATE GROUP CHAT
-router.post("/group", async (req, res) => {
+router.post("/group", async (req, res): Promise<void> => {
+
     try {
-        const chat = ChatFactory.createChat(ChatTypes.GROUP) as GroupChat;
-        if (req.body.name) {
-            await chat.initialize(req.body.users, req.body.name);
+        let chat: GroupChatType;
+
+        if (req.body.hasOwnProperty('name')) {
+            chat = await GroupChat.createGroupChat(req.body.users, req.body.name);
         }
         else {
-            await chat.initialize(req.body.users);
+            chat = await GroupChat.createGroupChat(req.body.users);
         }
-        res.status(200).json(await Chat.findOneChatById(chat.get_id()));
 
+        res.status(200).json(chat);
     } catch (err) {
         res.status(500).json({error: err.toString()});
     }
@@ -39,9 +38,10 @@ router.post("/group", async (req, res) => {
 
 
 // GET ALL USERS IN CHAT
-router.get("/users/:chatId", async (req, res) => {
+router.get("/users/:chatId", async (req, res): Promise<void> => {
+
     try {
-        const users = await Chat.getAllChatUsersIds(req.params.chatId);
+        const users: any[] = await Chat.getAllChatUsersIds(req.params.chatId);
         res.status(200).json(users);
     } catch (err) {
         res.status(500).json({error: err.toString()});
@@ -50,20 +50,24 @@ router.get("/users/:chatId", async (req, res) => {
 
 
 // GET ALL MESSAGES IN CHAT
-router.get("/messages/:chatId", async (req, res) => {
+router.get("/messages/:chatId", async (req, res): Promise<void> => {
+
     try {
-        const data = await Chat.getAllChatMessagesObjects(req.params.chatId);
+        const data: any = await Chat.getAllChatMessagesObjects(req.params.chatId);
         res.status(200).json(data.messages);
     } catch (err) {
         res.status(500).json({error: err.toString()});
     }
 });
 
+
 // GET LAST MESSAGE IN CHAT
-router.get("/lastMessage/:chatId", async (req, res) => {
+router.get("/lastMessage/:chatId", async (req, res): Promise<any> => {
+
     try {
-        const data = await Chat.getLastMessage(req.params.chatId);
+        const data: any = await Chat.getLastMessage(req.params.chatId);
         if (!data) return res.status(202).json({message_id: 0});
+
         res.status(200).json({message_id: data.message_id});
     } catch (err) {
         res.status(500).json({error: err.toString()});
@@ -72,9 +76,10 @@ router.get("/lastMessage/:chatId", async (req, res) => {
 
 
 // GET CHAT INFO
-router.get("/:chatId", async (req, res) => {
+router.get("/:chatId", async (req, res): Promise<void> => {
+
     try {
-        const chat = await Chat.findOneChatById(req.params.chatId);
+        const chat: any = await Chat.findOneChatById(req.params.chatId);
 
         res.status(200).json(chat);
     } catch (err) {
@@ -84,9 +89,10 @@ router.get("/:chatId", async (req, res) => {
 
 
 // DELETE CHAT
-router.delete("/:chatId", async (req, res) => {
+router.delete("/:chatId", async (req, res): Promise<void> => {
+
     try {
-        const chat = await Chat.findOneChatById(req.params.chatId);
+        const chat: any = await Chat.findOneChatById(req.params.chatId);
 
         if (!chat) {
             res.status(404).json("Chat doesn`t exists");
