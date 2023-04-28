@@ -6,18 +6,18 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 
 import {Login, Register, Home} from "pages";
 import {useAuth} from "./contexts/Auth/AuthContext";
-import {useThemeSwitcher} from "./hooks/storeHooks/useThemeSwitcher";
+import {useThemeSwitcher} from "./hooks";
 
 const queryClient: QueryClient = new QueryClient();
 export const socket: any = io("http://localhost:3001");
 
 function App(): JSX.Element {
   const {user}  = useAuth();
-  const {isLightTheme} = useThemeSwitcher();
+  const {color_theme} = useThemeSwitcher();
 
   return (
       <QueryClientProvider client={queryClient}>
-          <div className={isLightTheme ? 'light-theme': 'dark-theme'}>
+          <div className={color_theme}>
               <Router>
                   <Routes>
                       <Route path="/" element={user ? <Home socket={socket}/> : <Register />} />

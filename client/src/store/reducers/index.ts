@@ -5,5 +5,5 @@ export {updateSearchActive} from "./componentReducers/searchInputReducer";
 export {updateMenuItem, updateMenuOpen, updateMenuItemActive} from "./componentReducers/menuReducer";
 export {updateSelectedChat, updateVerticalChat} from "./componentReducers/chatListReducer";
 export {updateContactError, updateContactFormOpen} from "./componentReducers/contactListReducer";
-export {updateIsLightTheme} from "./componentReducers/themeSwitcherReducer";
+export {updateTheme} from "./componentReducers/themeSwitcherReducer";
 

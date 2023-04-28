@@ -1,28 +1,23 @@
 import {useSelector, useDispatch} from "react-redux";
-import {updateIsLightTheme, RootState} from "../../store/reducers/index";
+import {updateTheme, RootState} from "../../store/reducers/index";
 import {Dispatch} from "react";
 import {AnyAction} from "redux";
 
 interface switcherHook {
-    isLightTheme: boolean;
-    setIsLightTheme: (state: boolean | undefined) => void;
+    color_theme: string;
+    setTheme: (state: string) => void;
 }
 
 export function useThemeSwitcher(): switcherHook {
     const dispatch: Dispatch<AnyAction> = useDispatch();
-    const isLightTheme: boolean = useSelector((state: RootState) => state.theme_switcher.isLightThemeNow);
+    const color_theme: string = useSelector((state: RootState) => state.theme_switcher.theme);
 
-    const setIsLightTheme = (state?: boolean): void => {
-        if (state) {
-            dispatch(updateIsLightTheme(state));
-        }
-        else {
-            dispatch(updateIsLightTheme(!isLightTheme));
-        }
+    const setTheme = (state: string): void => {
+        dispatch(updateTheme(state));
     }
 
     return {
-        isLightTheme,
-        setIsLightTheme
+        color_theme,
+        setTheme
     };
 }

@@ -1,23 +1,24 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface searchState {
-    isLightThemeNow: boolean;
+    theme: string;
 }
 
 const initialState: searchState = {
-    isLightThemeNow: false,
+    theme: localStorage.getItem('theme') || 'dark-theme',
 };
 
 const themeSwitcherReducer = createSlice({
     name: "theme-switcher",
     initialState,
     reducers: {
-        updateIsLightTheme: (state, action: PayloadAction<boolean>): void => {
-            state.isLightThemeNow = action.payload;
+        updateTheme: (state, action: PayloadAction<string>): void => {
+            state.theme = action.payload;
+            localStorage.setItem('theme', state.theme);
         },
     }
 });
 
-export const {updateIsLightTheme} = themeSwitcherReducer.actions;
+export const {updateTheme} = themeSwitcherReducer.actions;
 
 export default themeSwitcherReducer.reducer;
