@@ -6,6 +6,7 @@ import {useMenu} from "hooks";
 import {useAuth} from "../../../contexts/Auth/AuthContext";
 import {ThemeSwitcher} from "../../ThemeSwitcher/ThemeSwitcher";
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import {UserProfile} from "../../UserProfile/UserProfile";
 
 export function SettingsMenu(): JSX.Element {
 
@@ -20,8 +21,9 @@ export function SettingsMenu(): JSX.Element {
 
     return (
         <div className="settings">
-            <div className="settings-content">
-                <div className="setting-item-preview" onClick={handleGeneralSettingsClick}>
+            <UserProfile/>
+            <div className="content">
+                <div className="item-preview" onClick={handleGeneralSettingsClick}>
                     <SettingsOutlinedIcon/>
                     <p>General settings</p>
                 </div>

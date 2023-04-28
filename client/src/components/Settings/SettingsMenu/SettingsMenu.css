@@ -1,7 +1,6 @@
 .settings {
     background-color: var(--site-color);
     color: var(--text-color);
-    font-weight: 399;
     width: 30rem;
     height: 100vh;
     overflow: auto;
@@ -11,14 +10,14 @@
     scrollbar-color: #262626FF #262626FF;
 }
 
-.settings-content {
+.content {
     width: 100%;
     font-size: 1.125rem;
     overflow-x: auto;
     animation: switchAnimation 0.25s ease-in-out;
 }
 
-.setting-item-preview {
+.item-preview {
     cursor: pointer;
     padding: 0.7rem;
     margin: 0.75rem;
@@ -28,17 +27,16 @@
     transition: 0.2s ease;
 }
 
-.setting-item-preview svg {
-    font-size: 1.4rem;
+.item-preview svg {
+    font-size: 1.5rem;
     color: var(--menu-icons-color);
 }
 
-.setting-item-preview p {
+.item-preview p {
     padding-left: 1rem;
     font-size: 1.15rem;
 }
 
-
-.setting-item-preview:hover {
+.item-preview:hover {
     background-color: var(--theme-switcher-hower-color);
 }
