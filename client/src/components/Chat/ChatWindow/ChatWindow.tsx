@@ -4,7 +4,7 @@ import React, {useEffect} from 'react';
 import {ChatHeader, ChatMessage, MessageForm} from 'components';
 import {socket} from "App";
 
-import {useChatMessages, useChatInfo, useChatList, useUserChats} from 'hooks';
+import {useChatMessages, useChatInfo, useChatList, useUserChats, useSettingsChanger} from 'hooks';
 import {useAuth} from "../../../contexts/Auth/AuthContext";
 
 

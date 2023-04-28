@@ -50,3 +50,7 @@
     --menu-icons-color: rgb(208, 208, 208);
     --profile-border-color: rgb(28, 28, 28);
 }
+
+:root {
+    --text-size: 16px;
+}

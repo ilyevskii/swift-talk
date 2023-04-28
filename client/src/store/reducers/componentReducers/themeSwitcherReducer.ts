@@ -2,13 +2,15 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface searchState {
     theme: string;
+    text_size: string;
 }
 
 const initialState: searchState = {
     theme: localStorage.getItem('theme') || 'dark-theme',
+    text_size: localStorage.getItem('text_size') || '16'
 };
 
-const themeSwitcherReducer = createSlice({
+const settingsChangerReducer = createSlice({
     name: "theme-switcher",
     initialState,
     reducers: {
@@ -16,9 +18,14 @@ const themeSwitcherReducer = createSlice({
             state.theme = action.payload;
             localStorage.setItem('theme', state.theme);
         },
+
+        updateTextSize: (state, action: PayloadAction<string>): void => {
+            state.text_size = action.payload;
+            localStorage.setItem('text_size', state.text_size);
+        },
     }
 });
 
-export const {updateTheme} = themeSwitcherReducer.actions;
+export const {updateTheme, updateTextSize} = settingsChangerReducer.actions;
 
-export default themeSwitcherReducer.reducer;
+export default settingsChangerReducer.reducer;

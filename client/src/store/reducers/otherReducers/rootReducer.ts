@@ -15,7 +15,7 @@ export const rootReducer: Reducer<any, any> = combineReducers({
     chat_list: chatListReducer,
     contact_list: contactListReducer,
     socket: socketReducer,
-    theme_switcher: themeSwitcherReducer
+    settings_changer: themeSwitcherReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

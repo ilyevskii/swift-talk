@@ -1,20 +1,20 @@
 import React from 'react';
 import './ThemeSwitcher.css';
 import {LightMode, DarkMode} from '@mui/icons-material';
-import {useThemeSwitcher} from "../../hooks/storeHooks/useThemeSwitcher";
+import {useSettingsChanger} from "../../hooks/storeHooks/useSettingsChanger";
 
 
 export function ThemeSwitcher(): JSX.Element {
 
-    const {color_theme, setTheme} = useThemeSwitcher();
+    const {color_theme, setTheme} = useSettingsChanger();
 
-    function handleLightThemeClick() {
+    function handleLightThemeClick(): void {
         if (color_theme === "dark-theme") {
             setTheme('light-theme');
         }
     }
 
-    function handleDarkThemeClick() {
+    function handleDarkThemeClick(): void {
         if (color_theme === 'light-theme') {
             setTheme('dark-theme');
         }
@@ -22,7 +22,7 @@ export function ThemeSwitcher(): JSX.Element {
 
     return (
         <>
-            <p className='theme-switcher-header'>Theme</p>
+            <p className='setting-header'>Theme</p>
             <ul className={`theme-switcher`}>
                 <li className={`theme-switcher-element${color_theme === 'light-theme' ? ' active' : ''}`}
                     onClick={handleLightThemeClick}>
@@ -39,6 +39,5 @@ export function ThemeSwitcher(): JSX.Element {
 
             </ul>
         </>
-
     )
 }

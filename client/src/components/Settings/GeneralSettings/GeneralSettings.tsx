@@ -3,6 +3,7 @@ import './GeneralSettings.css';
 import React from 'react';
 
 import {ThemeSwitcher} from "../../ThemeSwitcher/ThemeSwitcher";
+import {TextResizer} from "../../TextResizer/TextResizer";
 
 export function GeneralSettings(): JSX.Element {
 
@@ -10,6 +11,7 @@ export function GeneralSettings(): JSX.Element {
         <div className="left-container">
             <div className="settings-content">
                 <ThemeSwitcher/>
+                <TextResizer/>
             </div>
         </div>
     );
