@@ -1,15 +1,6 @@
-.contact-list {
-    background-color: var(--site-color);
-    color: var(--text-color);
-    width: 30rem;
-    height: 100vh;
-    overflow: auto;
-    overflow-y: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: #262626FF #262626FF;
+.contact-container {
     position: relative;
 }
-
 
 .contact-list-content {
     width: 100%;

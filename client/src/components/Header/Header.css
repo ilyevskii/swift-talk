@@ -11,6 +11,7 @@ path {
     top: 0.5rem;
     border-bottom: 1px solid var(--header-shadow-color);
     padding-bottom: 0.1rem;
+    border-right: 1px solid var(--header-shadow-color);
 }
 
 .header-container > * {

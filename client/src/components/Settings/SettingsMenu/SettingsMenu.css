@@ -1,15 +1,3 @@
-.settings {
-    background-color: var(--site-color);
-    color: var(--text-color);
-    width: 30rem;
-    height: 100vh;
-    overflow: auto;
-    overflow-x: scroll;
-    scrollbar-width: thin;
-    white-space: nowrap;
-    scrollbar-color: #262626FF #262626FF;
-}
-
 .content {
     width: 100%;
     font-size: 1.125rem;

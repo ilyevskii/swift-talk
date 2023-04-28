@@ -21,18 +21,24 @@ export function ThemeSwitcher(): JSX.Element {
     }
 
     return (
-        <ul className={`theme-switcher`}>
-            <li className={`theme-switcher-element${color_theme==='light-theme' ? ' active' : ''}`} onClick={handleLightThemeClick}>
-                <LightMode className='theme-switcher-icon' />
-                <p>Light</p>
-                <input type="checkbox" className='theme-switcher-checkbox'/>
-            </li>
-            <li className={`theme-switcher-element${color_theme==='dark-theme' ? ' active' : ''}`} onClick={handleDarkThemeClick}>
-                <DarkMode className='theme-switcher-icon'/>
-                <p>Dark</p>
-                <input type="checkbox" className='theme-switcher-checkbox'/>
-            </li>
+        <>
+            <p className='theme-switcher-header'>Theme</p>
+            <ul className={`theme-switcher`}>
+                <li className={`theme-switcher-element${color_theme === 'light-theme' ? ' active' : ''}`}
+                    onClick={handleLightThemeClick}>
+                    <LightMode className='theme-switcher-icon'/>
+                    <p>Light</p>
+                    <input type="checkbox" className='theme-switcher-checkbox'/>
+                </li>
+                <li className={`theme-switcher-element${color_theme === 'dark-theme' ? ' active' : ''}`}
+                    onClick={handleDarkThemeClick}>
+                    <DarkMode className='theme-switcher-icon'/>
+                    <p>Dark</p>
+                    <input type="checkbox" className='theme-switcher-checkbox'/>
+                </li>
 
-        </ul>
-    );
+            </ul>
+        </>
+
+    )
 }

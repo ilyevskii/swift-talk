@@ -16,7 +16,7 @@ export function VerticalChatList(): JSX.Element {
 
     return (
         <>
-            <div className="vertical-chat-list">
+            <div className="left-container">
                 {user_chats!.length ? (
                     <div className="vertical-chat-list-content">
                         {user_chats!.map((chat) => (

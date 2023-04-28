@@ -1,15 +1,3 @@
-.vertical-chat-list {
-    background-color: var(--site-color);
-    color: var(--text-color);
-    width: 30rem;
-    height: 100vh;
-    overflow: auto;
-    overflow-y: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: var(--site-color) var(--site-color);
-}
-
-
 .vertical-chat-list-content {
     width: 100%;
     max-height: 94%;

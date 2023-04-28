@@ -21,7 +21,7 @@ export function ContactList(): JSX.Element {
 
     return (
         <>
-            <div className="contact-list">
+            <div className="left-container contacts-container">
                 {user_contacts!.length ?
                     <div className="contact-list-content">
                         {user_contacts!.map((contact) => (

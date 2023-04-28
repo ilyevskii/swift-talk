@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+.left-container {
+    background-color: var(--site-color);
+    color: var(--text-color);
+    width: 30rem;
+    height: 100vh;
+    overflow: auto;
+    overflow-x: scroll;
+    scrollbar-width: thin;
+    white-space: nowrap;
+    scrollbar-color: var(--site-color) var(--site-color);
+    border-right: 1px solid var(--header-shadow-color);
+}
 
 .light-theme {
     --site-color: rgb(255, 255, 255);
