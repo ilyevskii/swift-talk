@@ -1,7 +1,7 @@
 import React from 'react';
 import './ThemeSwitcher.css';
 import {LightMode, DarkMode} from '@mui/icons-material';
-import {useSettingsChanger} from "../../hooks/storeHooks/useSettingsChanger";
+import {useSettingsChanger} from "hooks";
 
 
 export function ThemeSwitcher(): JSX.Element {

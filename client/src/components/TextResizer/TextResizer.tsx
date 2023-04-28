@@ -1,19 +1,17 @@
 import React, {ChangeEvent, useState} from 'react';
 import './TextResizer.css';
-import {useSettingsChanger} from "../../hooks";
+import {useSettingsChanger} from "hooks";
 
 
 export function TextResizer(): JSX.Element {
 
     const {text_size, setTextSize} = useSettingsChanger();
-    const [currentValue, setCurrentValue] = useState('16');
 
     const handleRangeInputChanging = (event: ChangeEvent): void => {
 
         const target: HTMLInputElement = event.target as HTMLInputElement;
         if (event.target.classList.contains("range-input")) {
             setTextSize(target.value);
-            setCurrentValue(target.value);
         }
     }
 

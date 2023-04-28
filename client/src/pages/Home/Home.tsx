@@ -1,5 +1,6 @@
 import './Home.css';
 import React from 'react';
+import {CSSTransition} from "react-transition-group";
 
 import {useChatList, useHeader, useMenu, useUserChats, useUserContacts, useContactList} from "hooks";
 
@@ -80,7 +81,7 @@ export function Home({socket}: HomeProps): JSX.Element {
                         <>
                             {!isContactsLoading ?
                                 <>
-                                    {menuItem === "contacts" && <ContactList/>}
+                                    {menuItem === "contacts" &&  <ContactList/>}
                                     {menuItem === "settings" && <SettingsMenu/>}
                                     {menuItem === "general settings" && <GeneralSettings/>}
                                 </>
