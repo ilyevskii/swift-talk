@@ -17,7 +17,8 @@
     --modal-menu-color: rgba(255, 255, 255, 0.95);
     --menu-item-color: rgb(234, 234, 234);
     --theme-switcher-hower-color: rgb(234, 234, 234);
-    --menu-icons-color: rgb(0, 0, 0);
+    --menu-icons-color: rgb(70, 70, 70);
+    --profile-border-color: rgb(236, 236, 236);
 }
 
 .dark-theme {
@@ -35,4 +36,5 @@
     --menu-item-color: rgb(45, 45, 45);
     --theme-switcher-hower-color: rgb(49, 49, 49);
     --menu-icons-color: rgb(208, 208, 208);
+    --profile-border-color: rgb(28, 28, 28);
 }
