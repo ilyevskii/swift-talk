@@ -10,6 +10,7 @@ export interface MessageType {
     text: string,
     sender_id: ObjectId,
     sender_username: string,
+    is_edited: boolean,
     chat_id: ObjectId,
     time: string,
     attachments: string
@@ -30,6 +31,7 @@ export class Message {
             sender_id: sender_id,
             sender_username: (await User.findOneUser({_id: sender_id})).username,
             chat_id: chat_id,
+            is_edited: false,
             time: new Date(Date.now()).getHours().toString().padStart(2, "0")
                 + ":"
                 + new Date(Date.now()).getMinutes().toString().padStart(2, "0"),
@@ -56,6 +58,7 @@ export class Message {
 
     static async setNewMessageText(message_id: string | ObjectId, text: string): Promise<any> {
         await Message.messagesDb.updateOneField({_id: new ObjectId(message_id.toString())}, 'text', text)
+        await Message.messagesDb.updateOneField({_id: new ObjectId(message_id.toString())}, 'is_edited', true)
     }
 
     static async deleteMessageById(message_id: string | ObjectId): Promise<void> {
