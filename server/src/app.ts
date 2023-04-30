@@ -36,41 +36,36 @@ const io: Server = new Server(server, {
     }
 });
 
-io.on("connection", (socket) => {
+io.on("connection", (socket): void => {
 
     socket.on("join_chat", (data): void => {
         socket.join(data);
     })
 
     socket.on("send_message", (data): void => {
-        try {
 
-            Chat.sendMessage(data.chat_id, data.sender_id, data.text).then((): void => {
-                    io.in(data.chat_id).emit("receive_message")
-            }).catch(err => console.log(err.toString()))
-        }
-        catch (err) {
-            console.log(err.toString());
-        }
-
+        Chat.sendMessage(data.chat_id, data.sender_id, data.text).then((): void => {
+                io.in(data.chat_id).emit("messages_changed")
+        }).catch(err => console.log(err.toString()))
 
     })
 
     socket.on("edit_message", (data): void => {
-        try {
-            Message.setNewMessageText(data.message_id, data.text).then((): void => {
-                io.in(data.chat_id).emit("receive_edited_message")
-            })
-            .catch(err => console.log(err.toString()))
-        }
-        catch (err) {
-            console.log(err.toString());
-        }
 
+        Message.setNewMessageText(data.message_id, data.text).then((): void => {
+            io.in(data.chat_id).emit("messages_changed")
+        })
+        .catch(err => console.log(err.toString()))
 
     })
 
-    socket.on("delete_message", (message): void => {})
+    socket.on("delete_message", (data): void => {
+
+        Message.deleteMessageById(data.message_id).then((): void => {
+            io.in(data.chat_id).emit("messages_changed")
+        })
+            .catch(err => console.log(err.toString()))
+    })
 
     socket.on("add_contact", (data): void => {
 
@@ -90,7 +85,7 @@ io.on("connection", (socket) => {
                     socket.emit('new_contact', {error: 'There are no users with such number!'})
                 }
             }
-        })
+        }).catch(err => console.log(err))
 
     })
 
