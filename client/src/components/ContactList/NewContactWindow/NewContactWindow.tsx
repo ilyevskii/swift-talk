@@ -15,7 +15,7 @@ export function NewContactWindow(): JSX.Element {
     };
 
     return (
-        <div className="new-contact-window">
+        <div className="blocking-window">
             <div className="window-content">
                 <div className="window-header">
                     <h2>New Contact</h2>

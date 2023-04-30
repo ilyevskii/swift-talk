@@ -2,7 +2,7 @@ import './Home.css';
 import React from 'react';
 import {CSSTransition} from "react-transition-group";
 
-import {useChatList, useHeader, useMenu, useUserChats, useUserContacts, useContactList} from "hooks";
+import {useChatList, useHeader, useMenu, useUserChats, useUserContacts, useContactList, useChatMessage} from "hooks";
 
 import {useEffect} from "react";
 import {useAuth} from "../../contexts/Auth/AuthContext";
@@ -16,6 +16,7 @@ import {
     SettingsMenu,
     GeneralSettings
 } from "components";
+import {DeleteMessageWindow} from "../../components/Chat/ChatMessage/DeleteMessageWIndow/DeleteMessageWindow";
 
 
 interface HomeProps {
@@ -29,6 +30,7 @@ export function Home({socket}: HomeProps): JSX.Element {
     const {handleOutsideClick} = useHeader();
     const {menuItem} = useMenu();
     const {isContactFormOpen, setContactFormOpen, setContactError} = useContactList();
+    const {deletionMessage} = useChatMessage();
 
     const {
         isChatsLoading,
@@ -117,11 +119,8 @@ export function Home({socket}: HomeProps): JSX.Element {
                 </div>
             }
 
-            {isContactFormOpen ?
-                <NewContactWindow/>
-                :
-                <></>
-            }
+            {isContactFormOpen && <NewContactWindow/>}
+            {deletionMessage && <DeleteMessageWindow/>}
 
         </div>
     )

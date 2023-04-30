@@ -1,4 +1,4 @@
-import {useMenu, useSearchInput, useChatList} from "hooks";
+import {useMenu, useSearchInput, useChatList, useChatMessage} from "hooks";
 
 interface HeaderHook {
     menuItem: string | null;
@@ -19,6 +19,7 @@ export function useHeader(): HeaderHook {
     const {menuItem, isMenuItemActive, isMenuOpen, setMenuActive, setMenuItemActive, setMenuItem} = useMenu();
     const {isSearchInputActive, setSearchInputActive} = useSearchInput();
     const {setIsVerticalChat} = useChatList();
+    const {setDeleteWindow} = useChatMessage();
 
     const handleBackButtonClick = (): void => {
 
@@ -49,12 +50,17 @@ export function useHeader(): HeaderHook {
 
     const handleOutsideClick = (event: MouseEvent): void => {
         const target: HTMLElement = event.target as HTMLElement;
+        console.log(target.classList);
         if (!target.classList.contains("search-input") && !target.classList.contains("header-button")) {
             if (isSearchInputActive) setSearchInputActive(false);
 
             if (isMenuOpen || target.tagName === "path") {
                 setMenuActive(false);
             }
+        }
+
+        if(!target.classList.contains('menu-item')) {
+            setDeleteWindow(null);
         }
     };
 

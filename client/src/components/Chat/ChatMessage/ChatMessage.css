@@ -46,8 +46,6 @@
 
 .delete-menu-down {
     position: absolute;
-    top: 2.75rem;
-    right: 2.5rem;
     width: 10rem;
     text-align: left;
     border-radius: 1rem;
@@ -55,4 +53,14 @@
     backdrop-filter: blur(4px);
     padding: 0.5rem 0.75rem;
     z-index: 1;
+}
+
+.delete-menu-down.right {
+    top: 2.75rem;
+    right: 2.5rem;
+}
+
+.delete-menu-down.left {
+    top: 2.75rem;
+    left: 20%;
 }

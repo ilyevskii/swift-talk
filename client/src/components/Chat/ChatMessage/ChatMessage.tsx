@@ -35,38 +35,30 @@ export function ChatMessage(props: ChatMessageProps): JSX.Element {
     }
 
     return (
-        <>
-            {isMyMessage ?
-                <div
-                    className={`chat-message right`}
-                    onContextMenu={handleContextMenuClick}>
-                    <p style={{fontSize: `${text_size}px`}}>{message}</p>
-                    <span className="message-time">{time}</span>
 
-                    {deleteWindowMessage == message_id &&
-                        <div className="delete-menu-down">
-                            <ul>
-                                <li className='menu-item' onClick={handleEditClick}>
-                                    <EditOutlined className='menu-item-icon'/>
-                                    <p>Edit</p>
-                                </li>
-                                <li className='menu-item' style={{color: "#e53935"}} onClick={handleDeleteCLick}>
-                                    <DeleteOutlined className='menu-item-icon'/>
-                                    <p>Delete</p>
-                                </li>
-                            </ul>
-                        </div>
-                    }
+        <div
+            className={`chat-message${isMyMessage ? " right" : "left"}`}
+            onContextMenu={handleContextMenuClick}>
+            <p style={{fontSize: `${text_size}px`}}>{message}</p>
+            <span className="message-time">{time}</span>
 
-                </div>
-                :
-                <div
-                    className={`chat-message left`}
-                    onContextMenu={handleContextMenuClick}>
-                    <p style={{fontSize: `${text_size}px`}}>{message}</p>
-                    <span className="message-time">{time}</span>
+            {deleteWindowMessage == message_id &&
+                <div className={`delete-menu-down ${isMyMessage ? " right": " left"}`}>
+                    <ul>
+                        {isMyMessage &&
+                            <li className='menu-item' onClick={handleEditClick}>
+                                <EditOutlined className='menu-item-icon'/>
+                                <p>Edit</p>
+                            </li>
+                        }
+                        <li className='menu-item' style={{color: "#e53935"}} onClick={handleDeleteCLick}>
+                            <DeleteOutlined className='menu-item-icon'/>
+                            <p>Delete</p>
+                        </li>
+                    </ul>
                 </div>
             }
-        </>
+
+        </div>
     );
 }

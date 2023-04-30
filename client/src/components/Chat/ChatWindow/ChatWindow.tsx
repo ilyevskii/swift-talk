@@ -62,12 +62,7 @@ export function ChatWindow(): JSX.Element {
 
     useEffect(() => {
 
-        socket.on('receive_message', async (): Promise<void> => {
-            await refresh_messages();
-            await refresh_chats();
-        });
-
-        socket.on('receive_edited_message', async (): Promise<void> => {
+        socket.on('messages_changed', async (): Promise<void> => {
             await refresh_messages();
             await refresh_chats();
         });

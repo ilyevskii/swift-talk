@@ -29,7 +29,6 @@ export class MessageRepository {
     async getMessageInfo(message_id: string): Promise<MessageDTO | undefined> {
 
         try {
-
             const response = await axios.get(`${this.RequestsUrl}/message/${message_id}`);
             const message: Message = response.data as Message;
 
