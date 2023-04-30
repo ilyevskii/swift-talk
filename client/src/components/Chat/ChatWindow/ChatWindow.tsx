@@ -4,8 +4,9 @@ import React, {useEffect} from 'react';
 import {ChatHeader, ChatMessage, MessageForm} from 'components';
 import {socket} from "App";
 
-import {useChatMessages, useChatInfo, useChatList, useUserChats, useSettingsChanger} from 'hooks';
+import {useChatMessages, useChatInfo, useChatList, useUserChats,useChatMessage} from 'hooks';
 import {useAuth} from "../../../contexts/Auth/AuthContext";
+import {MessageDTO} from "../../../repositories";
 
 
 export function ChatWindow(): JSX.Element {
@@ -13,6 +14,7 @@ export function ChatWindow(): JSX.Element {
     const {user} = useAuth();
     const {selectedChat} = useChatList();
     const {refresh_chats} = useUserChats(user!._id)
+    const {editingMessage, setEditingMessage} = useChatMessage();
 
     const {
         isMessagesLoading,
@@ -30,24 +32,46 @@ export function ChatWindow(): JSX.Element {
         refresh_chat_info,
     } = useChatInfo(user!._id, selectedChat!);
 
-    async function sendMessage(currentMessage: string): Promise<void> {
-        if (currentMessage) {
-            const messageData = {
-                chat_id: selectedChat!,
-                sender_id: user!._id,
-                text: currentMessage,
-            };
 
-            await socket.emit('send_message', messageData);
+    async function sendMessage(currentMessage: string): Promise<void> {
+
+        if (currentMessage) {
+
+            if (editingMessage) {
+
+                const messageData = {
+                    chat_id: selectedChat!,
+                    message_id: editingMessage,
+                    text: currentMessage
+                }
+                await socket.emit("edit_message", messageData);
+                setEditingMessage(null);
+            }
+            else {
+
+                const messageData = {
+                    chat_id: selectedChat!,
+                    sender_id: user!._id,
+                    text: currentMessage,
+                };
+                await socket.emit('send_message', messageData);
+            }
+
         }
     }
 
     useEffect(() => {
 
-        socket.on('receive_message', async () => {
-            await refresh_chats();
+        socket.on('receive_message', async (): Promise<void> => {
             await refresh_messages();
+            await refresh_chats();
         });
+
+        socket.on('receive_edited_message', async (): Promise<void> => {
+            await refresh_messages();
+            await refresh_chats();
+        });
+
     }, [socket]);
 
     const image_url: string =
@@ -61,9 +85,10 @@ export function ChatWindow(): JSX.Element {
                     <div className="chat-messages">
                         {!isMessagesLoading ? (
                             <>
-                                {chat_messages.map((message) => (
+                                {chat_messages.map((message: MessageDTO) => (
                                     <ChatMessage
                                         key={message._id}
+                                        message_id={message._id}
                                         message={message.text}
                                         isMyMessage={message.sender_id === user!._id}
                                         time={message.time}
