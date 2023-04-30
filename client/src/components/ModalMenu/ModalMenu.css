@@ -27,7 +27,7 @@
 
 .menu-item {
     display: flex;
-    border-radius: 8%;
+    border-radius: 10%;
     color: var(--text-color);
     padding: 0.25rem;
 }
