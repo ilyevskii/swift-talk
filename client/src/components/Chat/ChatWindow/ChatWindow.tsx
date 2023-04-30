@@ -41,7 +41,7 @@ export function ChatWindow(): JSX.Element {
 
                 const messageData = {
                     chat_id: selectedChat!,
-                    message_id: editingMessage,
+                    message_id: editingMessage.id,
                     text: currentMessage
                 }
                 await socket.emit("edit_message", messageData);
@@ -85,6 +85,7 @@ export function ChatWindow(): JSX.Element {
                                         key={message._id}
                                         message_id={message._id}
                                         message={message.text}
+                                        is_edited={message.is_edited}
                                         isMyMessage={message.sender_id === user!._id}
                                         time={message.time}
                                     />

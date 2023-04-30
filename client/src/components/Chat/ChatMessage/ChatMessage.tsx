@@ -8,12 +8,13 @@ interface ChatMessageProps {
     message_id: string;
     message: string;
     isMyMessage: boolean;
+    is_edited: boolean;
     time: string;
 }
 
 export function ChatMessage(props: ChatMessageProps): JSX.Element {
 
-    const {message_id, message, isMyMessage, time} = props;
+    const {message_id, message, isMyMessage, time, is_edited} = props;
     const {text_size} = useSettingsChanger();
 
     const {deleteWindowMessage, setDeleteWindow} = useChatMessage();
@@ -27,7 +28,7 @@ export function ChatMessage(props: ChatMessageProps): JSX.Element {
     }
 
     function handleEditClick(): void {
-        setEditingMessage(message_id);
+        setEditingMessage({id: message_id, text: message});
     }
 
     function handleDeleteCLick(): void {
@@ -40,7 +41,7 @@ export function ChatMessage(props: ChatMessageProps): JSX.Element {
             className={`chat-message${isMyMessage ? " right" : "left"}`}
             onContextMenu={handleContextMenuClick}>
             <p style={{fontSize: `${text_size}px`}}>{message}</p>
-            <span className="message-time">{time}</span>
+            <span className="message-time">{is_edited ? "edited " : ""}{time}</span>
 
             {deleteWindowMessage == message_id &&
                 <div className={`delete-menu-down ${isMyMessage ? " right": " left"}`}>

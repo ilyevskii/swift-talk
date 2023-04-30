@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface messageState {
     messageWithDeleteWindow: string | null;
-    editingMessage: string | null;
+    editingMessage: {id: string, text: string} | null;
     deletionMessage: string | null;
 }
 
@@ -19,7 +19,7 @@ const messageReducer = createSlice({
         updateDeleteWindowMessage: (state, action: PayloadAction<string | null>): void => {
             state.messageWithDeleteWindow = action.payload;
         },
-        updateEditingMessage: (state, action: PayloadAction<string | null>): void => {
+        updateEditingMessage: (state, action: PayloadAction<{id: string, text: string} | null>): void => {
             state.editingMessage = action.payload;
         },
         updateDeletionMessage: (state, action: PayloadAction<string | null>): void => {

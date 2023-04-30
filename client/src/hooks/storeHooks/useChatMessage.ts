@@ -5,24 +5,24 @@ import {AnyAction} from "redux";
 
 interface chatMessageHook {
     deleteWindowMessage: string | null;
-    editingMessage: string | null;
+    editingMessage: {id: string, text: string} | null;
     deletionMessage: string | null;
     setDeleteWindow: (message_id: string | null) => void;
-    setEditingMessage: (message_id: string | null) => void;
+    setEditingMessage: (message_id: {id: string, text: string} | null) => void;
     setDeletionMessage: (message_id: string | null) => void;
 }
 
 export function useChatMessage(): chatMessageHook {
     const dispatch: Dispatch<AnyAction> = useDispatch();
     const deleteWindowMessage: string | null = useSelector((state: RootState) => state.message.messageWithDeleteWindow);
-    const editingMessage: string | null = useSelector((state: RootState) => state.message.editingMessage);
+    const editingMessage: {id: string, text: string} | null = useSelector((state: RootState) => state.message.editingMessage);
     const deletionMessage: string | null = useSelector((state: RootState) => state.message.deletionMessage);
 
     const setDeleteWindow = (message_id: string | null): void => {
         dispatch(updateDeleteWindowMessage(message_id));
     };
 
-    const setEditingMessage = (message_id: string | null): void => {
+    const setEditingMessage = (message_id: {id: string, text: string} | null): void => {
         dispatch(updateEditingMessage(message_id));
     }
 

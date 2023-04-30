@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Send} from "@mui/icons-material";
+import {Send, EditOutlined, Close, Done} from "@mui/icons-material";
 import './MessageForm.css';
 
-import {useChatMessage, useMessageInfo} from "../../../hooks";
+import {useChatMessage} from "../../../hooks";
 
 interface MessageFormProps {
     submitFunc: (message: string) => void;
@@ -10,9 +10,7 @@ interface MessageFormProps {
 
 export function MessageForm(props: MessageFormProps): JSX.Element {
     const [message, setMessage] = useState<string>('');
-
-    const {editingMessage, setDeleteWindow} = useChatMessage();
-    const {message_info} = useMessageInfo(editingMessage);
+    const {editingMessage, setDeleteWindow, setEditingMessage} = useChatMessage();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setMessage(event.target.value);
@@ -24,25 +22,44 @@ export function MessageForm(props: MessageFormProps): JSX.Element {
         setMessage('');
     }
 
+    const handleCancel = (): void => {
+        setEditingMessage(null);
+        setMessage('');
+    }
+
     useEffect(() => {
-        if (message_info) {
-            setMessage(message_info.text);
+        if (editingMessage) {
+            setMessage(editingMessage.text);
             setDeleteWindow(null);
         }
 
-    }, [message_info])
+    }, [editingMessage])
 
     return (
         <form className="message-form" onSubmit={handleSubmit}>
-            <input
-                type="text"
-                className="message-input"
-                placeholder="Message"
-                value={message}
-                onChange={handleChange}
-            />
+            <div className="message-input">
+                {editingMessage &&
+                    <div className="editing-message-preview">
+                        <EditOutlined className="editing-message-icon"/>
+                        <div className="editing-message-text-wrapper">
+                            <div className="editing-message-text">
+                                <p>Edit Message</p>
+                                <small>{editingMessage.text}</small>
+                            </div>
+                        </div>
+                        <Close className="editing-message-close-icon" onClick={handleCancel}/>
+                    </div>
+                }
+                <input
+                    type="text"
+                    placeholder="Message"
+                    value={message}
+                    onChange={handleChange}
+                />
+            </div>
+
             <button className="send-button" type="submit">
-                <Send />
+                {editingMessage ? <Done/> : <Send />}
             </button>
         </form>
     );
