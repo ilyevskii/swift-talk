@@ -6,4 +6,5 @@ export {updateMenuItem, updateMenuOpen, updateMenuItemActive} from "./componentR
 export {updateSelectedChat, updateVerticalChat} from "./componentReducers/chatListReducer";
 export {updateContactError, updateContactFormOpen} from "./componentReducers/contactListReducer";
 export {updateTheme, updateTextSize} from "./componentReducers/themeSwitcherReducer";
+export {updateDeleteWindowMessage, updateEditingMessage, updateDeletionMessage} from "./componentReducers/messageReducer";
 
