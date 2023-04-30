@@ -9,8 +9,3 @@ body {
 .chat-window {
     flex: 1;
 }
-
-.left-menu {
-    width: 40rem;
-    overflow: hidden;
-}
