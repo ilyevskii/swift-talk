@@ -9,3 +9,5 @@ export {useChatList} from "./storeHooks/useChatList";
 export {useContactList} from "./storeHooks/useContactList";
 export {useSocket} from "./storeHooks/useSocket";
 export {useSettingsChanger} from "./storeHooks/useSettingsChanger";
+export {useChatMessage} from "./storeHooks/useChatMessage";
+export {useMessageInfo} from "./repoHooks/MessageHooks";
