@@ -73,3 +73,31 @@
     }
 }
 
+.add-chat-btn {
+    position: absolute;
+    background-color:  var(--send-button-color);
+    border-radius: 50%;
+    padding: 1rem 1.125rem 1rem 1.125rem;
+    color: white;
+    bottom: 8%;
+    right: 3%;
+    transition: 0.15s ease;
+}
+
+.add-chat-btn:hover {
+    background-color: var(--add-contact-button-color);
+}
+
+.new-chat-menu {
+    position: absolute;
+    bottom: 15%;
+    right: 3%;
+    width: 11rem;
+    text-align: left;
+    border-radius: 1rem;
+    background-color: var(--header-shadow-color);
+    backdrop-filter: blur(4px);
+    padding: 0.5rem 0.75rem;
+    z-index: 1;
+}
+

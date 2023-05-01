@@ -50,7 +50,6 @@ export function useHeader(): HeaderHook {
 
     const handleOutsideClick = (event: MouseEvent): void => {
         const target: HTMLElement = event.target as HTMLElement;
-        console.log(target.classList);
         if (!target.classList.contains("search-input") && !target.classList.contains("header-button")) {
             if (isSearchInputActive) setSearchInputActive(false);
 

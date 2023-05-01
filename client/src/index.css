@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 .left-container {
+    /*position: relative;*/
     background-color: var(--site-color);
     color: var(--text-color);
     width: 30rem;
