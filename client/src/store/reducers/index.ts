@@ -7,4 +7,5 @@ export {updateSelectedChat, updateVerticalChat} from "./componentReducers/chatLi
 export {updateContactError, updateContactFormOpen} from "./componentReducers/contactListReducer";
 export {updateTheme, updateTextSize} from "./componentReducers/themeSwitcherReducer";
 export {updateDeleteWindowMessage, updateEditingMessage, updateDeletionMessage} from "./componentReducers/messageReducer";
+export {updateNewMembers, type NewMember} from "./componentReducers/groupChatReducer";
 

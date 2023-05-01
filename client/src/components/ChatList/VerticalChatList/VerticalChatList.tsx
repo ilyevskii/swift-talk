@@ -23,6 +23,11 @@ export function VerticalChatList(): JSX.Element {
         setMenuItemActive(true);
     }
 
+    const handleGroupChatClick = (): void => {
+        setMenuItem('new group chat');
+        setMenuItemActive(true);
+    }
+
     return (
         <>
             <div className="left-container">
@@ -62,7 +67,7 @@ export function VerticalChatList(): JSX.Element {
                             ))}
                         </div>
                         {isClicked &&
-                            <div className="new-chat-menu">
+                            <div className="new-chat-menu" onClick={handleGroupChatClick}>
                                 <ul>
                                     <li className='menu-item'>
                                         <GroupOutlined className='menu-item-icon'/>

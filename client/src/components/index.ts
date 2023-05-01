@@ -13,3 +13,4 @@ export {SettingsMenu} from "./Settings/SettingsMenu/SettingsMenu";
 export {GeneralSettings} from "./Settings/GeneralSettings/GeneralSettings";
 export {UserProfile} from "./UserProfile/UserProfile";
 export {TextResizer} from "./TextResizer/TextResizer";
+export {GroupChatList} from "./GroupChat/GroupChat";

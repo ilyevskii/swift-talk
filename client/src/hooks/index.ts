@@ -11,3 +11,4 @@ export {useSocket} from "./storeHooks/useSocket";
 export {useSettingsChanger} from "./storeHooks/useSettingsChanger";
 export {useChatMessage} from "./storeHooks/useChatMessage";
 export {useMessageInfo} from "./repoHooks/MessageHooks";
+export {useGroupChat} from "./storeHooks/useGroupChat";

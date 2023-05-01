@@ -1,0 +1,12 @@
+.contact-preview.chosen {
+    background-color: var(--theme-switcher-hower-color);
+}
+
+.contacts-checkbox {
+    margin-right: 1rem;
+}
+
+.chosen-members {
+    padding-left: 1rem;
+    color: #838383;
+}

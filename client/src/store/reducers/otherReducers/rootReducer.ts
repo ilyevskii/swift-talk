@@ -7,6 +7,7 @@ import chatListReducer from "../componentReducers/chatListReducer";
 import contactListReducer from "../componentReducers/contactListReducer";
 import themeSwitcherReducer from "../componentReducers/themeSwitcherReducer";
 import messageReducer from "../componentReducers/messageReducer";
+import groupChatReducer from "../componentReducers/groupChatReducer";
 import socketReducer from "./socketReducer";
 
 
@@ -17,7 +18,8 @@ export const rootReducer: Reducer<any, any> = combineReducers({
     contact_list: contactListReducer,
     socket: socketReducer,
     settings_changer: themeSwitcherReducer,
-    message: messageReducer
+    message: messageReducer,
+    group_chat: groupChatReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
