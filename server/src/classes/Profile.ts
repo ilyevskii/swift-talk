@@ -2,6 +2,11 @@ import {Document, ObjectId, WithId} from "mongodb";
 
 import {DB} from './Database'
 
+export interface ProfileType {
+    first_name: string;
+    last_name: string;
+    bio: string;
+}
 
 export class Profile {
 
@@ -24,5 +29,9 @@ export class Profile {
 
     static async findProfileById(user_id: string | ObjectId): Promise<WithId<Document>> {
         return await Profile.profilesDb.findOne({_id: new ObjectId(user_id.toString())});
+    }
+
+    static async findProfileByIdAndUpdate(id: string, newObject: object): Promise<void> {
+        await Profile.profilesDb.findAndUpdateById(new ObjectId(id), newObject);
     }
 }

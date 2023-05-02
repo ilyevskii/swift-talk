@@ -35,7 +35,7 @@ export class GroupChat extends Chat {
         return this.id;
     }
 
-    static async createGroupChat(users: ObjectId[], name: string = "New group chat"): Promise<GroupChatType> {
+    static async createGroupChat(users: ObjectId[] | string[], name: string = "New group chat"): Promise<GroupChatType> {
 
         const new_chat_object: GroupChatType = {
             type: 'group',
@@ -45,12 +45,11 @@ export class GroupChat extends Chat {
         }
 
         const chat_id: ObjectId = await this.chatsDb.insertOne(new_chat_object);
-
-        for (let user in users) {
-            await user_chats.insertOne({user_id: new ObjectId(user.toString()), chat_id: chat_id});
+        for (let i = 0; i < users.length; i++) {
+            await user_chats.insertOne({user_id: new ObjectId(users[i].toString()), chat_id: chat_id});
         }
-
         new_chat_object._id = chat_id;
+
         return new_chat_object;
     }
 

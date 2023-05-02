@@ -11,10 +11,13 @@ router.post("/register", async (req, res): Promise<void> => {
 
     try {
         // check if user with such phone number or username exists
-        if (await User.findOneUser({phone_number: req.body.phone_number})
-            || await User.findOneUser({username: req.body.username}))
+        if (await User.findOneUser({phone_number: req.body.phone_number}))
         {
-            res.status(404).json("user exists");
+            res.status(404).json("User with this phone number already exists!");
+            return;
+        }
+        if (await User.findOneUser({username: req.body.username})) {
+            res.status(404).json("User with this username already exists!");
             return;
         }
 
@@ -38,14 +41,14 @@ router.post("/login", async (req, res): Promise<void> => {
         //try to found user with such phone number
         const user: WithId<Document> = await User.findOneUser({phone_number: req.body.phone_number});
         if (!user) {
-            res.status(404).json("user not found");
+            res.status(404).json("There is no user with this phone number!");
             return;
         }
 
         //check if password correct
         const validPassword = await bcrypt.compare(req.body.password, user.password)
         if (!validPassword) {
-            res.status(400).json("wrong password");
+            res.status(400).json("Wrong password!");
             return;
         }
 

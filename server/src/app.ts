@@ -4,6 +4,7 @@ import {ObjectId} from "mongodb";
 import {User} from "./classes/User";
 import {Chat} from "./classes/Chats/Chat";
 import {Message} from "./classes/Message";
+import {GroupChat} from "./classes/Chats/GroupChat";
 
 const express = require('express');
 const config = require('config');
@@ -40,6 +41,12 @@ io.on("connection", (socket): void => {
 
     socket.on("join_chat", (data): void => {
         socket.join(data);
+    })
+
+    socket.on("new_group", (data): void => {
+        GroupChat.createGroupChat(data.users, data.name).then((res): void => {
+            socket.emit('messages_changed');
+        }).catch(err => console.log(err.toString()))
     })
 
     socket.on("send_message", (data): void => {

@@ -1,4 +1,5 @@
 import {User, UserType} from '../classes/User'
+import {Profile, ProfileType} from "../classes/Profile";
 
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
@@ -21,26 +22,34 @@ router.get("/:userId", async (req, res): Promise<void> => {
     }
 });
 
+//GET USER PROFILE INFO
+router.get("/profile/:profileId", async (req, res): Promise<void> => {
+
+    try {
+        const profile: Profile = await Profile.findProfileById(req.params.profileId);
+        res.status(200).json(profile);
+    } catch (err) {
+        res.status(500).json({error: err.toString()});
+    }
+});
+
 
 //CHANGE USER INFO
 router.put("/:userId", async (req, res): Promise<void> => {
 
     if (req.body._id === req.params.userId) {
 
-        if (req.body.password) {
-            try {
-                const salt = await bcrypt.genSalt(10);
-                req.body.password = await bcrypt.hash(req.body.password, salt);
-            } catch (err) {
-                res.status(500).json(err);
-                return;
-            }
-        }
-
         try {
-            delete req.body._id;
-            await User.findUserByIdAndUpdate(req.params.userId, req.body);
-            res.status(200).json("Account has been updated");
+            const user = await User.findOneUser({username: req.body.username})
+
+            if (!user || user._id.toString() == req.body._id) {
+                delete req.body._id;
+                await User.findUserByIdAndUpdate(req.params.userId, req.body);
+                res.status(200).json("Account has been updated");
+            }
+            else {
+                res.status(404).json("This username is already taken!");
+            }
 
         } catch (err) {
             res.status(500).json({error: err.toString()});
@@ -48,6 +57,25 @@ router.put("/:userId", async (req, res): Promise<void> => {
 
     } else {
         res.status(403).json("You can update only your account!");
+    }
+});
+
+//CHANGE USER PROFILE INFO
+router.put("/profile/:profileId", async (req, res): Promise<void> => {
+
+    if (req.body._id === req.params.profileId) {
+
+        try {
+            delete req.body._id;
+            await Profile.findProfileByIdAndUpdate(req.params.profileId, req.body);
+            res.status(200).json("Profile has been updated");
+
+        } catch (err) {
+            res.status(500).json({error: err.toString()});
+        }
+
+    } else {
+        res.status(403).json("You can update only your profile!");
     }
 });
 
