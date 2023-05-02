@@ -67,9 +67,9 @@ export function VerticalChatList(): JSX.Element {
                             ))}
                         </div>
                         {isClicked &&
-                            <div className="new-chat-menu" onClick={handleGroupChatClick}>
+                            <div className="new-chat-menu">
                                 <ul>
-                                    <li className='menu-item'>
+                                    <li className='menu-item' onClick={handleGroupChatClick}>
                                         <GroupOutlined className='menu-item-icon'/>
                                         <p>New group</p>
                                     </li>
@@ -87,7 +87,7 @@ export function VerticalChatList(): JSX.Element {
                         <div className="no-user-chats">
                             <p>No chats yet.</p>
                         </div>
-                        <button className={"add-chat-btn"} onClick={() => console.log('click')}><Create /></button>
+                        <button className={"add-chat-btn"} onClick={() => setIsClicked(state => !state)}><Create /></button>
                     </>
 
                 )}

@@ -6,13 +6,6 @@ import {useUserInfo} from "../../hooks/repoHooks/UserHooks";
 
 export function UserProfile(): JSX.Element {
 
-    // const user = {
-    //     photo: 'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13',
-    //     name: 'Ilya',
-    //     phone: '+375336227147',
-    //     username: 'ilyevskii',
-    //     bio: 'hi there!'
-    // }
 
     const {user} = useAuth();
     const {user_info, isUserInfoLoading, refresh_user_info, isUserInfoError} = useUserInfo(user!._id);

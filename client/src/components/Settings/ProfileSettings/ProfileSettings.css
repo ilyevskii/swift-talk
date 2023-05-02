@@ -54,3 +54,8 @@
 .profile-input.username-error::placeholder {
     color: #ee6c6a;
 }
+
+.username-error-div {
+    margin-left: 1rem;
+    font-size: 0.9rem;
+}

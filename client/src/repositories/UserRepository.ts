@@ -59,14 +59,15 @@ export class UserRepository {
         }
     }
     async setUserInfo(user: UserDTO): Promise<void> {
-        try {
+
+        try{
             await axios.put(`${this.RequestsUrl}/user/${user._id}`,
                 {
                     _id: user._id,
                     username: user.username,
                     phone_number: user.phone_number,
                     profile_id: user.profile_id
-                });
+                })
 
             await axios.put(`${this.RequestsUrl}/user/profile/${user.profile_id}`,
                 {
@@ -74,11 +75,13 @@ export class UserRepository {
                     first_name: user.first_name,
                     last_name: user.last_name,
                     bio: user.bio
-                });
-
-        } catch (err: any) {
-            console.log(err.toString());
+                })
         }
+        catch (err: any) {
+            throw err.response.data;
+        }
+
+
     }
 
     async getAllUserChats(user_id: string): Promise<(ChatDTO | undefined)[] | []> {

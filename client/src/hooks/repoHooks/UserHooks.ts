@@ -10,9 +10,15 @@ export const useUserInfo = (user_id: string) => {
         return await userRepo.getUserInfo(user_id);
     });
 
-    const setUserInfo = async (user: UserDTO) => {
-        await userRepo.setUserInfo(user);
-        await refetch();
+    const setUserInfo = async (user: UserDTO): Promise<void> => {
+        try {
+            await userRepo.setUserInfo(user);
+            await refetch();
+        }
+        catch (err: any) {
+            throw err;
+        }
+
     }
 
     return {

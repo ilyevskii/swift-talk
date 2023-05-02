@@ -1,9 +1,10 @@
 import './ProfileSettings.css';
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 
 import {Done} from "@mui/icons-material";
 import {useAuth} from "../../../contexts/Auth/AuthContext";
 import {useUserInfo} from "../../../hooks/repoHooks/UserHooks";
+import {useMenu} from "../../../hooks";
 
 
 export function ProfileSettings(): JSX.Element {
@@ -12,9 +13,10 @@ export function ProfileSettings(): JSX.Element {
     const [firstName, setFirstName] = useState<string>("");
     const [bio, setBio] = useState<string>("");
     const [username, setUsername] = useState<string>("");
-    const [error, setError] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
     const {user} = useAuth();
     const {user_info, refresh_user_info, setUserInfo} = useUserInfo(user!._id);
+    const {setMenuItem} = useMenu();
 
     const handleFirstNameChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setFirstName(event.target.value);
@@ -32,10 +34,15 @@ export function ProfileSettings(): JSX.Element {
         setUsername(event.target.value);
     };
 
+    useEffect(() => {
+        setError("");
+    }, [username])
+
     const handleChangeClick = async (): Promise<void> => {
-        console.log('aaa');
         const username_regexp: RegExp = /^[a-z0-9_]{5,15}$/;
-        if (username_regexp.test(username)) {
+        let usrnm = username ? username : user_info.username;
+
+        if (username_regexp.test(usrnm)) {
             const newUserInfo = {...user_info};
 
             firstName && (newUserInfo.first_name = firstName);
@@ -43,10 +50,17 @@ export function ProfileSettings(): JSX.Element {
             bio && (newUserInfo.bio = bio);
             username && (newUserInfo.username = username);
 
-            await setUserInfo(newUserInfo);
+            try {
+                await setUserInfo(newUserInfo);
+                setMenuItem("settings");
+            }
+            catch (err: any) {
+                setError(err);
+            }
+
         }
         else {
-            setError(true);
+            setError("Wrong input!");
         }
 
     }
@@ -99,6 +113,7 @@ export function ProfileSettings(): JSX.Element {
                         defaultValue={user_info.username}
                         onChange={handleUsernameChange}
                     />
+                    {error && <p className="username-error-div">{error}</p>}
                     <p className="profile-settings-footer">
                         You can choose a username on <b>SwiftTalk.</b><br/>
                         You can use a–z, 0–9 and underscores. <br/>Minimum length is 5 characters.
