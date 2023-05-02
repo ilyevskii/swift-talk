@@ -6,7 +6,7 @@ interface searchState {
 }
 
 const initialState: searchState = {
-    theme: localStorage.getItem('theme') || 'dark-theme',
+    theme: localStorage.getItem('theme') || 'light-theme',
     text_size: localStorage.getItem('text_size') || '16'
 };
 

@@ -16,7 +16,7 @@
 
 .light-theme {
     --site-color: rgb(255, 255, 255);
-    --content-color: rgb(244, 244, 245);;
+    --content-color: rgb(244, 244, 245);
     --text-color: rgb(40, 40, 40);
     --chat-color: rgb(153, 186, 146);
     --contact-window-color: rgba(17, 17, 17, 0.5);

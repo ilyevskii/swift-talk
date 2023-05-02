@@ -18,8 +18,9 @@ export const loginCall = async (userInfo: userLoginRequest, dispatch: Dispatch<A
     try {
         const res = await axios.post("http://localhost:3001/api/auth/login", userInfo);
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
-    } catch (err) {
+    } catch (err: any) {
         dispatch({ type: "LOGIN_FAILURE"});
+        throw err.response.data;
     }
 };
 
@@ -28,7 +29,8 @@ export const registerCall = async (userInfo: userRegisterRequest, dispatch: Disp
     try {
         const res = await axios.post("http://localhost:3001/api/auth/register", userInfo);
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
-    } catch (err) {
+    } catch (err: any) {
         dispatch({ type: "LOGIN_FAILURE"});
+        throw err.response.data;
     }
 };
