@@ -38,7 +38,7 @@ export function ChatMessage(props: ChatMessageProps): JSX.Element {
     return (
 
         <div
-            className={`chat-message${isMyMessage ? " right" : "left"}`}
+            className={`chat-message${isMyMessage ? " right" : " left"}`}
             onContextMenu={handleContextMenuClick}>
             <p style={{fontSize: `${text_size}px`}}>{message}</p>
             <span className="message-time">{is_edited ? "edited " : ""}{time}</span>

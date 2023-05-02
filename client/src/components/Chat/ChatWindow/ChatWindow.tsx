@@ -54,6 +54,7 @@ export function ChatWindow(): JSX.Element {
                     sender_id: user!._id,
                     text: currentMessage,
                 };
+                console.log(messageData);
                 await socket.emit('send_message', messageData);
             }
 
@@ -63,6 +64,7 @@ export function ChatWindow(): JSX.Element {
     useEffect(() => {
 
         socket.on('messages_changed', async (): Promise<void> => {
+            console.log(1111);
             await refresh_messages();
             await refresh_chats();
         });

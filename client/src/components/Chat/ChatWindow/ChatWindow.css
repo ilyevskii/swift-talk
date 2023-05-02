@@ -9,13 +9,12 @@
 
 .no-chat-window {
     display: flex;
-    width: 100%;
+    width: 75%;
     height: 100vh;
     color: var(--text-color);
     justify-content: center;
     background-color: var(--chat-color);
     align-items: center;
-    border-left: 1px solid var(--header-shadow-color);
 }
 
 .no-chat-window p {

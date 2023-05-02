@@ -8,6 +8,7 @@ interface groupListHook {
     setNewMember: (member: NewMember) => void;
     removeNewMember: (member: NewMember) => void;
     findNewMember: (member: NewMember) => boolean;
+    setMembers: (members: NewMember[]) => void;
 }
 
 export function useGroupChat(): groupListHook {
@@ -28,11 +29,16 @@ export function useGroupChat(): groupListHook {
         return !!obj;
     }
 
+    const setMembers = (members: NewMember[]): void => {
+        dispatch(updateNewMembers(members));
+    }
+
 
     return {
         newMembers,
         setNewMember,
         removeNewMember,
-        findNewMember
+        findNewMember,
+        setMembers
     };
 }

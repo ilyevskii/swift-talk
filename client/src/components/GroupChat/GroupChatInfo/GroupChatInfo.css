@@ -1,0 +1,42 @@
+.new-group-chat-info {
+    display: block;
+    height: 100%;
+    padding: 1rem;
+}
+
+.new-group-chat-photo {
+    width: 30%;
+    border-radius: 50%;
+    margin: 1.5rem auto 0 auto;
+}
+
+.new-group-chat-name-input {
+    border: 1px solid #b9b9b9;
+    background-color: var(--site-color);
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.new-group-chat-members {
+    margin-top: 2rem;
+    display: block;
+}
+
+.group-chat-member-preview {
+    display: flex;
+    width: 100%;
+    margin: 0.75rem 0.75rem 0.8rem 0;
+    align-items: center;
+}
+
+.group-chat-member-preview:first-of-type {
+    margin-top: 1rem;
+}
+
+.group-chat-member-preview-photo {
+    width: 2.5rem;
+    margin-right: 0.5rem;
+    border-radius: 50%;
+}

@@ -24,7 +24,7 @@ export function VerticalChatList(): JSX.Element {
     }
 
     const handleGroupChatClick = (): void => {
-        setMenuItem('new group chat');
+        setMenuItem('new_group');
         setMenuItemActive(true);
     }
 

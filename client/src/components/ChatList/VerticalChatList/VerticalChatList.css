@@ -79,7 +79,7 @@
     border-radius: 50%;
     padding: 1rem 1.125rem 1rem 1.125rem;
     color: white;
-    bottom: 8%;
+    bottom: 2%;
     right: 3%;
     transition: 0.15s ease;
 }
@@ -90,7 +90,7 @@
 
 .new-chat-menu {
     position: absolute;
-    bottom: 15%;
+    bottom: 9%;
     right: 3%;
     width: 11rem;
     text-align: left;

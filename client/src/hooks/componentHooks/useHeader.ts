@@ -1,4 +1,4 @@
-import {useMenu, useSearchInput, useChatList, useChatMessage} from "hooks";
+import {useMenu, useSearchInput, useChatList, useChatMessage, useGroupChat} from "hooks";
 
 interface HeaderHook {
     menuItem: string | null;
@@ -11,7 +11,6 @@ interface HeaderHook {
     setMenuItemActive: (state?: boolean) => void;
     handleOutsideClick: (event: any) => any;
     setIsVerticalChat: (state?: boolean) => void;
-    setMenuItem: (item: string | null) => void;
 }
 
 export function useHeader(): HeaderHook {
@@ -20,16 +19,22 @@ export function useHeader(): HeaderHook {
     const {isSearchInputActive, setSearchInputActive} = useSearchInput();
     const {setIsVerticalChat} = useChatList();
     const {setDeleteWindow} = useChatMessage();
+    const {setMembers} = useGroupChat();
 
     const handleBackButtonClick = (): void => {
 
         if (isMenuItemActive) {
+            if (menuItem == "new_group") setMembers([]);
             if (menuItem === "general settings") {
                 setMenuItem("settings");
+            }
+            else if (menuItem == "new_group_info") {
+                setMenuItem("new_group");
             }
             else {
                 setMenuItemActive(false);
                 setMenuItem(null);
+                setIsVerticalChat(true);
             }
         }
         else {
@@ -74,6 +79,5 @@ export function useHeader(): HeaderHook {
         handleOutsideClick,
         setMenuItemActive,
         setIsVerticalChat,
-        setMenuItem
     };
 }

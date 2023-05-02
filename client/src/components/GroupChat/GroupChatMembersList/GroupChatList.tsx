@@ -1,24 +1,28 @@
-import './GroupChat.css';
-import React, {useState} from 'react';
+import './GroupChatList.css';
+import React from 'react';
 
-import {ArrowForward} from "@mui/icons-material";
-import {useChatList, useContactList, useGroupChat, useUserContacts} from "hooks";
-import {useAuth} from "../../contexts/Auth/AuthContext";
-import {ContactDTO} from "../../repositories";
-import {NewMember} from "../../store/reducers";
+import {ArrowForward, PersonAdd} from "@mui/icons-material";
+import {useContactList, useGroupChat, useMenu, useUserContacts} from "hooks";
+import {useAuth} from "../../../contexts/Auth/AuthContext";
+import {ContactDTO} from "../../../repositories";
+import {NewMember} from "../../../store/reducers";
 
 
 export function GroupChatList(): JSX.Element {
 
     const {user} = useAuth();
     const {user_contacts} = useUserContacts(user!._id);
-    const {setSelectedChat} = useChatList();
     const {setContactFormOpen} = useContactList();
-    const {newMembers, setNewMember, removeNewMember, findNewMember} = useGroupChat();
+    const {setMenuItem} = useMenu();
+    const {setNewMember, removeNewMember, findNewMember} = useGroupChat();
 
-    const handleAddContactClick = () => {
+    const handleAddContactClick = (): void => {
         setContactFormOpen();
     };
+
+    const handleContinueClick = (): void => {
+        setMenuItem('new_group_info');
+    }
 
     const handleContactPreviewClick = (newMember: ContactDTO): void => {
 
@@ -49,16 +53,13 @@ export function GroupChatList(): JSX.Element {
     return (
         <>
             <div className="left-container contacts-container">
-                <div className="chosen-members">
-                    {newMembers.length ? <div>Chosen members</div> : <div>Choose members...</div>}
-                </div>
                 {user_contacts!.length ?
                     <div className="contact-list-content">
                         {user_contacts!.map((contact: ContactDTO) => (
 
                             <div
                                 key={contact._id}
-                                className={`contact-preview${isContactToggled(contact) ? " chosen" : ""}`}
+                                className={`contact-preview new-contact${isContactToggled(contact) ? " chosen" : ""}`}
                                 onClick={() => {
                                 handleContactPreviewClick(contact)
                             }}>
@@ -74,13 +75,13 @@ export function GroupChatList(): JSX.Element {
                                 </div>
                             </div>
                         ))}
-                        <button className={"add-contact-btn"} onClick={handleAddContactClick}><ArrowForward /></button>
+                        <button className={"add-contact-btn"} onClick={handleContinueClick}><ArrowForward /></button>
                     </div>
 
                     :
                     <div className="no-user-contacts">
                         <p>No contacts yet.</p>
-                        <button className={"add-contact-btn"} onClick={handleAddContactClick}><ArrowForward /></button>
+                        <button className={"add-contact-btn"} onClick={handleAddContactClick}><PersonAdd /></button>
                     </div>
                 }
             </div>
