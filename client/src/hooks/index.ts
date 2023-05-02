@@ -12,3 +12,4 @@ export {useSettingsChanger} from "./storeHooks/useSettingsChanger";
 export {useChatMessage} from "./storeHooks/useChatMessage";
 export {useMessageInfo} from "./repoHooks/MessageHooks";
 export {useGroupChat} from "./storeHooks/useGroupChat";
+export {useImageUploader} from "./storeHooks/useImageUploader";

@@ -8,4 +8,5 @@ export {updateContactError, updateContactFormOpen} from "./componentReducers/con
 export {updateTheme, updateTextSize} from "./componentReducers/themeSwitcherReducer";
 export {updateDeleteWindowMessage, updateEditingMessage, updateDeletionMessage} from "./componentReducers/messageReducer";
 export {updateNewMembers, type NewMember} from "./componentReducers/groupChatReducer";
+export {updateGroupImage, updateProfileImage} from "./componentReducers/imageUploaderReducer";
 

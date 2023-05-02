@@ -9,6 +9,7 @@ import themeSwitcherReducer from "../componentReducers/themeSwitcherReducer";
 import messageReducer from "../componentReducers/messageReducer";
 import groupChatReducer from "../componentReducers/groupChatReducer";
 import socketReducer from "./socketReducer";
+import imageUploaderReducer from "../componentReducers/imageUploaderReducer";
 
 
 export const rootReducer: Reducer<any, any> = combineReducers({
@@ -19,7 +20,8 @@ export const rootReducer: Reducer<any, any> = combineReducers({
     socket: socketReducer,
     settings_changer: themeSwitcherReducer,
     message: messageReducer,
-    group_chat: groupChatReducer
+    group_chat: groupChatReducer,
+    image_uploader: imageUploaderReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

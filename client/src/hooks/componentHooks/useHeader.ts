@@ -1,4 +1,4 @@
-import {useMenu, useSearchInput, useChatList, useChatMessage, useGroupChat} from "hooks";
+import {useMenu, useSearchInput, useChatList, useChatMessage, useGroupChat, useImageUploader} from "hooks";
 
 interface HeaderHook {
     menuItem: string | null;
@@ -21,6 +21,7 @@ export function useHeader(): HeaderHook {
     const {setIsVerticalChat} = useChatList();
     const {setDeleteWindow} = useChatMessage();
     const {setMembers} = useGroupChat();
+    const {setProfileImage} = useImageUploader();
 
     const handleBackButtonClick = (): void => {
 
@@ -28,6 +29,7 @@ export function useHeader(): HeaderHook {
             if (menuItem == "new_group") setMembers([]);
             if (menuItem === "general settings" || menuItem === "profile settings") {
                 setMenuItem("settings");
+                setProfileImage(null);
             }
             else if (menuItem == "new_group_info") {
                 setMenuItem("new_group");

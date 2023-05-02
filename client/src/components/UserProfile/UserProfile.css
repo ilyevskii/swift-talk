@@ -18,6 +18,10 @@
     width: 100%;
 }
 
+.user-profile-image:hover {
+    cursor: pointer;
+}
+
 .user-profile-name {
     position: absolute;
     color: white;

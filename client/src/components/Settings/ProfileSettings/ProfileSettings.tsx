@@ -4,7 +4,8 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import {Done} from "@mui/icons-material";
 import {useAuth} from "../../../contexts/Auth/AuthContext";
 import {useUserInfo} from "../../../hooks/repoHooks/UserHooks";
-import {useMenu} from "../../../hooks";
+import {useImageUploader, useMenu} from "../../../hooks";
+import {ImageUploader} from "../../ImageUploader/ImageUploader";
 
 
 export function ProfileSettings(): JSX.Element {
@@ -17,6 +18,8 @@ export function ProfileSettings(): JSX.Element {
     const {user} = useAuth();
     const {user_info, refresh_user_info, setUserInfo} = useUserInfo(user!._id);
     const {setMenuItem} = useMenu();
+
+    const {profile_image} = useImageUploader();
 
     const handleFirstNameChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setFirstName(event.target.value);
@@ -65,6 +68,11 @@ export function ProfileSettings(): JSX.Element {
 
     }
 
+    const handlePhotoClick = () => {
+        const uploader: HTMLInputElement | null = document.querySelector(".image-uploader");
+        uploader?.click();
+    }
+
     const image_url = 'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13';
 
     return (
@@ -72,9 +80,13 @@ export function ProfileSettings(): JSX.Element {
             <div className="new-group-chat-info">
                 <img
                     className="new-group-chat-photo"
-                    src={image_url}
+                    src={profile_image ? URL.createObjectURL(profile_image) : image_url}
                     alt={"new_chat_photo"}
+                    onClick={handlePhotoClick}
                 />
+                <div style={{display: "none"}}>
+                    <ImageUploader type="profile"/>
+                </div>
                 <div className="profile-settings-inputs">
                     <input
                         type="text"

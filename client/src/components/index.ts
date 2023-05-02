@@ -16,3 +16,4 @@ export {TextResizer} from "./TextResizer/TextResizer";
 export {GroupChatList} from "./GroupChat/GroupChatMembersList/GroupChatList";
 export {GroupChatInfo} from "./GroupChat/GroupChatInfo/GroupChatInfo";
 export {ProfileSettings} from "./Settings/ProfileSettings/ProfileSettings";
+export {ImageUploader} from "./ImageUploader/ImageUploader";

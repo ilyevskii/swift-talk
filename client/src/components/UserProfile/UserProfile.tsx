@@ -3,6 +3,7 @@ import React from 'react';
 import {PhoneOutlined, AlternateEmailOutlined, InfoOutlined} from '@mui/icons-material';
 import {useAuth} from "../../contexts/Auth/AuthContext";
 import {useUserInfo} from "../../hooks/repoHooks/UserHooks";
+import {ImageUploader} from "../ImageUploader/ImageUploader";
 
 export function UserProfile(): JSX.Element {
 
@@ -17,7 +18,7 @@ export function UserProfile(): JSX.Element {
             {!isUserInfoLoading && !isUserInfoError ?
                 <>
                     <div className="user-profile-header">
-                        <img className="user-profile-image" src={photo} alt={user_info.username} />
+                        <img className="user-profile-image" src={photo} alt={user_info.username}/>
                         <h2 className="user-profile-name">{user_info.username}</h2>
                     </div>
                     <div className="content">
