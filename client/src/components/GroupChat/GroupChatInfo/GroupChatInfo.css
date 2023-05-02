@@ -1,13 +1,12 @@
 .new-group-chat-info {
     display: block;
     height: 100%;
-    padding: 1rem;
 }
 
 .new-group-chat-photo {
     width: 30%;
     border-radius: 50%;
-    margin: 1.5rem auto 0 auto;
+    margin: 2.5rem auto 0 auto;
 }
 
 .new-group-chat-name-input {
@@ -17,11 +16,15 @@
     border-radius: 0.75rem;
     width: 100%;
     margin-top: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .new-group-chat-members {
     margin-top: 2rem;
     display: block;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .group-chat-member-preview {

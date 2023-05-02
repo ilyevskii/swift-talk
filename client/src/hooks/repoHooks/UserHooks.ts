@@ -1,8 +1,29 @@
 import {useQuery} from "react-query";
-import {ChatDTO} from "repositories";
+import {ChatDTO, UserDTO} from "repositories";
 import {UserRepository, ContactDTO} from "repositories";
 
 const userRepo: UserRepository = new UserRepository("http://localhost:3001");
+
+export const useUserInfo = (user_id: string) => {
+
+    const {data, refetch, isLoading, isError} = useQuery<any, Error>(['user_info', user_id], async () => {
+        return await userRepo.getUserInfo(user_id);
+    });
+
+    const setUserInfo = async (user: UserDTO) => {
+        await userRepo.setUserInfo(user);
+        await refetch();
+    }
+
+    return {
+        user_info: data as UserDTO,
+        isUserInfoLoading: isLoading,
+        isUserInfoError: isError,
+        refresh_user_info: refetch,
+        setUserInfo
+    };
+}
+
 
 export const useUserChats = (user_id: string) => {
     const {

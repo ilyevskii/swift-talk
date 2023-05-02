@@ -18,6 +18,7 @@ export function Header(): JSX.Element {
         handleSearchbarClick,
         handleMenuButtonClick,
         setIsVerticalChat,
+        setMenuItem
     } = useHeader();
 
     const {newMembers, removeNewMember} = useGroupChat();
@@ -64,7 +65,7 @@ export function Header(): JSX.Element {
                         {menuItem == 'new_group_info' && 'New Group'}
                         {menuItem === 'settings' &&
                             <div className={"header-menu-item-icons"}>
-                                <CreateOutlined/>
+                                <CreateOutlined onClick={() => setMenuItem('profile settings')}/>
                                 <MoreVert/>
                             </div>
                         }

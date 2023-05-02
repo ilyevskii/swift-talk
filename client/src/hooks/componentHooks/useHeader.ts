@@ -11,6 +11,7 @@ interface HeaderHook {
     setMenuItemActive: (state?: boolean) => void;
     handleOutsideClick: (event: any) => any;
     setIsVerticalChat: (state?: boolean) => void;
+    setMenuItem: (state: string | null) => void;
 }
 
 export function useHeader(): HeaderHook {
@@ -25,7 +26,7 @@ export function useHeader(): HeaderHook {
 
         if (isMenuItemActive) {
             if (menuItem == "new_group") setMembers([]);
-            if (menuItem === "general settings") {
+            if (menuItem === "general settings" || menuItem === "profile settings") {
                 setMenuItem("settings");
             }
             else if (menuItem == "new_group_info") {
@@ -79,5 +80,6 @@ export function useHeader(): HeaderHook {
         handleOutsideClick,
         setMenuItemActive,
         setIsVerticalChat,
+        setMenuItem
     };
 }

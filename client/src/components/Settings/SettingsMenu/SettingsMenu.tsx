@@ -10,11 +10,6 @@ import {UserProfile} from "../../UserProfile/UserProfile";
 export function SettingsMenu(): JSX.Element {
 
     const {setMenuItem} = useMenu();
-    // const components_classes: string = classNames(
-    //     'left-container',
-    //     {'slide-in': isSettings},
-    //     {'slide-out': !isSettings}
-    // )
 
     function handleGeneralSettingsClick(): void {
         setMenuItem('general settings');

@@ -9,6 +9,12 @@ export interface User {
     profile_id: string
 }
 
+export interface Profile {
+    first_name: string;
+    last_name: string;
+    bio: string;
+}
+
 export interface Contact extends User{
     chat_id: string;
 }
@@ -24,6 +30,9 @@ export interface UserDTO {
     username: string;
     phone_number: string;
     profile_id: string;
+    first_name: string;
+    last_name: string;
+    bio: string;
 }
 
 export class UserRepository {
@@ -35,10 +44,37 @@ export class UserRepository {
 
     async getUserInfo(user_id: string): Promise<UserDTO | undefined> {
         try {
-            const response = await axios.get(`${this.RequestsUrl}/user/${user_id}`);
-            const user: User = response.data as User;
 
-            return UserRepository.userDTO(user);
+            const user_response = await axios.get(`${this.RequestsUrl}/user/${user_id}`);
+            const user: User = user_response.data as User;
+
+            const profile_response = await axios.get(`${this.RequestsUrl}/user/profile/${user.profile_id}`);
+            const profile: Profile = profile_response.data as Profile;
+
+
+            return UserRepository.userDTO(user, profile);
+
+        } catch (err: any) {
+            console.log(err.toString());
+        }
+    }
+    async setUserInfo(user: UserDTO): Promise<void> {
+        try {
+            await axios.put(`${this.RequestsUrl}/user/${user._id}`,
+                {
+                    _id: user._id,
+                    username: user.username,
+                    phone_number: user.phone_number,
+                    profile_id: user.profile_id
+                });
+
+            await axios.put(`${this.RequestsUrl}/user/profile/${user.profile_id}`,
+                {
+                    _id: user.profile_id,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    bio: user.bio
+                });
 
         } catch (err: any) {
             console.log(err.toString());
@@ -88,13 +124,16 @@ export class UserRepository {
         };
     }
 
-    static userDTO(user: User): UserDTO {
+    static userDTO(user: User, profile: Profile): UserDTO {
 
         return {
             _id: user._id,
             username: user.username,
             phone_number: user.phone_number,
             profile_id: user.profile_id,
+            first_name: profile.first_name,
+            last_name: profile.last_name,
+            bio: profile.bio
         };
     }
 

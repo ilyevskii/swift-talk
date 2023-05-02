@@ -15,7 +15,7 @@ import {
     NewContactWindow,
     SettingsMenu,
     GeneralSettings,
-    GroupChatList, GroupChatInfo
+    GroupChatList, GroupChatInfo, ProfileSettings
 } from "components";
 import {DeleteMessageWindow} from "../../components/Chat/ChatMessage/DeleteMessageWIndow/DeleteMessageWindow";
 
@@ -89,6 +89,7 @@ export function Home({socket}: HomeProps): JSX.Element {
                                     {menuItem === "general settings" && <GeneralSettings/>}
                                     {menuItem === "new_group" && <GroupChatList/>}
                                     {menuItem === "new_group_info" && <GroupChatInfo/>}
+                                    {menuItem === "profile settings" && <ProfileSettings/>}
                                 </>
                                 :
                                 <div>Loading...</div>
