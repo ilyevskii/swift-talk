@@ -1,33 +1,42 @@
-import {useSelector, useDispatch} from "react-redux";
-import {RootState, updateGroupImage, updateProfileImage} from "../../store/reducers/index";
-import {Dispatch} from "react";
-import {AnyAction} from "redux";
+import axios from "axios";
+import {useAuth} from "../../contexts/Auth/AuthContext";
+import {useUserInfo} from "../repoHooks/UserHooks";
+import {useGroupChat} from "./useGroupChat";
 
 interface imageUploaderHook {
-    profile_image: File | null;
-    group_image: File | null;
-    setProfileImage: (file: File | null) => void;
-    setGroupImage: (file: File | null) => void;
+    uploadProfileImage: (file: File | null) => Promise<string | undefined>;
+    uploadGroupImage: (file: File | null) => Promise<string | undefined>;
 }
 
 export function useImageUploader(): imageUploaderHook {
 
-    const dispatch: Dispatch<AnyAction> = useDispatch();
-    const profile_image: File | null = useSelector((state: RootState) => state.image_uploader.profile_image);
-    const group_image: File | null = useSelector((state: RootState) => state.image_uploader.group_image);
+    const {user} = useAuth();
+    const {user_info} = useUserInfo(user!._id);
 
-    const setProfileImage = (file: File | null): void => {
-        dispatch(updateProfileImage(file));
+    const uploadProfileImage = async (file: File | null): Promise<string | undefined> => {
+
+        if (file) {
+            const formData: FormData = new FormData();
+            formData.append("profile_id", user_info.profile_id as string);
+            formData.append("image", file as File);
+            const response = await axios.post("http://localhost:3001/api/upload/profile-image", formData);
+            console.log(response.data);
+            return response.data.image_path;
+        }
     }
 
-    const setGroupImage = (file: File | null): void => {
-        dispatch(updateGroupImage(file));
+    const uploadGroupImage = async (file: File | null): Promise<string | undefined> => {
+
+        if (file) {
+            const formData: FormData = new FormData();
+            formData.append("image", file as File);
+            const response = await axios.post("http://localhost:3001/api/upload/group-image", formData);
+            return response.data.image_path;
+        }
     }
 
     return {
-        profile_image,
-        group_image,
-        setGroupImage,
-        setProfileImage
+        uploadProfileImage,
+        uploadGroupImage
     };
 }

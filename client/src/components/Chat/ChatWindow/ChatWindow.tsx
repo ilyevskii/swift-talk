@@ -4,7 +4,7 @@ import React, {useEffect} from 'react';
 import {ChatHeader, ChatMessage, MessageForm} from 'components';
 import {socket} from "App";
 
-import {useChatMessages, useChatInfo, useChatList, useUserChats,useChatMessage} from 'hooks';
+import {useChatMessages, useChatInfo, useChatList, useUserChats, useChatMessage, useMenu} from 'hooks';
 import {useAuth} from "../../../contexts/Auth/AuthContext";
 import {MessageDTO} from "../../../repositories";
 
@@ -32,7 +32,7 @@ export function ChatWindow(): JSX.Element {
         refresh_chat_info,
     } = useChatInfo(user!._id, selectedChat!);
 
-
+    const {setMenuItem, setMenuItemActive} = useMenu();
     async function sendMessage(currentMessage: string): Promise<void> {
 
         if (currentMessage) {
@@ -67,6 +67,17 @@ export function ChatWindow(): JSX.Element {
             await refresh_messages();
             await refresh_chats();
         });
+
+        socket.on('new_group_chat', async (): Promise<void> => {
+            console.log('aaa');
+            await refresh_messages();
+            await refresh_chats();
+            console.log('aaa');
+            setMenuItem(null);
+            setMenuItemActive(false);
+        });
+
+
 
     }, [socket]);
 

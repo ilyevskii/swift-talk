@@ -12,10 +12,11 @@ export interface User {
 export interface Profile {
     first_name: string;
     last_name: string;
+    image: string;
     bio: string;
 }
 
-export interface Contact extends User{
+export interface Contact extends User {
     chat_id: string;
 }
 
@@ -30,6 +31,8 @@ export interface UserDTO {
     username: string;
     phone_number: string;
     profile_id: string;
+    image_path: string;
+    image: File;
     first_name: string;
     last_name: string;
     bio: string;
@@ -74,7 +77,8 @@ export class UserRepository {
                     _id: user.profile_id,
                     first_name: user.first_name,
                     last_name: user.last_name,
-                    bio: user.bio
+                    bio: user.bio,
+                    image: user.image_path
                 })
         }
         catch (err: any) {
@@ -127,7 +131,11 @@ export class UserRepository {
         };
     }
 
-    static userDTO(user: User, profile: Profile): UserDTO {
+    static async userDTO(user: User, profile: Profile): Promise<UserDTO> {
+
+        const response: Response = await fetch(`http://localhost:3001/public/images/profile/${profile.image}`);
+        const blob: Blob = await response.blob();
+        const file: File = new File([blob], profile.image, { type: blob.type });
 
         return {
             _id: user._id,
@@ -135,6 +143,8 @@ export class UserRepository {
             phone_number: user.phone_number,
             profile_id: user.profile_id,
             first_name: profile.first_name,
+            image: file,
+            image_path: profile.image,
             last_name: profile.last_name,
             bio: profile.bio
         };

@@ -10,32 +10,19 @@ import {ImageUploader} from "../../ImageUploader/ImageUploader";
 
 export function ProfileSettings(): JSX.Element {
 
+    const {user} = useAuth();
+    const {user_info, refresh_user_info, setUserInfo} = useUserInfo(user!._id);
+    const {setMenuItem} = useMenu();
+
     const [lastName, setLastName] = useState<string>("");
     const [firstName, setFirstName] = useState<string>("");
     const [bio, setBio] = useState<string>("");
     const [username, setUsername] = useState<string>("");
     const [error, setError] = useState<string>("");
-    const {user} = useAuth();
-    const {user_info, refresh_user_info, setUserInfo} = useUserInfo(user!._id);
-    const {setMenuItem} = useMenu();
+    const [profile_image, serProfileImage] = useState<File|null>(user_info.image_path ? user_info.image : null);
 
-    const {profile_image} = useImageUploader();
 
-    const handleFirstNameChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        setFirstName(event.target.value);
-    };
-
-    const handleLastNameChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        setLastName(event.target.value);
-    };
-
-    const handleBioChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        setBio(event.target.value);
-    };
-
-    const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        setUsername(event.target.value);
-    };
+    const {uploadProfileImage} = useImageUploader();
 
     useEffect(() => {
         setError("");
@@ -54,6 +41,8 @@ export function ProfileSettings(): JSX.Element {
             username && (newUserInfo.username = username);
 
             try {
+                const image_url: string | undefined = await uploadProfileImage(profile_image);
+                if (image_url) newUserInfo.image_path = image_url;
                 await setUserInfo(newUserInfo);
                 setMenuItem("settings");
             }
@@ -73,6 +62,13 @@ export function ProfileSettings(): JSX.Element {
         uploader?.click();
     }
 
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            const file: File = event.target.files[0];
+            serProfileImage(file);
+        }
+    };
+
     const image_url = 'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13';
 
     return (
@@ -85,7 +81,7 @@ export function ProfileSettings(): JSX.Element {
                     onClick={handlePhotoClick}
                 />
                 <div style={{display: "none"}}>
-                    <ImageUploader type="profile"/>
+                    <input className="image-uploader" type="file" accept="image/*" onChange={handleImageChange} />
                 </div>
                 <div className="profile-settings-inputs">
                     <input
@@ -93,21 +89,21 @@ export function ProfileSettings(): JSX.Element {
                         placeholder="First name"
                         className="profile-input"
                         defaultValue={user_info.first_name}
-                        onChange={handleFirstNameChange}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFirstName(event.target.value)}
                     />
                     <input
                         type="text"
                         placeholder="Last name"
                         className="profile-input"
                         defaultValue={user_info.last_name}
-                        onChange={handleLastNameChange}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => setLastName(event.target.value)}
                     />
                     <input
                         type="text"
                         placeholder="bio"
                         className="profile-input"
                         defaultValue={user_info.bio}
-                        onChange={handleBioChange}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => setBio(event.target.value)}
                     />
                     <p className="profile-settings-footer">
                         Any details such as age, occupation or city. <br/>
@@ -123,7 +119,7 @@ export function ProfileSettings(): JSX.Element {
                         minLength={5}
                         maxLength={15}
                         defaultValue={user_info.username}
-                        onChange={handleUsernameChange}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => setUsername(event.target.value)}
                     />
                     {error && <p className="username-error-div">{error}</p>}
                     <p className="profile-settings-footer">

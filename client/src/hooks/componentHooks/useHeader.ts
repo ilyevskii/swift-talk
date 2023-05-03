@@ -21,7 +21,6 @@ export function useHeader(): HeaderHook {
     const {setIsVerticalChat} = useChatList();
     const {setDeleteWindow} = useChatMessage();
     const {setMembers} = useGroupChat();
-    const {setProfileImage} = useImageUploader();
 
     const handleBackButtonClick = (): void => {
 
@@ -29,7 +28,6 @@ export function useHeader(): HeaderHook {
             if (menuItem == "new_group") setMembers([]);
             if (menuItem === "general settings" || menuItem === "profile settings") {
                 setMenuItem("settings");
-                setProfileImage(null);
             }
             else if (menuItem == "new_group_info") {
                 setMenuItem("new_group");

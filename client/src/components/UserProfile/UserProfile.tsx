@@ -18,7 +18,10 @@ export function UserProfile(): JSX.Element {
             {!isUserInfoLoading && !isUserInfoError ?
                 <>
                     <div className="user-profile-header">
-                        <img className="user-profile-image" src={photo} alt={user_info.username}/>
+                        <img
+                            className="user-profile-image"
+                            src={user_info.image_path ? URL.createObjectURL(user_info.image) : photo}
+                            alt={user_info.username}/>
                         <h2 className="user-profile-name">{user_info.username}</h2>
                     </div>
                     <div className="content">
