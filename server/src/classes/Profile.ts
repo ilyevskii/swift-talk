@@ -5,6 +5,7 @@ import {DB} from './Database'
 export interface ProfileType {
     first_name: string;
     last_name: string;
+    image: string;
     bio: string;
 }
 
@@ -12,12 +13,12 @@ export class Profile {
 
     static readonly profilesDb: DB = new DB('profiles');
 
-
     static async addProfile(): Promise<ObjectId> {
         return await this.profilesDb.insertOne(
             {
                 first_name: '',
                 last_name: '',
+                image: '',
                 bio: ''
             }
         )
@@ -33,5 +34,9 @@ export class Profile {
 
     static async findProfileByIdAndUpdate(id: string, newObject: object): Promise<void> {
         await Profile.profilesDb.findAndUpdateById(new ObjectId(id), newObject);
+    }
+
+    static async updateImage(id: string, image: string): Promise<void> {
+        await Profile.profilesDb.updateOneField({_id: new ObjectId(id.toString())}, 'image', image)
     }
 }

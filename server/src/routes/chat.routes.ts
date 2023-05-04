@@ -24,10 +24,10 @@ router.post("/group", async (req, res): Promise<void> => {
         let chat: GroupChatType;
 
         if (req.body.hasOwnProperty('name')) {
-            chat = await GroupChat.createGroupChat(req.body.users, req.body.name);
+            chat = await GroupChat.createGroupChat(req.body.users, req.body.photo, req.body.name);
         }
         else {
-            chat = await GroupChat.createGroupChat(req.body.users);
+            chat = await GroupChat.createGroupChat(req.body.users, req.body.photo);
         }
 
         res.status(200).json(chat);

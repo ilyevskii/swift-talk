@@ -4,7 +4,7 @@ import {ObjectId} from "mongodb";
 import {User} from "./classes/User";
 import {Chat} from "./classes/Chats/Chat";
 import {Message} from "./classes/Message";
-import {GroupChat} from "./classes/Chats/GroupChat";
+import {GroupChat, GroupChatType} from "./classes/Chats/GroupChat";
 
 const express = require('express');
 const config = require('config');
@@ -16,6 +16,7 @@ const authRoute: Router = require("./routes/auth.routes");
 const chatRoute: Router = require("./routes/chat.routes");
 const userRoute: Router = require("./routes/user.routes");
 const messageRoute: Router = require("./routes/message.routes");
+const uploadRoute: Router = require("./routes/upload.routes")
 
 const app: Express = express()
 const port: string = config.get('Dev.programConfig.port');
@@ -23,10 +24,12 @@ const server: any = http.createServer(app);
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use('/public', express.static('public'));
 app.use("/api/auth", authRoute);
 app.use("/api/chat", chatRoute);
 app.use("/api/user", userRoute);
 app.use("/api/message", messageRoute);
+app.use("/api/upload", uploadRoute);
 
 
 const io: Server = new Server(server, {
@@ -44,8 +47,8 @@ io.on("connection", (socket): void => {
     })
 
     socket.on("new_group", (data): void => {
-        GroupChat.createGroupChat(data.users, data.name).then((res): void => {
-            socket.emit('messages_changed');
+        GroupChat.createGroupChat(data.users, data.photo, data.name).then((res: GroupChatType): void => {
+            socket.emit('new_group_chat');
         }).catch(err => console.log(err.toString()))
     })
 

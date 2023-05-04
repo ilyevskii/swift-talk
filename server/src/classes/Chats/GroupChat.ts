@@ -35,12 +35,12 @@ export class GroupChat extends Chat {
         return this.id;
     }
 
-    static async createGroupChat(users: ObjectId[] | string[], name: string = "New group chat"): Promise<GroupChatType> {
+    static async createGroupChat(users: ObjectId[] | string[], image:string, name: string = "New group chat"): Promise<GroupChatType> {
 
         const new_chat_object: GroupChatType = {
             type: 'group',
             name: name,
-            photo: '',
+            photo: image,
             last_message: {}
         }
 
