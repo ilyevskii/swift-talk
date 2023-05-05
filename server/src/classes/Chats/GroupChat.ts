@@ -7,7 +7,7 @@ export interface GroupChatType {
     _id?: ObjectId | null;
     type: string;
     name: string;
-    photo: string;
+    image: string;
     last_message: Object;
 }
 
@@ -40,7 +40,7 @@ export class GroupChat extends Chat {
         const new_chat_object: GroupChatType = {
             type: 'group',
             name: name,
-            photo: image,
+            image: image,
             last_message: {}
         }
 

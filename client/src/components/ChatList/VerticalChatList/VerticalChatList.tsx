@@ -5,6 +5,7 @@ import React, {useState} from 'react';
 import {useAuth} from "../../../contexts/Auth/AuthContext";
 import {useChatList, useUserChats, useMenu} from "hooks";
 import {Create, PersonOutlined, GroupOutlined} from "@mui/icons-material";
+import {ChatDTO} from "../../../repositories";
 
 
 export function VerticalChatList(): JSX.Element {
@@ -15,8 +16,6 @@ export function VerticalChatList(): JSX.Element {
     const {setMenuItem, setMenuItemActive} = useMenu();
 
     const [isClicked, setIsClicked] = useState(false);
-
-    const image_url: string = 'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13';
 
     const handleMessageClick = (): void => {
         setMenuItem('contacts');
@@ -34,10 +33,10 @@ export function VerticalChatList(): JSX.Element {
                 {user_chats!.length ? (
                     <>
                         <div className="vertical-chat-list-content">
-                            {user_chats!.map((chat) => (
+                            {user_chats!.map((chat: ChatDTO) => (
                                 <div key={chat._id} className="vertical-chat-preview">
                                     <img
-                                        src={image_url}
+                                        src={URL.createObjectURL(chat.image)}
                                         alt={chat.name}
                                         className="vertical-chat-image"
                                     />

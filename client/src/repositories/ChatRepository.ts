@@ -1,9 +1,20 @@
 import {MessageRepository, MessageDTO} from "./MessageRepository";
 import axios from "axios";
+import {UserDTO, UserRepository} from "./UserRepository";
 
 export interface Chat {
     _id: string;
-    name: string | Record<string, string>;
+    name: string;
+    type: string;
+    image: string | File;
+    last_message: string | MessageDTO;
+}
+
+export interface PrivateChat {
+    _id: string;
+    interlocutor: Record<string, string>;
+    name?: string;
+    image?: File;
     type: string;
     last_message: string | MessageDTO;
 }
@@ -12,6 +23,7 @@ export interface ChatDTO {
     _id: string;
     name: string;
     type: string;
+    image: File;
     last_message: MessageDTO;
 }
 
@@ -39,16 +51,36 @@ export class ChatRepository {
         }
     }
 
-    private static chatDTO(chat: Chat, last_message?: MessageDTO, user_id?: string): ChatDTO  | undefined{
+    private async chatDTO(chat: Chat | PrivateChat, last_message?: MessageDTO, user_id?: string): Promise<ChatDTO  | undefined> {
 
         try{
 
-            if (chat.type === "private" && typeof chat.name === "object") {
-                chat.name = chat.name[user_id!] as string;
+            if (chat.type === "private") {
+                const interlocutor_info: UserDTO | undefined = await UserRepository.getUserInfo(
+                    this.RequestsUrl,
+                    (chat as PrivateChat).interlocutor[user_id!]
+                );
+                chat.name = interlocutor_info?.username;
+                chat.image = interlocutor_info?.image;
             }
             if (last_message) {
                 chat.last_message = MessageRepository.messageDTO(last_message);
             }
+
+            if (typeof chat.image === "string") {
+
+                if (chat.image.length) {
+                    const response: Response = await fetch(`http://localhost:3001/public/images/chat/${chat.image}`);
+                    const blob: Blob = await response.blob();
+                    chat.image = new File([blob], chat.image as string, { type: blob.type });
+                }
+                else {
+                    const response: Response = await fetch(`http://localhost:3001/public/images/chat/default.jpg`);
+                    const blob: Blob = await response.blob();
+                    chat.image = new File([blob], "default.jpg", { type: blob.type });
+                }
+            }
+
             return chat as ChatDTO;
         }
         catch (err: any) {
@@ -71,7 +103,7 @@ export class ChatRepository {
             }
 
             const last_message: MessageDTO | undefined = await this.getLastMessage(chat._id);
-            return ChatRepository.chatDTO(chat, last_message, user_id);
+            return (await this.chatDTO(chat, last_message, user_id));
 
         } catch (err: any) {
             console.log(err.toString());
@@ -93,19 +125,6 @@ export class ChatRepository {
         } catch (err: any) {
             console.log(err.toString());
             return [];
-        }
-    }
-
-    public static async getChatInfo(url: string, user_id: string, chat_id: string): Promise<ChatDTO | undefined> {
-        try {
-            const chat_response: any = await axios.get(`${url}/chat/${chat_id}`);
-            const chat: ChatRepository = new ChatRepository(url);
-            const last_message: MessageDTO | undefined = await chat.getLastMessage(chat_id);
-
-            return ChatRepository.chatDTO(chat_response.data, last_message, user_id);
-
-        } catch (err: any) {
-            console.log(err.toString());
         }
     }
 }

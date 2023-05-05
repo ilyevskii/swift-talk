@@ -4,6 +4,7 @@ import React from 'react';
 import {PersonAdd} from "@mui/icons-material";
 import {useChatList, useContactList, useUserContacts} from "hooks";
 import {useAuth} from "../../../contexts/Auth/AuthContext";
+import {ContactDTO} from "../../../repositories";
 
 
 export function ContactList(): JSX.Element {
@@ -13,22 +14,20 @@ export function ContactList(): JSX.Element {
     const {setSelectedChat} = useChatList();
     const {setContactFormOpen} = useContactList();
 
-    const handleAddContactClick = () => {
+    const handleAddContactClick = (): void => {
         setContactFormOpen();
     };
-
-    const image_url = 'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13';
 
     return (
         <>
             <div className="left-container contacts-container">
                 {user_contacts!.length ?
                     <div className="contact-list-content">
-                        {user_contacts!.map((contact) => (
+                        {user_contacts!.map((contact: ContactDTO) => (
                             <div key={contact._id} className="contact-preview" onClick={() => {
                                 setSelectedChat(contact.chat_id);
                             }}>
-                                <img src={image_url} alt={contact.username} className="contact-image" />
+                                <img src={URL.createObjectURL(contact.image)} alt={contact.username} className="contact-image" />
                                 <div className="contact-info" >
                                     <h3 className="contact-name">{contact.username}</h3>
                                 </div>

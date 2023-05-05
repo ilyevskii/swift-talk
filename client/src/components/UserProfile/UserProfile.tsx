@@ -10,9 +10,7 @@ export function UserProfile(): JSX.Element {
 
     const {user} = useAuth();
     const {user_info, isUserInfoLoading, refresh_user_info, isUserInfoError} = useUserInfo(user!._id);
-
-    const photo = 'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13';
-
+    
     return (
         <div className="user-profile">
             {!isUserInfoLoading && !isUserInfoError ?
@@ -20,7 +18,7 @@ export function UserProfile(): JSX.Element {
                     <div className="user-profile-header">
                         <img
                             className="user-profile-image"
-                            src={user_info.image_path ? URL.createObjectURL(user_info.image) : photo}
+                            src={URL.createObjectURL(user_info.image)}
                             alt={user_info.username}/>
                         <h2 className="user-profile-name">{user_info.username}</h2>
                     </div>

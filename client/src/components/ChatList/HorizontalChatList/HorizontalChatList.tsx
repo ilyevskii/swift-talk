@@ -5,6 +5,7 @@ import {socket} from "App";
 
 import {useChatList, useUserChats} from "hooks";
 import {useAuth} from "../../../contexts/Auth/AuthContext";
+import {ChatDTO} from "../../../repositories";
 
 export function HorizontalChatList(): JSX.Element {
 
@@ -12,13 +13,11 @@ export function HorizontalChatList(): JSX.Element {
     const {user_chats} = useUserChats(user!._id);
     const {setSelectedChat} = useChatList();
 
-    const image_url: string = 'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13';
-    
     return (
         <div className="horizontal-chat-list">
             {user_chats!.length ? (
                 <div className="horizontal-chat-list-content">
-                    {user_chats!.map((chat) => (
+                    {user_chats!.map((chat: ChatDTO) => (
                         <div
                             key={chat._id}
                             className="horizontal-chat-preview"
@@ -28,7 +27,7 @@ export function HorizontalChatList(): JSX.Element {
                             }}
                         >
                             <img
-                                src={image_url}
+                                src={URL.createObjectURL(chat.image)}
                                 alt={chat.name}
                                 className="horizontal-chat-image"
                             />

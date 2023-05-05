@@ -8,7 +8,7 @@ import {User} from "../User";
 export interface PrivateChatType {
     _id?: ObjectId | null,
     type: string,
-    name: Object,
+    interlocutor: Object,
     last_message: Object
 }
 
@@ -23,9 +23,9 @@ export class PrivateChat extends Chat {
         this.id = await this.db.insertOne(
             {
                 type: 'private',
-                name: {
-                    [first_user_id]: await User.getUsername(second_user_id),
-                    [second_user_id]: await User.getUsername(first_user_id)
+                interlocutor: {
+                    [first_user_id]: second_user_id,
+                    [second_user_id]: first_user_id
                 },
                 last_message: {}
             }
@@ -41,9 +41,9 @@ export class PrivateChat extends Chat {
 
         const new_chat_object: PrivateChatType = {
             type: 'private',
-            name: {
-                [first_user_id]: await User.getUsername(second_user_id),
-                [second_user_id]: await User.getUsername(first_user_id)
+            interlocutor: {
+                [first_user_id]: second_user_id,
+                [second_user_id]: first_user_id
             },
             last_message: {}
         }
