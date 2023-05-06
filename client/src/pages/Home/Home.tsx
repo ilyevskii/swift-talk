@@ -1,25 +1,37 @@
 import './Home.css';
+import React from 'react';
+import {CSSTransition} from "react-transition-group";
 
-import {useState, useEffect} from "react";
+import {useChatList, useHeader, useMenu, useUserChats, useUserContacts, useContactList, useChatMessage} from "hooks";
+
+import {useEffect} from "react";
 import {useAuth} from "../../contexts/Auth/AuthContext";
-import {useUserChats, useUserContacts} from "hooks";
+import {
+    HorizontalChatList,
+    VerticalChatList,
+    Header,
+    ChatWindow,
+    ContactList,
+    NewContactWindow,
+    SettingsMenu,
+    GeneralSettings,
+    GroupChatList, GroupChatInfo, ProfileSettings
+} from "components";
+import {DeleteMessageWindow} from "../../components/Chat/ChatMessage/DeleteMessageWIndow/DeleteMessageWindow";
 
-import {HorizontalChatList, VerticalChatList, Header, ChatWindow, ContactList, NewContactWindow} from "components";
 
-
-type HomeProps = {
+interface HomeProps {
     socket: any;
-};
+}
 
-export function Home({socket}: HomeProps) {
+export function Home({socket}: HomeProps): JSX.Element {
 
     const {user} = useAuth();
-
-    const [showVertical, setShowVertical] = useState<boolean>(true);
-    const [selectedChat, setSelectedChat] = useState<string | null>(null);
-    const [leftMenuItem, setLeftMenuItem] = useState<string | null>(null);
-    const [isContactFormOpen, setContactFormOpen] = useState<boolean>(false);
-    const [newContactError, setContactError] = useState<string | null>(null);
+    const {isVerticalChatNow, selectedChat, setSelectedChat} = useChatList();
+    const {handleOutsideClick} = useHeader();
+    const {menuItem} = useMenu();
+    const {isContactFormOpen, setContactFormOpen, setContactError} = useContactList();
+    const {deletionMessage} = useChatMessage();
 
     const {
         isChatsLoading,
@@ -37,23 +49,6 @@ export function Home({socket}: HomeProps) {
         refresh_contacts,
     } = useUserContacts(user!._id);
 
-    const closeNewContactWindow = () => {
-        setContactFormOpen(false);
-        setContactError("");
-    };
-
-    useEffect(() => {
-        if (!isContactFormOpen) refresh_chats().catch();
-    }, [isContactFormOpen, refresh_chats]);
-
-    async function addNewContact(contact_number: string) {
-
-        await socket.emit("add_contact", {
-            socket_id: socket.id,
-            user_id: user!._id,
-            new_contact_number: contact_number,
-        });
-    }
 
     useEffect(() => {
 
@@ -66,12 +61,13 @@ export function Home({socket}: HomeProps) {
             if (data.error === false) {
 
                 refresh_contacts().then(() => {
+                    socket.emit('join_chat', data.chat_id as string);
                     setContactFormOpen(false);
-                    setContactError(null);
-                });
+                    setContactError("null");
+                    setSelectedChat(data.chat_id as string);
+                    refresh_chats();
+                })
 
-                setSelectedChat(data.chat_id as string);
-                refresh_chats();
 
             } else {
                 setContactError(data.error as string);
@@ -80,25 +76,20 @@ export function Home({socket}: HomeProps) {
     }, [socket, refresh_chats, refresh_contacts]);
 
     return (
-        <div className="home-page">
+        <div className="home-page" onClick={handleOutsideClick}>
             <div className="left-menu">
-                <Header
-                    onToggle={() => setShowVertical((prev) => !prev)}
-                    chooseMenuItem={(item) => setLeftMenuItem(item)}
-                />
+                <Header/>
                 {
-                    leftMenuItem ?
+                    menuItem ?
                         <>
                             {!isContactsLoading ?
                                 <>
-                                    {leftMenuItem === "contacts" ?
-                                        <ContactList
-                                            contacts={user_contacts!}
-                                            setSelectedChat={setSelectedChat}
-                                            setFormOpen={setContactFormOpen}/>
-                                        :
-                                        <>{leftMenuItem}</>
-                                    }
+                                    {menuItem === "contacts" &&  <ContactList/>}
+                                    {menuItem === "settings" && <SettingsMenu/>}
+                                    {menuItem === "general settings" && <GeneralSettings/>}
+                                    {menuItem === "new_group" && <GroupChatList/>}
+                                    {menuItem === "new_group_info" && <GroupChatInfo/>}
+                                    {menuItem === "profile settings" && <ProfileSettings/>}
                                 </>
                                 :
                                 <div>Loading...</div>
@@ -109,16 +100,10 @@ export function Home({socket}: HomeProps) {
                         <>
                             {!isChatsLoading ?
                                 <>
-                                    {showVertical ?
-                                        <VerticalChatList
-                                            socket={socket}
-                                            chats={user_chats!}
-                                            setSelectedChat={setSelectedChat}/>
+                                    {isVerticalChatNow ?
+                                        <VerticalChatList/>
                                         :
-                                        <HorizontalChatList
-                                            socket={socket}
-                                            chats={user_chats!}
-                                            setSelectedChat={setSelectedChat}/>
+                                        <HorizontalChatList/>
                                     }
                                 </>
                                 :
@@ -130,24 +115,16 @@ export function Home({socket}: HomeProps) {
             </div>
             {selectedChat ?
                 <div className="chat-window">
-                    <ChatWindow
-                        socket={socket}
-                        selectedChat={selectedChat}
-                        user_id={user!._id}
-                        refresh_chats={refresh_chats}/>
+                    <ChatWindow/>
                 </div>
                 :
-                <p>Choose chat to start messaging!</p>
+                <div className="no-chat-window">
+                    <p>Choose chat to start messaging!</p>
+                </div>
             }
 
-            {isContactFormOpen ?
-                <NewContactWindow
-                    onClose={closeNewContactWindow}
-                    addNewContact={addNewContact}
-                    error={newContactError}/>
-                :
-                <></>
-            }
+            {isContactFormOpen && <NewContactWindow/>}
+            {deletionMessage && <DeleteMessageWindow/>}
 
         </div>
     )

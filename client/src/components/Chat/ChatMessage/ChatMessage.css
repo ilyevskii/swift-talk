@@ -8,17 +8,18 @@
     max-width: 60%;
     word-wrap: break-word;
     word-break: break-all;
+    position: relative;
 }
 
 .chat-message.left {
-    background-color: #212121;
-    color: #ffffff;
+    background-color: var(--content-color);
+    color: var(--text-color);
     margin-right: auto;
 }
 
 .chat-message.right {
-    background-color: rgb(135, 116, 225);
-    color: #fff;
+    background-color: var(--message-color);
+    color: var(--text-color);
     margin-left: auto;
 }
 
@@ -28,9 +29,38 @@
 }
 
 .message-time {
-    color: white;
+    color: var(--message-time-color);
     font-size: 12px;
     align-self: flex-end;
     white-space: nowrap;
     margin-left: 0.5rem;
+}
+
+.button {
+    background-color: var(--content-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+}
+
+.delete-menu-down {
+    position: absolute;
+    width: 10rem;
+    text-align: left;
+    border-radius: 1rem;
+    background-color: var(--modal-menu-color);
+    backdrop-filter: blur(4px);
+    padding: 0.5rem 0.75rem;
+    z-index: 1;
+}
+
+.delete-menu-down.right {
+    top: 2.75rem;
+    right: 2.5rem;
+}
+
+.delete-menu-down.left {
+    top: 2.75rem;
+    left: 20%;
 }

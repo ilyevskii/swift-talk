@@ -1,13 +1,11 @@
 import React from 'react';
 import './ModalMenu.css';
 import { PersonOutlineOutlined, SettingsOutlined, InfoOutlined } from "@mui/icons-material";
+import {useMenu} from "hooks";
 
-interface ModalMenuProps {
-    changeMenuItem: (item: string | null) => void;
-    toggleButton: (state: boolean) => void;
-}
+export function ModalMenu(): JSX.Element {
 
-export function ModalMenu(props: ModalMenuProps) {
+    const {setMenuItem, setMenuItemActive} = useMenu();
 
     return (
         <>
@@ -15,20 +13,20 @@ export function ModalMenu(props: ModalMenuProps) {
                 <div className="menu">
                     <ul>
                         <li className="menu-item" onClick={() => {
-                            props.changeMenuItem('contacts')
-                            props.toggleButton(true);
+                            setMenuItem('contacts')
+                            setMenuItemActive(true);
                         }}>
                             <PersonOutlineOutlined className="menu-item-icon" /> Contacts
                         </li>
                         <li className="menu-item" onClick={() => {
-                            props.changeMenuItem('settings')
-                            props.toggleButton(true)
+                            setMenuItem('settings')
+                            setMenuItemActive(true)
                         }}>
                             <SettingsOutlined className="menu-item-icon" /> Settings
                         </li>
                         <li className="menu-item" onClick={() => {
-                            props.changeMenuItem('about')
-                            props.toggleButton(true)
+                            setMenuItem('about')
+                            setMenuItemActive(true)
                         }}
                         ><InfoOutlined className="menu-item-icon" /> About
                         </li>

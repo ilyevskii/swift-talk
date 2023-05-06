@@ -1,5 +1,6 @@
 #general ignores
 .idea
+.env
 
 #server ignores
 server/node_modules

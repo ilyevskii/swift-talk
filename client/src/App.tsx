@@ -1,24 +1,23 @@
+import {BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
 import React from 'react';
 import {io} from "socket.io-client";
 
-import {Login, Register, Home} from "pages";
-
-import {useAuth} from "./contexts/Auth/AuthContext";
-import {BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
 import {QueryClient, QueryClientProvider} from 'react-query';
-import { Provider } from 'react-redux';
-import {store} from 'store/store';
+
+import {Login, Register, Home} from "pages";
+import {useAuth} from "./contexts/Auth/AuthContext";
+import {useSettingsChanger} from "./hooks";
 
 const queryClient: QueryClient = new QueryClient();
-
-export const socket = io("http://localhost:3001");
+export const socket: any = io("http://localhost:3001");
 
 function App(): JSX.Element {
   const {user}  = useAuth();
+  const {color_theme} = useSettingsChanger();
 
   return (
-      <Provider store={store}>
-          <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+          <div className={color_theme}>
               <Router>
                   <Routes>
                       <Route path="/" element={user ? <Home socket={socket}/> : <Register />} />
@@ -26,8 +25,8 @@ function App(): JSX.Element {
                       <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
                   </Routes>
               </Router>
-          </QueryClientProvider>
-      </Provider>
+          </div>
+      </QueryClientProvider>
   );
 }
 

@@ -1,20 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import {ChatHeader, ChatMessage, MessageForm} from 'components';
 import './ChatWindow.css';
 
-import {useChatMessages, useChatInfo} from 'hooks';
+import React, {useEffect} from 'react';
+import {ChatHeader, ChatMessage, MessageForm} from 'components';
+import {socket} from "App";
 
-interface ChatWindowProps {
-    socket: any;
-    selectedChat: string;
-    user_id: string;
-    refresh_chats: () => Promise<any>;
-}
+import {useChatMessages, useChatInfo, useChatList, useUserChats, useChatMessage, useMenu} from 'hooks';
+import {useAuth} from "../../../contexts/Auth/AuthContext";
+import {MessageDTO} from "../../../repositories";
 
-export function ChatWindow(props: ChatWindowProps): JSX.Element {
-    const {socket, selectedChat, user_id, refresh_chats} = props;
 
-    const [chat, setChat] = useState<string>(selectedChat);
+export function ChatWindow(): JSX.Element {
+
+    const {user} = useAuth();
+    const {selectedChat} = useChatList();
+    const {refresh_chats} = useUserChats(user!._id)
+    const {editingMessage, setEditingMessage} = useChatMessage();
 
     const {
         isMessagesLoading,
@@ -22,7 +22,7 @@ export function ChatWindow(props: ChatWindowProps): JSX.Element {
         chat_messages,
         messages_error,
         refresh_messages,
-    } = useChatMessages(chat);
+    } = useChatMessages(selectedChat!);
 
     const {
         isChatInfoLoading,
@@ -30,29 +30,55 @@ export function ChatWindow(props: ChatWindowProps): JSX.Element {
         chat_info,
         chat_info_error,
         refresh_chat_info,
-    } = useChatInfo(user_id, chat);
+    } = useChatInfo(user!._id, selectedChat!);
 
-    useEffect((): void => {
-        setChat(selectedChat);
-    }, [selectedChat]);
-
+    const {setMenuItem, setMenuItemActive} = useMenu();
     async function sendMessage(currentMessage: string): Promise<void> {
-        if (currentMessage) {
-            const messageData = {
-                chat_id: chat,
-                sender_id: user_id,
-                text: currentMessage,
-            };
 
-            await socket.emit('send_message', messageData);
+        if (currentMessage) {
+
+            if (editingMessage) {
+
+                const messageData = {
+                    chat_id: selectedChat!,
+                    message_id: editingMessage.id,
+                    text: currentMessage
+                }
+                await socket.emit("edit_message", messageData);
+                setEditingMessage(null);
+            }
+            else {
+
+                const messageData = {
+                    chat_id: selectedChat!,
+                    sender_id: user!._id,
+                    text: currentMessage,
+                };
+                console.log(messageData);
+                await socket.emit('send_message', messageData);
+            }
+
         }
     }
 
     useEffect(() => {
-        socket.on('receive_message', async () => {
+
+        socket.on('messages_changed', async (): Promise<void> => {
             await refresh_messages();
             await refresh_chats();
         });
+
+        socket.on('new_group_chat', async (): Promise<void> => {
+            console.log('aaa');
+            await refresh_messages();
+            await refresh_chats();
+            console.log('aaa');
+            setMenuItem(null);
+            setMenuItemActive(false);
+        });
+
+
+
     }, [socket]);
 
     const image_url: string =
@@ -66,11 +92,13 @@ export function ChatWindow(props: ChatWindowProps): JSX.Element {
                     <div className="chat-messages">
                         {!isMessagesLoading ? (
                             <>
-                                {chat_messages.map((message) => (
+                                {chat_messages.map((message: MessageDTO) => (
                                     <ChatMessage
                                         key={message._id}
+                                        message_id={message._id}
                                         message={message.text}
-                                        isMyMessage={message.sender_id === user_id}
+                                        is_edited={message.is_edited}
+                                        isMyMessage={message.sender_id === user!._id}
                                         time={message.time}
                                     />
                                 ))}

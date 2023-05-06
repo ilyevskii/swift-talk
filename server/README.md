@@ -1,7 +1,7 @@
 # Messenger
 Course project on the discipline OOP.
 
-"Web pulse" is a web application for instant messaging between users. After registration the user gets access to all the functions of the site: access to contacts, messaging in private and group chats and other functions.
+"Swift Talk" is a web application for instant messaging between users. After registration the user gets access to all the functions of the site: access to contacts, messaging in private and group chats and other functions.
 
 
 # Use-Case Diagram
@@ -11,5 +11,4 @@ Course project on the discipline OOP.
 
 # Class Diagram
 
-
-![Messenger(1)](https://user-images.githubusercontent.com/95957223/227710581-6dc7278b-ce5a-4c30-b13c-5de3b90b1077.png)
+![uml](https://user-images.githubusercontent.com/95957223/236599381-5f228473-ecd3-42a1-b839-50cfce8effb0.png)

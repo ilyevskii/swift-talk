@@ -4,6 +4,7 @@ export interface Message {
     _id: string;
     text: string;
     sender_id: string;
+    is_edited: boolean;
     sender_username: string;
     chat_id: string,
     time: string;
@@ -14,6 +15,7 @@ export interface MessageDTO {
     _id: string,
     text: string,
     time: string,
+    is_edited: boolean,
     sender_id: string,
     sender_username: string,
     attachments: any[] | string,
@@ -57,6 +59,7 @@ export class MessageRepository {
             _id: message._id,
             text: message.text,
             time: message.time,
+            is_edited: message.is_edited,
             sender_id: message.sender_id,
             sender_username: message.sender_username,
             attachments: message.attachments,

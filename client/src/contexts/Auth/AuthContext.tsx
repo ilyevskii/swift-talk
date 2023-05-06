@@ -1,5 +1,5 @@
 import {createContext, useEffect, useReducer, useContext, ReactNode} from "react";
-import {Dispatch, Context} from "react";
+import React, {Dispatch, Context} from "react";
 import AuthReducer from "./AuthReducer";
 import {Action} from "./AuthReducer";
 

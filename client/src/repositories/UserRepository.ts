@@ -9,7 +9,14 @@ export interface User {
     profile_id: string
 }
 
-export interface Contact extends User{
+export interface Profile {
+    first_name: string;
+    last_name: string;
+    image: string;
+    bio: string;
+}
+
+export interface Contact extends User {
     chat_id: string;
 }
 
@@ -24,6 +31,11 @@ export interface UserDTO {
     username: string;
     phone_number: string;
     profile_id: string;
+    image_path: string;
+    image: File;
+    first_name: string;
+    last_name: string;
+    bio: string;
 }
 
 export class UserRepository {
@@ -35,14 +47,45 @@ export class UserRepository {
 
     async getUserInfo(user_id: string): Promise<UserDTO | undefined> {
         try {
-            const response = await axios.get(`${this.RequestsUrl}/user/${user_id}`);
-            const user: User = response.data as User;
 
-            return UserRepository.userDTO(user);
+            const user_response = await axios.get(`${this.RequestsUrl}/user/${user_id}`);
+            const user: User = user_response.data as User;
+
+            const profile_response = await axios.get(`${this.RequestsUrl}/user/profile/${user.profile_id}`);
+            const profile: Profile = profile_response.data as Profile;
+
+
+            return UserRepository.userDTO(user, profile);
 
         } catch (err: any) {
             console.log(err.toString());
         }
+    }
+    async setUserInfo(user: UserDTO): Promise<void> {
+
+        try{
+            await axios.put(`${this.RequestsUrl}/user/${user._id}`,
+                {
+                    _id: user._id,
+                    username: user.username,
+                    phone_number: user.phone_number,
+                    profile_id: user.profile_id
+                })
+
+            await axios.put(`${this.RequestsUrl}/user/profile/${user.profile_id}`,
+                {
+                    _id: user.profile_id,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    bio: user.bio,
+                    image: user.image_path
+                })
+        }
+        catch (err: any) {
+            throw err.response.data;
+        }
+
+
     }
 
     async getAllUserChats(user_id: string): Promise<(ChatDTO | undefined)[] | []> {
@@ -88,13 +131,22 @@ export class UserRepository {
         };
     }
 
-    static userDTO(user: User): UserDTO {
+    static async userDTO(user: User, profile: Profile): Promise<UserDTO> {
+
+        const response: Response = await fetch(`http://localhost:3001/public/images/profile/${profile.image}`);
+        const blob: Blob = await response.blob();
+        const file: File = new File([blob], profile.image, { type: blob.type });
 
         return {
             _id: user._id,
             username: user.username,
             phone_number: user.phone_number,
             profile_id: user.profile_id,
+            first_name: profile.first_name,
+            image: file,
+            image_path: profile.image,
+            last_name: profile.last_name,
+            bio: profile.bio
         };
     }
 

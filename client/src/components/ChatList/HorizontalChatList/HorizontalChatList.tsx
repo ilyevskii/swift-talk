@@ -1,23 +1,24 @@
-import React from 'react';
 import './HorizontalChatList.css';
-import {ChatDTO} from "messanger-serializer";
 
-interface Props {
-    socket: any;
-    chats: ChatDTO[];
-    setSelectedChat: (id: string) => void;
-}
+import React from 'react';
+import {socket} from "App";
 
-export function HorizontalChatList(props: Props): JSX.Element {
+import {useChatList, useUserChats} from "hooks";
+import {useAuth} from "../../../contexts/Auth/AuthContext";
 
-    const { socket, chats, setSelectedChat } = props;
+export function HorizontalChatList(): JSX.Element {
+
+    const {user} = useAuth();
+    const {user_chats} = useUserChats(user!._id);
+    const {setSelectedChat} = useChatList();
+
     const image_url: string = 'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13';
     
     return (
         <div className="horizontal-chat-list">
-            {chats.length ? (
+            {user_chats!.length ? (
                 <div className="horizontal-chat-list-content">
-                    {chats.map((chat) => (
+                    {user_chats!.map((chat) => (
                         <div
                             key={chat._id}
                             className="horizontal-chat-preview"
