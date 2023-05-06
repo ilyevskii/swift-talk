@@ -16,13 +16,14 @@ export interface Profile {
     bio: string;
 }
 
-export interface Contact extends User {
+export interface Contact extends UserDTO {
     chat_id: string;
 }
 
 export interface ContactDTO {
     _id: string;
     username: string;
+    image: File;
     chat_id: string;
 }
 
@@ -110,11 +111,11 @@ export class UserRepository {
             const user_contacts = response.data;
 
             return await Promise.all(user_contacts.map(async (contact: {user_id: string, contact_id: string, chat_id: string}) => {
-                const response = await axios.get(`${this.RequestsUrl}/user/${contact.contact_id}`);
-                const contact_info: Contact = response.data as Contact;
-                contact_info.chat_id = contact.chat_id;
+                const contact_info: UserDTO | undefined = await this.getUserInfo(contact.contact_id);
 
-                return UserRepository.contactDTO(contact_info);
+                if (contact_info) {
+                    return UserRepository.contactDTO(contact_info, contact.chat_id);
+                }
             }));
         }
         catch (err: any) {
@@ -122,20 +123,30 @@ export class UserRepository {
         }
     }
 
-    static contactDTO(contact: Contact): ContactDTO {
+    static contactDTO(contact: UserDTO, chat_id: string): ContactDTO {
 
         return {
             _id: contact._id,
             username: contact.username,
-            chat_id: contact.chat_id,
+            image: contact.image,
+            chat_id: chat_id,
         };
     }
 
     static async userDTO(user: User, profile: Profile): Promise<UserDTO> {
 
-        const response: Response = await fetch(`http://localhost:3001/public/images/profile/${profile.image}`);
-        const blob: Blob = await response.blob();
-        const file: File = new File([blob], profile.image, { type: blob.type });
+        let blob: Blob;
+        if (profile.image.length) {
+            const response: Response = await fetch(`http://localhost:3001/public/images/profile/${profile.image}`);
+            blob = await response.blob();
+        }
+        else {
+            const response: Response = await fetch(`http://localhost:3001/public/images/profile/default.jpg`);
+            blob = await response.blob();
+        }
+        const file: File = new File([blob], profile.image.length ? profile.image : "default.jpg",
+            { type: blob.type });
+
 
         return {
             _id: user._id,
@@ -148,6 +159,22 @@ export class UserRepository {
             last_name: profile.last_name,
             bio: profile.bio
         };
+    }
+
+    static async getUserInfo(url:string, user_id: string): Promise<UserDTO | undefined> {
+        try {
+            const user_response = await axios.get(`${url}/user/${user_id}`);
+            const user: User = user_response.data as User;
+
+            const profile_response = await axios.get(`${url}/user/profile/${user.profile_id}`);
+            const profile: Profile = profile_response.data as Profile;
+
+
+            return UserRepository.userDTO(user, profile);
+
+        } catch (err: any) {
+            console.log(err.toString());
+        }
     }
 
 }

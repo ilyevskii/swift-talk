@@ -81,14 +81,11 @@ export function ChatWindow(): JSX.Element {
 
     }, [socket]);
 
-    const image_url: string =
-        'https://avatars.mds.yandex.net/i?id=5d8db0440aae4c3265492d1b3f8de64dddf64453-8342484-images-thumbs&n=13';
-
     return (
         <div className="chat-window">
             {!isChatInfoLoading ? (
                 <>
-                    <ChatHeader chatName={chat_info.name} chatPhoto={image_url} />
+                    <ChatHeader chatName={chat_info.name} chatPhoto={URL.createObjectURL(chat_info.image)} />
                     <div className="chat-messages">
                         {!isMessagesLoading ? (
                             <>

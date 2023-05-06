@@ -47,6 +47,11 @@ export class User {
         return (await User.usersDb.findOne({_id: new ObjectId(user_id.toString())})).username;
     }
 
+    static async getProfileImage(user_id: string): Promise<any> {
+        const profile_id = (await User.usersDb.findOne({_id: new ObjectId(user_id.toString())})).profile_id;
+        return await Profile.getImage(profile_id);
+    }
+
     static async deleteUserById(id: string): Promise<void> {
         await User.usersDb.findAndDeleteById(new ObjectId(id));
     }

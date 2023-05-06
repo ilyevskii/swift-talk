@@ -14,6 +14,7 @@ export class SavedMessages extends Chat {
             {
                 type: 'saved_messages',
                 name: 'Saved Messages',
+                image: 'saved_messages.jpg',
                 last_message: {}
             }
         );
@@ -29,6 +30,7 @@ export class SavedMessages extends Chat {
             {
                 type: 'saved_messages',
                 name: 'Saved Messages',
+                image: 'saved_messages.jpg',
                 last_message: {}
             }
         );

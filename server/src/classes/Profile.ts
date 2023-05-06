@@ -39,4 +39,8 @@ export class Profile {
     static async updateImage(id: string, image: string): Promise<void> {
         await Profile.profilesDb.updateOneField({_id: new ObjectId(id.toString())}, 'image', image)
     }
+
+    static async getImage(profile_id: string): Promise<any> {
+        return (await Profile.profilesDb.findOne({_id: new ObjectId(profile_id.toString())})).image;
+    }
 }
